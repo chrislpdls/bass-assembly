@@ -442,7 +442,31 @@
     b.setAttribute("aria-pressed", playing ? "true" : "false");
     b.textContent = playing ? "Stop" : "Play";
   }
+  // iOS mutes Web Audio when the ring/silent switch is on. Every iPhone browser (Safari, Chrome,
+  // Firefox...) runs on WebKit, so all of them are affected. Two fixes: ask for playback audio
+  // where the Audio Session API exists, and play a silent looping <audio> element on iOS, which
+  // switches the page to media playback in every iOS browser.
+  var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var silence = null;
+  function silentWav() {
+    var n = 4000, b = new Uint8Array(44 + n), v = new DataView(b.buffer);
+    function str(o, s) { for (var i = 0; i < s.length; i++) b[o + i] = s.charCodeAt(i); }
+    str(0, "RIFF"); v.setUint32(4, 36 + n, true); str(8, "WAVEfmt "); v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true);
+    v.setUint16(32, 1, true); v.setUint16(34, 8, true); str(36, "data"); v.setUint32(40, n, true);
+    b.fill(128, 44); // 8-bit PCM silence
+    return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+  }
+  function unmuteIOS() {
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+    if (!IOS) return;
+    try {
+      if (!silence) { silence = new Audio(silentWav()); silence.loop = true; silence.setAttribute("playsinline", ""); }
+      var p = silence.play(); if (p && p.catch) p.catch(function () {});
+    } catch (e) {}
+  }
   function play() {
+    unmuteIOS();
     try {
       if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
       if (ctx.state === "suspended") ctx.resume();
@@ -452,6 +476,7 @@
     updatePlay();
   }
   function stop() {
+    if (silence) silence.pause();
     playing = false; run++; clearInterval(timer);
     if (voice && ctx) { endVoice(voice, ctx.currentTime); voice = null; }
     cur = -1; mark(-1);
