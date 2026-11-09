@@ -1,0 +1,164 @@
+/* Self-hosted fonts: Geist and Geist Mono, variable weight (SIL Open Font License, see fonts/).
+   The logo uses Geist Pixel Line, outlined in the SVG, so fonts/geist-pixel-line.woff2 is not loaded. */
+@font-face { font-family: "Geist"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/geist-variable.woff2") format("woff2"); }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/geist-mono-variable.woff2") format("woff2"); }
+
+:root, :root[data-skin="black"] {
+  --bg: #121212; --panel: #0a0a0a; --ink: #f2f2f2; --ink-2: #8f8f8f; --line: #2a2a2a;
+  --accent: #f2f2f2; --accent-ink: #000000; --hot: #7a7a7a;
+  --cell: #161616; --cell-beat: #212121; --root-row: #303030;
+  /* Live state: playing step, selected step, key and pad. Same in both themes. */
+  --live: #00ffb2; --live-ink: #000000;
+  /* Inline icons (data URIs, no request), one color per theme. */
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f2f2f2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M1 3l2 2 4-4' fill='none' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --font-ui: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+:root[data-skin="white"] {
+  --bg: #e9e9e9; --panel: #ffffff; --ink: #0a0a0a; --ink-2: #6b6b6b; --line: #d2d2d2;
+  --accent: #0a0a0a; --accent-ink: #ffffff; --hot: #8a8a8a;
+  --cell: #f1f1f1; --cell-beat: #e3e3e3; --root-row: #d2d2d2;
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%230a0a0a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M1 3l2 2 4-4' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-ui); }
+body { padding: 67px 16px 48px; line-height: 1.45; }
+.wrap { max-width: 1040px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 51px; }
+main { display: flex; flex-direction: column; gap: 51px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1.logo { margin: 0; line-height: 0; color: var(--ink); flex: 1; min-width: 0; }
+h1.logo svg { display: block; width: min(631px, 100%); height: auto; }
+#skin { padding: 6px 12px; font-size: 13px; background: transparent; border-color: var(--ink); flex: none; }
+/* Header actions: GitHub link (bare logo in the ink color, 31px click area) and theme button. */
+.acts { display: flex; align-items: center; gap: 8px; flex: none; }
+#skin { height: 31px; }
+.gh { display: flex; align-items: center; justify-content: center; width: 31px; height: 31px; border-radius: 8px; color: var(--ink); }
+.gh:hover { opacity: .7; }
+.gh svg { display: block; width: 20px; height: 20px; }
+h2 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.45; margin: 0 0 10px; }
+.sub { color: var(--accent); margin: 2px 0 0; font-size: 13px; font-weight: 500; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; letter-spacing: -0.05em; color: var(--ink-2); }
+.field select {
+  font: 400 14px var(--font-mono); letter-spacing: 0; color: var(--ink); background: var(--cell);
+  border: 1px solid var(--line); border-radius: 6px; padding: 7px 30px 7px 8px;
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  background-image: var(--chevron); background-repeat: no-repeat; background-position: right 12px center;
+  text-overflow: ellipsis;
+}
+.field input[type=range] { accent-color: var(--accent); width: 100%; margin: 6px 0 0; }
+.field .val { color: var(--ink); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 600 13px var(--font-mono); letter-spacing: -0.02em; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: var(--cell); color: var(--ink); padding: 9px 14px; }
+button:hover { border-color: var(--live); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.live { background: var(--live); color: var(--live-ink); border-color: var(--live); }
+button.live:hover { border-color: var(--ink); }
+button.play { text-transform: uppercase; }
+button.play.on { background: var(--live); color: var(--live-ink); border-color: var(--live); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.check { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 300; line-height: 1.37; color: var(--ink); }
+.check input {
+  appearance: none; -webkit-appearance: none; margin: 0; flex: none; cursor: pointer;
+  width: 16px; height: 16px; border: 1px solid var(--ink-2); border-radius: 4px; background: var(--cell);
+}
+.check input:checked { background: var(--accent) var(--tick) no-repeat center; border-color: var(--accent); }
+.gridwrap { overflow-x: auto; padding-bottom: 4px; }
+.grid { display: grid; gap: 3px; min-width: 560px; align-items: stretch; }
+.lbl { font: 500 11px var(--font-mono); color: var(--ink-2); display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+.lbl.root { color: var(--accent); }
+.hd { font: 500 11px var(--font-mono); color: var(--ink-2); text-align: center; padding: 2px 0; border-radius: 4px; }
+.hd.beat { color: var(--ink); }
+.hd.now { background: var(--live); color: var(--live-ink); }
+.c { height: 24px; border-radius: 4px; border: 0; padding: 0; background: var(--cell); }
+.c.b { background: var(--cell-beat); }
+.c.r { background: var(--root-row); }
+.c.on { background: var(--accent); }
+.c.now { outline: 2px solid var(--ink); outline-offset: -2px; }
+.c.on.now { background: var(--live); outline: 0; }
+.c.flag { height: 28px; font: 500 11px var(--font-mono); color: var(--ink-2); }
+.c.flag.on { background: var(--accent); color: var(--accent-ink); }
+.c.bar { height: 60px; overflow: hidden; display: flex; flex-direction: column; cursor: ns-resize; touch-action: pan-x; user-select: none; -webkit-user-select: none; }
+.c.bar.off { cursor: default; }
+.c.bar span { flex: none; height: 15px; font: 500 10px/15px var(--font-mono); color: var(--ink); text-align: center; }
+.c.bar b { position: relative; flex: 1; display: block; }
+.c.bar i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--accent); opacity: .85; display: block; }
+.c.bar.g i { background: var(--hot); opacity: 1; }
+.c.bar:hover:not(.off) i { opacity: 1; }
+.kbwrap { overflow-x: auto; margin-top: 12px; padding-bottom: 6px; }
+.stp { display: flex; flex-direction: column; gap: 5px; align-items: stretch; }
+.stp small { font: 500 10px var(--font-mono); color: var(--ink-2); text-align: center; min-height: 13px; }
+#stepsel.row { display: grid; grid-template-columns: repeat(var(--n, 16), minmax(36px, 1fr)); gap: 6px; min-width: 600px; }
+.chip { padding: 5px 0; min-width: 34px; font: 500 12px var(--font-mono); letter-spacing: 0; }
+.chip.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chip.sel { background: var(--live); border-color: var(--live); color: var(--live-ink); }
+.kb { position: relative; height: 120px; }
+.wk { position: absolute; top: 0; height: 120px; background: #f4f4f4; border: 1px solid #777; border-radius: 0 0 4px 4px; font: 500 10px var(--font-mono); color: #555; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; }
+.bk { position: absolute; top: 0; width: 16px; height: 72px; background: #111; border: 1px solid #555; border-radius: 0 0 3px 3px; z-index: 2; }
+.wk.used { background: #bdbdbd; }
+.bk.used { background: #777; }
+.wk.sel { background: var(--live); color: var(--live-ink); }
+.bk.sel { background: var(--live); }
+.wk.sel, .bk.sel { outline: 1px solid var(--ink); outline-offset: -1px; }
+.padgrid { display: grid; grid-template-columns: repeat(8, minmax(34px, 62px)); gap: 8px; margin-top: 14px; justify-content: start; }
+.pd { aspect-ratio: 1; border-radius: 8px; background: var(--cell-beat); border: 2px solid var(--ink-2); color: var(--ink); display: flex; align-items: center; justify-content: center; text-align: center; font: 500 10px var(--font-mono); }
+.pd.none { background: transparent; border-color: transparent; }
+.pd.used { background: var(--root-row); border-color: var(--ink); }
+.pd.sel { background: var(--live); border-color: var(--accent); color: var(--live-ink); }
+.kbtxt { font-size: 15px; margin: 10px 0 0; max-width: 70ch; }
+table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+th { font: 500 11px var(--font-ui); color: var(--ink-2); }
+td.off { color: var(--ink-2); }
+td strong { font-weight: 500; }
+.tablewrap { overflow-x: auto; max-height: 440px; overflow-y: auto; }
+.note { font-size: 11px; font-weight: 300; line-height: 1.37; color: var(--ink-2); margin: 10px 0 0; max-width: 65ch; }
+.saved { display: flex; flex-direction: column; gap: 6px; }
+.saved .item { display: flex; gap: 6px; }
+.saved .item button:first-child { flex: 1; text-align: left; font-weight: 400; font-size: 14px; letter-spacing: 0; }
+.saved .item button.x { padding: 9px 11px; }
+.empty { color: var(--ink-2); font-size: 13px; }
+.status { font-size: 12px; color: var(--ink-2); min-height: 18px; margin-top: 12px; }
+
+/* Content below the tool */
+.about h3 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.45; margin: 31px 0 10px; }
+.about p { font-size: 13px; letter-spacing: 0.03em; color: var(--ink); margin: 0 0 10px; max-width: 620px; }
+.about ul { color: var(--ink); font-size: 13px; letter-spacing: 0.03em; margin: 0 0 10px; padding-left: 20px; max-width: 620px; }
+details { border-top: 1px solid var(--line); padding: 10px 0; }
+details:last-of-type { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 500; font-size: 15px; letter-spacing: -0.04em; list-style: none; display: flex; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+"; font-family: var(--font-mono); width: 1ch; flex: none; }
+details[open] summary::before { content: "\2212"; }
+details.closing summary::before { content: "+"; }
+details p { margin: 8px 0 0; }
+footer { color: var(--ink-2); font-size: 12px; padding-top: 4px; }
+footer p { margin: 0; }
+/* Links never get a color: they use the text color (also once visited). FAQ links are bold. */
+a { color: var(--ink); }
+details a { font-weight: 600; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 12px; top: 12px; background: var(--accent); color: var(--accent-ink); padding: 8px 12px; border-radius: 6px; z-index: 10; }
+
+/* Smaller screens: scale the big titles down (full responsive pass to come).
+   The logo fills the space left by the theme button at every width. */
+@media (max-width: 760px) {
+  body { padding-top: 28px; }
+  .wrap, main { gap: 24px; }
+  h2, .about h3 { font-size: 32px; }
+  /* Smaller theme button, with a 44px touch area kept by the ::after overlay. */
+  #skin { position: relative; padding: 3px 7px; font-size: 11px; border-radius: 6px; }
+  #skin::after { content: ""; position: absolute; inset: -12px -8px; }
+  .acts { gap: 16px; }
+  #skin { height: 22px; }
+  .gh { position: relative; width: 22px; height: 22px; border-radius: 6px; }
+  .gh svg { width: 16px; height: 16px; }
+  .gh::after { content: ""; position: absolute; inset: -12px -8px; }
+  .sub { margin-top: 8px; }
+}
