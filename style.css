@@ -39,7 +39,7 @@ h1.logo svg { display: block; width: min(631px, 100%); height: auto; }
 .gh { display: flex; align-items: center; justify-content: center; width: 31px; height: 31px; border-radius: 8px; color: var(--ink); }
 .gh:hover { opacity: .7; }
 .gh svg { display: block; width: 20px; height: 20px; }
-h2 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.45; margin: 0 0 10px; }
+h2 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.1; margin: 0 0 10px; }
 .sub { color: var(--accent); margin: 2px 0 0; font-size: 13px; font-weight: 500; }
 /* Anchor menu: what you can do, in order. Export MIDI stands out in green. */
 .tour { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
