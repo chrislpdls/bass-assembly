@@ -535,7 +535,7 @@
         var stl = STYLES[$("style").value], sc = stl.scale;
         if (sc) $("scale").value = sc;
         $("bpm").value = Math.round((stl.bpm[0] + stl.bpm[1]) / 2);
-        readControls(); setSound(styleSound(stl)); generate(); status("Style " + stl.label + ": new idea generated.");
+        readControls(); setSound(styleSound(stl)); generate(); status("Style " + stl.label + ": new notes generated.");
       } else {
         readControls();
         // A new step count changes which step follows the last one: drop ties into a rest.
@@ -547,7 +547,7 @@
   ["dens", "bpm", "swing", "hum"].forEach(function (id) { $(id).addEventListener("input", readControls); });
 
   $("gen").addEventListener("click", function () {
-    readControls(); generate(); render(); status("New idea generated.");
+    readControls(); generate(); render(); status("New notes, same settings.");
   });
   $("rand").addEventListener("click", function () {
     var k = rnd(Object.keys(STYLES)), st = STYLES[k];
@@ -567,7 +567,7 @@
     sd.rev = Math.min(70, Math.max(0, sd.rev + Math.round(Math.random() * 30 - 10)));
     sd.dtime = rnd([.5, .75, 1]);
     readControls(); setSound(sd); generate(); render();
-    status("Random pick: " + st.label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm.");
+    status("New bassline: " + st.label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm.");
   });
   $("mut").addEventListener("click", function () {
     readControls(); mutate(3, false); render(); status("A few steps changed.");

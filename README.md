@@ -8,7 +8,7 @@ No account, no tracking, nothing uploaded. Everything runs locally and your save
 
 - Styles: Acid, EBM, Industrial, Rolling and Dark Wave, each with its own rhythm grid, note weights, accents, ties, velocity and gate ranges
 - Eight scales, from minor pentatonic to harmonic minor
-- Generate, randomize everything, or vary a pattern a little. Optionally repeat the first half with small variations
+- Generate a bassline (random settings and sequence), change only the notes, or vary a pattern a little. Optionally repeat the first half with small variations
 - Editable piano roll with accent, tie, velocity and gate for every step
 - Built-in synth: wave, filter, resonance, filter decay, drive, sub oscillator, glide, delay and reverb
 - Swing and humanize (small random changes to timing, velocity and note length)
