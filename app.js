@@ -443,11 +443,13 @@
       nextT += dur; pos = (pos + 1) % S.n;
     }
   }
+  // Every Play button (settings, sequencer, keys) shows the same state.
   function updatePlay() {
-    var b = $("play");
-    b.classList.toggle("on", playing);
-    b.setAttribute("aria-pressed", playing ? "true" : "false");
-    b.textContent = playing ? "Stop" : "Play";
+    Array.prototype.forEach.call(document.querySelectorAll("button.play"), function (b) {
+      b.classList.toggle("on", playing);
+      b.setAttribute("aria-pressed", playing ? "true" : "false");
+      b.textContent = playing ? "Stop" : "Play";
+    });
   }
   // iOS mutes Web Audio when the ring/silent switch is on. Every iPhone browser (Safari, Chrome,
   // Firefox...) runs on WebKit, so all of them are affected. Two fixes: ask for playback audio
@@ -582,7 +584,9 @@
   $("clr").addEventListener("click", function () {
     S.steps = blank(); render(); status("Sequence cleared.");
   });
-  $("play").addEventListener("click", function () { if (playing) stop(); else play(); });
+  Array.prototype.forEach.call(document.querySelectorAll("button.play"), function (b) {
+    b.addEventListener("click", function () { if (playing) stop(); else play(); });
+  });
   $("keep").addEventListener("click", function () {
     readControls();
     var label = STYLES[S.style].label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm";
@@ -649,7 +653,9 @@
     tracks.forEach(function (tk) { all = all.concat(chunk("MTrk", tk)); });
     return new Uint8Array(all);
   }
-  $("midi").addEventListener("click", function () {
+  // The main export button and the shortcuts next to the sequencer and the keys.
+  Array.prototype.forEach.call(document.querySelectorAll("#midi, button.midi-btn"), function (b) { b.addEventListener("click", exportMidi); });
+  function exportMidi() {
     readControls();
     var out = $("midiout");
     var bytes = buildMidi(), ok = false;
@@ -664,7 +670,7 @@
       out.appendChild(l);
     } catch (e) {}
     status(ok ? "MIDI exported: " + name : "Export is not possible in this browser. Try another one.");
-  });
+  }
   $("copy").addEventListener("click", function () {
     var n = S.n, lines = ["Bass Assembly bassline " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + n + " steps, " + S.bpm + " bpm"];
     for (var i = 0; i < n; i++) {

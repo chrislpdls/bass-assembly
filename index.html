@@ -218,11 +218,13 @@
 
   <section class="panel" id="sequence" aria-label="Sequence">
     <div class="gridwrap"><div class="grid" id="grid"></div></div>
+    <div class="row panelbar below"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
     <p class="note">Click a cell to place a note on a step, click again to remove it. Accent: a stronger step. Tie: the note glides into the next step without being retriggered. Vel and Gate: drag a bar up or down, or across several steps to draw them all at once. Higher means louder or longer. Arrow keys also work.</p>
   </section>
 
   <section class="panel" aria-label="Keys and pads">
     <h2>Which key for each step</h2>
+    <div class="row panelbar"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
     <div class="kbwrap"><div class="row" id="stepsel"></div></div>
     <div class="kbwrap"><div class="kb" id="kb"></div></div>
     <div class="padgrid" id="pads" aria-label="Generic pad layout"></div>
@@ -252,7 +254,7 @@
       <label class="field" style="flex-direction:row;align-items:center;gap:6px">Bars
         <select id="midibars"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select>
       </label>
-      <button id="midi">Export as MIDI (.mid)</button>
+      <button class="live" id="midi">Export as MIDI (.mid)</button>
     </div>
     <p class="note" id="midiout" aria-live="polite">The .mid file holds the bass line, ready to drop into your DAW. If the download does not start by itself, a link appears here: click it.</p>
     <p class="note">Semitones is the distance from the root note, handy if you transpose. Velocity (0 to 127) and gate (% of the step) are indicative: set them on your instrument. For a tied step, turn on glide on your synth and lengthen the note.</p>
