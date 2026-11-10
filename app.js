@@ -190,7 +190,7 @@
   }
   var PADS_TOP = [["C#", 1], ["D#", 3], ["", -1], ["F#", 6], ["G#", 8], ["A#", 10], ["", -1], ["", -1]];
   var PADS_BOT = [["C", 0], ["D", 2], ["E", 4], ["F", 5], ["G", 7], ["A", 9], ["B", 11], ["C", 12]];
-  /* Which key for each step: what the step chips, pads and keyboard show for the selected step. */
+  /* Play it on your gear panel: what the step chips, pads and keyboard show for the selected step. */
   var BLACK = { 1: 1, 3: 1, 6: 1, 8: 1, 10: 1 };
   function kbInfo() {
     var n = S.n, used = {}, usedM = {}, low = null;

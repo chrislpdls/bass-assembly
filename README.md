@@ -12,7 +12,7 @@ No account, no tracking, nothing uploaded. Everything runs locally and your save
 - Editable piano roll with accent, tie, velocity and gate for every step
 - Built-in synth: wave, filter, resonance, filter decay, drive, sub oscillator, glide, delay and reverb
 - Swing and humanize (small random changes to timing, velocity and note length)
-- "Which key for each step" panel: the note of each step on a piano keyboard and on a generic two row pad layout
+- "Play it on your gear" panel: the note of each step on a piano keyboard and on a generic two row pad layout
 - Copy the pattern as text, or export it as a Standard MIDI File (1, 2 or 4 bars)
 - Save the ideas you like, stored in the browser's local storage
 - Dark and light themes
