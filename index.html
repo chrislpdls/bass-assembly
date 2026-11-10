@@ -226,8 +226,17 @@
     <div class="kbwrap"><div class="row" id="stepsel"></div></div>
     <div class="kbwrap"><div class="kb" id="kb"></div></div>
     <div class="padgrid" id="pads" aria-label="Generic pad layout"></div>
-    <p class="kbtxt" id="kbtxt"></p>
-    <p class="note">Pick a step to see its note. The top row shows the note of every step. The keyboard shows the same note on a piano, starting from the lowest C your sequence needs. The two pad rows are a generic layout, like on most pad controllers: the bottom row holds the white keys, the top row the sharps. Selected note: highlighted. Other notes of the sequence: lightly marked. While playing, everything follows the current step. If your controller has octave buttons, use them to reach the right octave.</p>
+    <dl class="kbinfo" aria-label="Selected step">
+      <div><dt>Step</dt><dd id="ki-step"></dd></div>
+      <div><dt>Note</dt><dd id="ki-note"></dd></div>
+      <div><dt>Pad row</dt><dd id="ki-row"></dd></div>
+      <div><dt>Octave</dt><dd id="ki-oct"></dd></div>
+      <div><dt>Velocity</dt><dd id="ki-vel"></dd></div>
+      <div><dt>Gate</dt><dd id="ki-gate"></dd></div>
+      <div><dt>Accent</dt><dd id="ki-acc"></dd></div>
+      <div><dt>Tie</dt><dd id="ki-tie"></dd></div>
+    </dl>
+    <p class="note">Pick a step to see its note. Octave counts up from the lowest octave of your sequence (+0 is the lowest). The top row shows the note of every step. The keyboard shows the same note on a piano, starting from the lowest C your sequence needs. The two pad rows are a generic layout, like on most pad controllers: the bottom row holds the white keys, the top row the sharps. Selected note: highlighted. Other notes of the sequence: lightly marked. While playing, everything follows the current step. If your controller has octave buttons, use them to reach the right octave.</p>
   </section>
 
   <section class="panel" aria-label="To copy">

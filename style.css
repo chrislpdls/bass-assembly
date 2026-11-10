@@ -115,7 +115,11 @@ button.ghost:hover { border-color: var(--live); }
 .pd.none { background: transparent; border-color: transparent; }
 .pd.used { background: var(--root-row); border-color: var(--ink); }
 .pd.sel { background: var(--live); border-color: var(--accent); color: var(--live-ink); }
-.kbtxt { font-size: 15px; margin: 10px 0 0; max-width: 70ch; }
+/* Selected step info: equal fixed columns, one line per value, so playback never shifts the page. */
+.kbinfo { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; max-width: 640px; }
+.kbinfo div { min-width: 0; }
+.kbinfo dt { font-size: 11px; color: var(--ink-2); }
+.kbinfo dd { margin: 2px 0 0; font: 500 15px var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
 th { font: 500 11px var(--font-ui); color: var(--ink-2); }
@@ -165,4 +169,5 @@ details a { font-weight: 600; }
   .gh svg { width: 16px; height: 16px; }
   .gh::after { content: ""; position: absolute; inset: -12px -8px; }
   .sub { margin-top: 8px; }
+  .kbinfo { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 10px; }
 }

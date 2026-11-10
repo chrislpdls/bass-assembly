@@ -208,13 +208,20 @@
     return "pd" + (v === k.selPc ? " sel" : k.used[v] ? " used" : "");
   }
   function keyCls(m, k) { return (BLACK[m % 12] ? "bk" : "wk") + (k.sel.on && m === k.sel.m ? " sel" : (k.usedM[m] ? " used" : "")); }
-  function kbText(k) {
-    var sel = k.sel;
-    if (!sel.on) return "Step " + (selStep + 1) + ": rest. Leave this step empty.";
-    var pc = sel.m % 12;
-    return "Step " + (selStep + 1) + ": " + noteName(sel.m) + ". Play " + NAMES[pc] + " on the " + (BLACK[pc] ? "top" : "bottom") + " pad row, or on the keyboard. Octave: " +
-      (k.rel === 0 ? "the lowest octave of your sequence" : k.rel + (k.rel === 1 ? " octave" : " octaves") + " above the lowest octave of your sequence") +
-      ". Velocity " + velOf(sel) + ", gate " + gatePct(sel) + "%" + (sel.acc ? ", accent" : "") + (sel.tie ? ", tied to the next step" : "") + ".";
+  // Fixed fields for the selected step: only the values change, so the layout never moves while playing.
+  function kbFill(k) {
+    var sel = k.sel, on = sel.on, pc = on ? sel.m % 12 : 0;
+    var v = {
+      step: (selStep + 1) + "/" + k.n,
+      note: on ? noteName(sel.m) : "rest",
+      row: on ? (BLACK[pc] ? "top" : "bottom") : "-",
+      oct: on ? "+" + k.rel : "-",
+      vel: on ? String(velOf(sel)) : "-",
+      gate: on ? gatePct(sel) + "%" : "-",
+      acc: on ? (sel.acc ? "yes" : "no") : "-",
+      tie: on ? (sel.tie ? "yes" : "no") : "-"
+    };
+    Object.keys(v).forEach(function (f) { $("ki-" + f).textContent = v[f]; });
   }
   // Full rebuild, when the notes change.
   function kbRender() {
@@ -236,7 +243,7 @@
     }
     $("kb").style.width = (wi * W) + "px";
     $("kb").innerHTML = kb;
-    $("kbtxt").textContent = kbText(k);
+    kbFill(k);
   }
   // Light update when only the selected step moves (playback): change classes in place.
   function kbSelect() {
@@ -244,7 +251,7 @@
     Array.prototype.forEach.call($("stepsel").querySelectorAll(".chip"), function (c) { c.classList.toggle("sel", +c.dataset.sel === selStep); });
     Array.prototype.forEach.call($("pads").children, function (p) { p.className = padCls(+p.dataset.v, k); });
     Array.prototype.forEach.call($("kb").children, function (key) { key.className = keyCls(+key.dataset.m, k); });
-    $("kbtxt").textContent = kbText(k);
+    kbFill(k);
   }
   function table() {
     var n = S.n, h = "";
