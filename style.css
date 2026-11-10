@@ -43,12 +43,8 @@ h2 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.
 .sub { color: var(--accent); margin: 2px 0 0; font-size: 13px; font-weight: 500; }
 /* Anchor menu: what you can do, in order. Export MIDI stands out in green. */
 .tour { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
-.tour a { font: 600 13px var(--font-mono); letter-spacing: -0.02em; text-decoration: none; color: var(--ink); border: 1px solid var(--ink-2); border-radius: 999px; padding: 6px 12px; }
-.tour a:hover { border-color: var(--live); }
-.tour b { color: var(--ink-2); margin-right: 2px; }
+.tour a { font: 600 13px var(--font-mono); letter-spacing: -0.02em; text-decoration: none; color: var(--ink); border: 1px solid var(--ink); border-radius: 999px; padding: 6px 12px; }
 .tour a.midi { background: var(--live); color: var(--live-ink); border-color: var(--live); }
-.tour a.midi:hover { border-color: var(--ink); }
-.tour a.midi b { color: var(--live-ink); }
 section[id], #export { scroll-margin-top: 16px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
