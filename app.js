@@ -190,7 +190,7 @@
   }
   var PADS_TOP = [["C#", 1], ["D#", 3], ["", -1], ["F#", 6], ["G#", 8], ["A#", 10], ["", -1], ["", -1]];
   var PADS_BOT = [["C", 0], ["D", 2], ["E", 4], ["F", 5], ["G", 7], ["A", 9], ["B", 11], ["C", 12]];
-  /* Which key for each step: what the step chips, pads and keyboard show for the selected step. */
+  /* Play it on your gear panel: what the step chips, pads and keyboard show for the selected step. */
   var BLACK = { 1: 1, 3: 1, 6: 1, 8: 1, 10: 1 };
   function kbInfo() {
     var n = S.n, used = {}, usedM = {}, low = null;
@@ -208,13 +208,20 @@
     return "pd" + (v === k.selPc ? " sel" : k.used[v] ? " used" : "");
   }
   function keyCls(m, k) { return (BLACK[m % 12] ? "bk" : "wk") + (k.sel.on && m === k.sel.m ? " sel" : (k.usedM[m] ? " used" : "")); }
-  function kbText(k) {
-    var sel = k.sel;
-    if (!sel.on) return "Step " + (selStep + 1) + ": rest. Leave this step empty.";
-    var pc = sel.m % 12;
-    return "Step " + (selStep + 1) + ": " + noteName(sel.m) + ". Play " + NAMES[pc] + " on the " + (BLACK[pc] ? "top" : "bottom") + " pad row, or on the keyboard. Octave: " +
-      (k.rel === 0 ? "the lowest octave of your sequence" : k.rel + (k.rel === 1 ? " octave" : " octaves") + " above the lowest octave of your sequence") +
-      ". Velocity " + velOf(sel) + ", gate " + gatePct(sel) + "%" + (sel.acc ? ", accent" : "") + (sel.tie ? ", tied to the next step" : "") + ".";
+  // Fixed fields for the selected step: only the values change, so the layout never moves while playing.
+  function kbFill(k) {
+    var sel = k.sel, on = sel.on, pc = on ? sel.m % 12 : 0;
+    var v = {
+      step: (selStep + 1) + "/" + k.n,
+      note: on ? noteName(sel.m) : "rest",
+      row: on ? (BLACK[pc] ? "top" : "bottom") : "-",
+      oct: on ? "+" + k.rel : "-",
+      vel: on ? String(velOf(sel)) : "-",
+      gate: on ? gatePct(sel) + "%" : "-",
+      acc: on ? (sel.acc ? "yes" : "no") : "-",
+      tie: on ? (sel.tie ? "yes" : "no") : "-"
+    };
+    Object.keys(v).forEach(function (f) { $("ki-" + f).textContent = v[f]; });
   }
   // Full rebuild, when the notes change.
   function kbRender() {
@@ -236,7 +243,7 @@
     }
     $("kb").style.width = (wi * W) + "px";
     $("kb").innerHTML = kb;
-    $("kbtxt").textContent = kbText(k);
+    kbFill(k);
   }
   // Light update when only the selected step moves (playback): change classes in place.
   function kbSelect() {
@@ -244,7 +251,7 @@
     Array.prototype.forEach.call($("stepsel").querySelectorAll(".chip"), function (c) { c.classList.toggle("sel", +c.dataset.sel === selStep); });
     Array.prototype.forEach.call($("pads").children, function (p) { p.className = padCls(+p.dataset.v, k); });
     Array.prototype.forEach.call($("kb").children, function (key) { key.className = keyCls(+key.dataset.m, k); });
-    $("kbtxt").textContent = kbText(k);
+    kbFill(k);
   }
   function table() {
     var n = S.n, h = "";
@@ -436,11 +443,13 @@
       nextT += dur; pos = (pos + 1) % S.n;
     }
   }
+  // Every Play button (settings, sequencer, keys) shows the same state.
   function updatePlay() {
-    var b = $("play");
-    b.classList.toggle("on", playing);
-    b.setAttribute("aria-pressed", playing ? "true" : "false");
-    b.textContent = playing ? "Stop" : "Play";
+    Array.prototype.forEach.call(document.querySelectorAll("button.play"), function (b) {
+      b.classList.toggle("on", playing);
+      b.setAttribute("aria-pressed", playing ? "true" : "false");
+      b.textContent = playing ? "Stop" : "Play";
+    });
   }
   // iOS mutes Web Audio when the ring/silent switch is on. Every iPhone browser (Safari, Chrome,
   // Firefox...) runs on WebKit, so all of them are affected. Two fixes: ask for playback audio
@@ -535,7 +544,7 @@
         var stl = STYLES[$("style").value], sc = stl.scale;
         if (sc) $("scale").value = sc;
         $("bpm").value = Math.round((stl.bpm[0] + stl.bpm[1]) / 2);
-        readControls(); setSound(styleSound(stl)); generate(); status("Style " + stl.label + ": new idea generated.");
+        readControls(); setSound(styleSound(stl)); generate(); status("Style " + stl.label + ": new notes generated.");
       } else {
         readControls();
         // A new step count changes which step follows the last one: drop ties into a rest.
@@ -547,7 +556,7 @@
   ["dens", "bpm", "swing", "hum"].forEach(function (id) { $(id).addEventListener("input", readControls); });
 
   $("gen").addEventListener("click", function () {
-    readControls(); generate(); render(); status("New idea generated.");
+    readControls(); generate(); render(); status("New notes, same settings.");
   });
   $("rand").addEventListener("click", function () {
     var k = rnd(Object.keys(STYLES)), st = STYLES[k];
@@ -567,7 +576,7 @@
     sd.rev = Math.min(70, Math.max(0, sd.rev + Math.round(Math.random() * 30 - 10)));
     sd.dtime = rnd([.5, .75, 1]);
     readControls(); setSound(sd); generate(); render();
-    status("Random pick: " + st.label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm.");
+    status("New bassline: " + st.label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm.");
   });
   $("mut").addEventListener("click", function () {
     readControls(); mutate(3, false); render(); status("A few steps changed.");
@@ -575,7 +584,9 @@
   $("clr").addEventListener("click", function () {
     S.steps = blank(); render(); status("Sequence cleared.");
   });
-  $("play").addEventListener("click", function () { if (playing) stop(); else play(); });
+  Array.prototype.forEach.call(document.querySelectorAll("button.play"), function (b) {
+    b.addEventListener("click", function () { if (playing) stop(); else play(); });
+  });
   $("keep").addEventListener("click", function () {
     readControls();
     var label = STYLES[S.style].label + ", " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + S.n + " steps, " + S.bpm + " bpm";
@@ -642,7 +653,9 @@
     tracks.forEach(function (tk) { all = all.concat(chunk("MTrk", tk)); });
     return new Uint8Array(all);
   }
-  $("midi").addEventListener("click", function () {
+  // The main export button and the shortcuts next to the sequencer and the keys.
+  Array.prototype.forEach.call(document.querySelectorAll("#midi, button.midi-btn"), function (b) { b.addEventListener("click", exportMidi); });
+  function exportMidi() {
     readControls();
     var out = $("midiout");
     var bytes = buildMidi(), ok = false;
@@ -657,7 +670,7 @@
       out.appendChild(l);
     } catch (e) {}
     status(ok ? "MIDI exported: " + name : "Export is not possible in this browser. Try another one.");
-  });
+  }
   $("copy").addEventListener("click", function () {
     var n = S.n, lines = ["Bass Assembly bassline " + NAMES[S.root] + " " + SCALES[S.scale].label.toLowerCase() + ", " + n + " steps, " + S.bpm + " bpm"];
     for (var i = 0; i < n; i++) {

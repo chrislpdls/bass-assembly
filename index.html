@@ -81,7 +81,7 @@
       "name": "How do I play the pattern on my own synth or pad controller?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The panel called Which key for each step shows the note of every step on a piano keyboard and on a generic two row pad layout. The table below it lists the note, MIDI number, velocity and gate of each step, and you can copy it as text."
+        "text": "The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text."
       }
     },
     {
@@ -128,11 +128,20 @@
           <button id="skin">DK<span class="sr"> dark theme, switch to light</span></button>
         </div>
       </div>
-      <p class="sub">Free bassline generator and step sequencer. Create acid, EBM, industrial and dark wave basslines, listen to them, edit every step and export MIDI.</p>
+      <p class="sub">A free bassline generator for ideas, with a step sequencer. It writes the notes, your synth makes the sound: the sound here is just a demo. Create acid, EBM, industrial and dark wave basslines, edit every step and export MIDI.</p>
+      <nav class="tour" aria-label="What you can do">
+        <a href="#generate">Generate</a>
+        <a href="#sequence">Edit the steps</a>
+        <a href="#keys">Play it on your gear</a>
+        <a class="midi" href="#export">Export MIDI</a>
+        <a href="#copy-notes">Copy on your instrument</a>
+        <a href="#sound">Sound for demo</a>
+      </nav>
   </header>
   <main>
 
-  <section class="panel" aria-label="Settings">
+  <section class="panel" id="generate" aria-label="Settings">
+    <h2>Generate</h2>
     <div class="controls">
       <label class="field">Root note
         <select id="root"></select>
@@ -164,18 +173,18 @@
     </div>
     <div class="row" style="margin-top:14px">
       <button class="play" id="play" aria-pressed="false">Play</button>
-      <button class="primary" id="gen">Generate an idea</button>
-      <button class="live" id="rand">Randomize all</button>
-      <button id="mut">Vary a little</button>
-      <button id="clr">Clear</button>
-      <button id="keep">Keep this idea</button>
+      <button class="live" id="rand">Generate bassline<span class="hint">Random settings + sequence</span></button>
+      <button class="ghost" id="gen">Change notes</button>
+      <button class="ghost" id="mut">Vary a little</button>
+      <button class="ghost" id="clr">Clear</button>
+      <button class="ghost" id="keep">Keep this idea</button>
       <label class="check"><input type="checkbox" id="rep" checked> Repeat the first half with variation</label>
     </div>
     <div class="status" id="status" aria-live="polite"></div>
   </section>
 
-  <section class="panel" aria-label="Sound">
-    <h2>Make your sound</h2>
+  <section class="panel" id="sound" aria-label="Sound">
+    <h2>Sound for demo</h2>
     <div class="controls">
       <label class="field">Wave
         <select id="wave"><option value="square">Square</option><option value="sawtooth">Sawtooth</option><option value="triangle">Triangle</option></select>
@@ -217,21 +226,44 @@
   </section>
 
   <section class="panel" id="sequence" aria-label="Sequence">
+    <h2>Edit the steps</h2>
     <div class="gridwrap"><div class="grid" id="grid"></div></div>
+    <div class="row panelbar below"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
     <p class="note">Click a cell to place a note on a step, click again to remove it. Accent: a stronger step. Tie: the note glides into the next step without being retriggered. Vel and Gate: drag a bar up or down, or across several steps to draw them all at once. Higher means louder or longer. Arrow keys also work.</p>
   </section>
 
-  <section class="panel" aria-label="Keys and pads">
-    <h2>Which key for each step</h2>
+  <section class="panel" id="keys" aria-label="Keys and pads">
+    <h2>Play it on your gear</h2>
+    <div class="row panelbar"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
     <div class="kbwrap"><div class="row" id="stepsel"></div></div>
     <div class="kbwrap"><div class="kb" id="kb"></div></div>
     <div class="padgrid" id="pads" aria-label="Generic pad layout"></div>
-    <p class="kbtxt" id="kbtxt"></p>
-    <p class="note">Pick a step to see its note. The top row shows the note of every step. The keyboard shows the same note on a piano, starting from the lowest C your sequence needs. The two pad rows are a generic layout, like on most pad controllers: the bottom row holds the white keys, the top row the sharps. Selected note: highlighted. Other notes of the sequence: lightly marked. While playing, everything follows the current step. If your controller has octave buttons, use them to reach the right octave.</p>
+    <dl class="kbinfo" aria-label="Selected step">
+      <div><dt>Step</dt><dd id="ki-step"></dd></div>
+      <div><dt>Note</dt><dd id="ki-note"></dd></div>
+      <div><dt>Pad row</dt><dd id="ki-row"></dd></div>
+      <div><dt>Octave</dt><dd id="ki-oct"></dd></div>
+      <div><dt>Velocity</dt><dd id="ki-vel"></dd></div>
+      <div><dt>Gate</dt><dd id="ki-gate"></dd></div>
+      <div><dt>Accent</dt><dd id="ki-acc"></dd></div>
+      <div><dt>Tie</dt><dd id="ki-tie"></dd></div>
+    </dl>
+    <p class="note">Pick a step to see its note. Octave counts up from the lowest octave of your sequence (+0 is the lowest). The top row shows the note of every step. The keyboard shows the same note on a piano, starting from the lowest C your sequence needs. The two pad rows are a generic layout, like on most pad controllers: the bottom row holds the white keys, the top row the sharps. Selected note: highlighted. Other notes of the sequence: lightly marked. While playing, everything follows the current step. If your controller has octave buttons, use them to reach the right octave.</p>
   </section>
 
-  <section class="panel" aria-label="To copy">
-    <h2>To copy on your instrument</h2>
+  <section class="panel" id="export" aria-label="Export MIDI">
+    <h2>Export MIDI</h2>
+    <div class="row">
+      <label class="field" style="flex-direction:row;align-items:center;gap:6px">Bars
+        <select id="midibars"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select>
+      </label>
+      <button class="live" id="midi">Export as MIDI (.mid)</button>
+    </div>
+    <p class="note" id="midiout" aria-live="polite">The .mid file holds the bass line, ready to drop into your DAW. If the download does not start by itself, a link appears here: click it.</p>
+  </section>
+
+  <section class="panel" id="copy-notes" aria-label="To copy">
+    <h2>Copy on your instrument</h2>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Step</th><th>Note</th><th>MIDI</th><th>Semitones</th><th>Vel</th><th>Gate</th><th>Notes</th></tr></thead>
@@ -239,13 +271,6 @@
       </table>
     </div>
     <div class="row" style="margin-top:10px"><button id="copy">Copy as text</button></div>
-    <div class="row" style="margin-top:10px">
-      <label class="field" style="flex-direction:row;align-items:center;gap:6px">Bars
-        <select id="midibars"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select>
-      </label>
-      <button id="midi">Export as MIDI (.mid)</button>
-    </div>
-    <p class="note" id="midiout" aria-live="polite">The .mid file holds the bass line, ready to drop into your DAW. If the download does not start by itself, a link appears here: click it.</p>
     <p class="note">Semitones is the distance from the root note, handy if you transpose. Velocity (0 to 127) and gate (% of the step) are indicative: set them on your instrument. For a tied step, turn on glide on your synth and lengthen the note.</p>
   </section>
 
@@ -255,7 +280,7 @@
   </section>
 
   <section class="panel about" aria-label="About Bass Assembly">
-    <h2>A bassline generator for ideas, not for presets</h2>
+    <h2>About Bass Assembly</h2>
     <p>Bass Assembly helps when you stare at an empty sequencer. Pick a style, a root note and a scale, press generate, and you get a short bass pattern of 8 or 16 steps with its own accents, ties, velocity and gate. Every result is editable, so a happy accident becomes a starting point.</p>
     <p>The generator follows the habits of each genre. Acid favors minor pentatonic notes, accents and slides. EBM keeps a tight, driving pulse on the beat. Industrial leaves more space and leans on the root. Dark wave moves between the root, the fifth and the minor third.</p>
     <h3>What you can do</h3>
@@ -280,7 +305,7 @@
       </details>
       <details>
         <summary>How do I play the pattern on my own synth or pad controller?</summary>
-        <p>The panel called Which key for each step shows the note of every step on a piano keyboard and on a generic two row pad layout. The table below it lists the note, MIDI number, velocity and gate of each step, and you can copy it as text.</p>
+        <p>The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text.</p>
       </details>
       <details>
         <summary>What does Humanize do?</summary>
