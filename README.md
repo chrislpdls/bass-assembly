@@ -70,7 +70,7 @@ A quick way to do it: search the whole project for `bassassembly.app` and replac
 
 ## How the generator works
 
-For each step the generator draws from a per style probability grid, scaled by the density slider. Notes are picked from the chosen scale with weights by interval (root, fifth and so on) and a bias toward notes close to the previous one. Accents, ties, velocity and gate come from per style ranges. The result is a suggestion, not a rule: the idea is to get unstuck, then edit.
+For each step the generator draws from a per style probability grid, scaled by the density setting. Notes are picked from the chosen scale with weights by interval (root, fifth and so on) and a bias toward notes close to the previous one. Accents, ties, velocity and gate come from per style ranges. The result is a suggestion, not a rule: the idea is to get unstuck, then edit.
 
 The MIDI file is written by hand, without libraries (format 1, 480 ticks per quarter note).
 
