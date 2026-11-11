@@ -524,7 +524,8 @@
      A knob is a native range input under an SVG dial: the input stays focusable, so the
      arrow keys, Page Up/Down, Home/End and screen readers work as usual. The dial shows
      21 dots on a 270 degree arc and a pointer. Drag up or right to turn it up, hold Shift
-     for fine steps. Every change fires the usual "input" event on the range input. */
+     for fine steps, or tap a point of the arc. Every change fires the usual "input" event
+     on the range input. */
   var KNOB_DOTS = 21, SVGNS = "http://www.w3.org/2000/svg";
   function svgEl(tag, attrs, parent) {
     var e = document.createElementNS(SVGNS, tag);
@@ -543,27 +544,48 @@
     input.knob = { dots: dots, ptr: svgEl("line", { "class": "ptr", x1: 60, y1: 50, x2: 60, y2: 36 }, svg) };
     input.addEventListener("input", function () { paintKnob(input); });
 
+    function set(v) {
+      var min = +input.min, max = +input.max, step = +input.step || 1;
+      v = Math.min(max, Math.max(min, min + Math.round((v - min) / step) * step));
+      if (v !== +input.value) { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); }
+    }
+    // A tap or click without dragging sets the value where the arc was touched,
+    // so the knob also works for people who cannot drag (WCAG 2.5.7).
+    function setAt(e) {
+      var r = dial.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      if (Math.sqrt(dx * dx + dy * dy) < r.width * .2) return; // the centre has no direction
+      var deg = Math.atan2(dx, -dy) * 180 / Math.PI; // 0 at the top, clockwise
+      var f = Math.abs(deg) > 135 ? (deg > 0 ? 1 : 0) : (deg + 135) / 270; // gap at the bottom: nearest end
+      set(+input.min + f * (input.max - input.min));
+    }
+
+    // Only the first finger or pointer on a dial turns it: a second touch is ignored.
     var drag = null;
     dial.addEventListener("pointerdown", function (e) {
-      if (e.button > 0) return;
+      if (e.button > 0 || drag) return;
       e.preventDefault();
       input.focus({ preventScroll: true });
-      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, v: +input.value };
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, v: +input.value, moved: false };
       try { dial.setPointerCapture(e.pointerId); } catch (err) {}
     });
     dial.addEventListener("pointermove", function (e) {
       if (!drag || e.pointerId !== drag.id) return;
-      var min = +input.min, max = +input.max, step = +input.step || 1;
+      var min = +input.min, max = +input.max;
+      if (Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) > 3) drag.moved = true;
       // 200 px of travel covers the whole range, 800 px with Shift.
       drag.v += ((drag.y - e.clientY) + (e.clientX - drag.x)) / (e.shiftKey ? 800 : 200) * (max - min);
       drag.v = Math.min(max, Math.max(min, drag.v));
       drag.x = e.clientX; drag.y = e.clientY;
-      var v = Math.round(drag.v / step) * step;
-      if (v !== +input.value) { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); }
+      set(drag.v);
     });
-    function end() { drag = null; }
-    dial.addEventListener("pointerup", end);
-    dial.addEventListener("pointercancel", end);
+    dial.addEventListener("pointerup", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      if (!drag.moved) setAt(e);
+      drag = null;
+    });
+    dial.addEventListener("pointercancel", function (e) {
+      if (drag && e.pointerId === drag.id) drag = null;
+    });
   }
   function paintKnob(input) {
     var k = input.knob; if (!k) return;
