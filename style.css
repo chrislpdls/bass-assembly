@@ -60,10 +60,11 @@ section[id] { scroll-margin-top: 16px; }
 }
 .field input[type=range] { accent-color: var(--accent); width: 100%; margin: 6px 0 0; }
 .field .val { color: var(--ink); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; }
-/* Generate panel: a row of menus, then a row of knobs, on the same columns. */
+/* Generate panel. Desktop: 5 columns, the menus on the first row, Density and the knobs on
+   the second. Tablet and mobile: see the media queries at the end. */
 .gen { display: flex; flex-direction: column; gap: 32px; padding: 24px; }
 .gen h2 { margin: 0; line-height: 50px; }
-.cols { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px; }
+.setup { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px 24px; align-items: start; }
 .field-hint { display: flex; flex-direction: column; gap: 6px; }
 .hint { margin: 0; font-size: 11px; line-height: 1.45; letter-spacing: -0.05em; color: var(--ink-2); }
 .actions { display: flex; flex-direction: column; gap: 24px; }
@@ -181,6 +182,24 @@ a { color: var(--ink); }
 details a { font-weight: 600; }
 .skip { position: absolute; left: -9999px; }
 .skip:focus { left: 12px; top: 12px; background: var(--accent); color: var(--accent-ink); padding: 8px 12px; border-radius: 6px; z-index: 10; }
+
+/* Generate panel, tablet: menus on 3 columns (Density joins them, without its hint),
+   then the 3 knobs side by side, smaller (80px). Grid of 6: a menu or a knob spans 2. */
+@media (max-width: 900px) {
+  .gen { gap: 24px; }
+  .gen .actions { margin-top: 8px; }
+  .setup { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+  .setup > * { grid-column: span 2; }
+  .setup > .knob { margin-top: 12px; }
+  .setup .hint { display: none; }
+  .dial { width: 80px; height: 80px; }
+}
+/* Generate panel, mobile: menus on 2 columns (span 3 of 6), the knobs stay 3 across. */
+@media (max-width: 560px) {
+  .gen { padding: 16px; }
+  .gen .actions { margin-top: 0; }
+  .setup > :not(.knob) { grid-column: span 3; }
+}
 
 /* Smaller screens: scale the big titles down (full responsive pass to come).
    The logo fills the space left by the theme button at every width. */
