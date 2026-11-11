@@ -140,45 +140,63 @@
   </header>
   <main>
 
-  <section class="panel" id="generate" aria-label="Settings">
-    <h2>Generate</h2>
-    <div class="controls">
-      <label class="field">Root note
+  <section class="panel gen" id="generate" aria-label="Settings">
+    <h2>Generate bassline</h2>
+    <!-- Choices to assemble yourself: menus. Continuous values: knobs.
+         One grid, in reading order: the menus come first, then the knobs, at every width. -->
+    <div class="setup">
+      <label class="field">Style
+        <select id="style"></select>
+      </label>
+      <label class="field">Note
         <select id="root"></select>
       </label>
       <label class="field">Scale
         <select id="scale"></select>
       </label>
-      <label class="field">Starting octave
+      <label class="field">Octave
         <select id="oct"><option value="1">1 (very low)</option><option value="2" selected>2 (bass)</option><option value="3">3 (mid)</option></select>
       </label>
       <label class="field">Steps
         <select id="n"><option value="16" selected>16 steps</option><option value="8">8 steps</option></select>
       </label>
-      <label class="field">Style
-        <select id="style"></select>
-      </label>
-      <label class="field">Density <span class="val" id="densv"></span>
-        <input type="range" id="dens" min="10" max="100" value="55">
-      </label>
-      <label class="field">Tempo <span class="val" id="bpmv"></span>
-        <input type="range" id="bpm" min="60" max="170" value="100">
-      </label>
-      <label class="field">Swing <span class="val" id="swingv"></span>
-        <input type="range" id="swing" min="0" max="60" value="0">
-      </label>
-      <label class="field">Humanize <span class="val" id="humv"></span>
-        <input type="range" id="hum" min="0" max="100" value="0">
-      </label>
+      <div class="field-hint">
+        <label class="field">Density
+          <select id="dens" aria-describedby="dens-hint"><option value="20">Very low (20%)</option><option value="35">Low (35%)</option><option value="55" selected>Medium (55%)</option><option value="75">High (75%)</option><option value="90">Very high (90%)</option></select>
+        </label>
+        <p class="hint" id="dens-hint">How many steps get a note. Low is sparse, high is busy.</p>
+      </div>
+      <div class="knob">
+        <label for="bpm">Tempo</label>
+        <div class="dial"><input type="range" id="bpm" min="60" max="170" value="100"></div>
+        <output class="val" id="bpmv" for="bpm"></output>
+      </div>
+      <div class="knob">
+        <label for="swing">Swing</label>
+        <div class="dial"><input type="range" id="swing" min="0" max="60" value="0"></div>
+        <output class="val" id="swingv" for="swing"></output>
+      </div>
+      <div class="knob">
+        <label for="hum">Humanize</label>
+        <div class="dial"><input type="range" id="hum" min="0" max="100" value="0"></div>
+        <output class="val" id="humv" for="hum"></output>
+      </div>
     </div>
-    <div class="row" style="margin-top:14px">
-      <button class="play" id="play" aria-pressed="false">Play</button>
-      <button class="live" id="rand">Generate bassline<span class="hint">Random settings + sequence</span></button>
-      <button class="ghost" id="gen">Change notes</button>
-      <button class="ghost" id="mut">Vary a little</button>
-      <button class="ghost" id="clr">Clear</button>
-      <button class="ghost" id="keep">Keep this idea</button>
-      <label class="check"><input type="checkbox" id="rep" checked> Repeat the first half with variation</label>
+    <div class="actions">
+      <div class="row">
+        <button class="play" id="play" aria-pressed="false">Play</button>
+        <button class="primary" id="rand">Generate bassline</button>
+        <button id="gen">Change notes</button>
+        <button id="mut">Vary a little</button>
+        <button id="clr">Clear</button>
+        <button id="keep">Keep this idea</button>
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="rep" checked> Repeat 1st half + variation</label>
+      </div>
+      <div class="row">
+        <button class="midi-btn">Export MIDI</button>
+      </div>
     </div>
     <div class="status" id="status" aria-live="polite"></div>
   </section>

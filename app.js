@@ -296,6 +296,9 @@
   /* A saved idea comes from browser storage: it may be damaged or made by an older version.
      Keep only known keys and values in range, so loading it can never break the page. */
   function num(v, lo, hi, d) { v = +v; return isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; }
+  // Density is a menu: older ideas saved with any value from 10 to 100 snap to the nearest choice.
+  var DENS = [20, 35, 55, 75, 90];
+  function densOpt(v) { return DENS.reduce(function (b, x) { return Math.abs(x - v) < Math.abs(b - v) ? x : b; }, DENS[0]); }
   function cleanState(st) {
     var c = {}, i;
     c.style = STYLES[st.style] ? st.style : "acid";
@@ -303,7 +306,7 @@
     c.root = Math.round(num(st.root, 0, 11, 0));
     c.oct = [1, 2, 3].indexOf(+st.oct) >= 0 ? +st.oct : 2;
     c.n = +st.n === 8 ? 8 : 16;
-    c.dens = Math.round(num(st.dens, 10, 100, 55));
+    c.dens = densOpt(num(st.dens, 10, 100, 55));
     c.rep = st.rep !== false;
     c.bpm = Math.round(num(st.bpm, 60, 170, 100));
     c.swing = Math.round(num(st.swing, 0, 60, 0));
@@ -517,11 +520,93 @@
   function styleSound(st) { return { wave: st.wave, cut: st.cut, q: st.q, dec: st.dec, drive: st.drive, sub: st.sub, glide: st.glide, delay: st.delay, dtime: st.dtime, dfb: st.dfb, rev: st.rev, rsize: st.rsize }; }
   ["wave", "cut", "q", "dec", "drive", "sub", "glide", "delay", "dtime", "dfb", "rev", "rsize"].forEach(function (id) { $(id).addEventListener("input", readSound); });
 
+  /* ---------- Knobs ----------
+     A knob is a native range input under an SVG dial: the input stays focusable, so the
+     arrow keys, Page Up/Down, Home/End and screen readers work as usual. The dial shows
+     21 dots on a 270 degree arc and a pointer. Drag up or right to turn it up, hold Shift
+     for fine steps, or tap a point of the arc. Every change fires the usual "input" event
+     on the range input. */
+  var KNOB_DOTS = 21, SVGNS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs, parent) {
+    var e = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    parent.appendChild(e);
+    return e;
+  }
+  function initKnob(input) {
+    var dial = input.parentNode, dots = [];
+    var svg = svgEl("svg", { viewBox: "0 0 120 120", width: 120, height: 120, "aria-hidden": "true", focusable: "false" }, dial);
+    for (var i = 0; i < KNOB_DOTS; i++) {
+      var a = (-135 + i * 270 / (KNOB_DOTS - 1)) * Math.PI / 180;
+      dots.push(svgEl("circle", { "class": "d", cx: (60 + 47 * Math.sin(a)).toFixed(2), cy: (60 - 47 * Math.cos(a)).toFixed(2), r: 1.8 }, svg));
+    }
+    svgEl("circle", { "class": "body", cx: 60, cy: 60, r: 31 }, svg);
+    input.knob = { dots: dots, ptr: svgEl("line", { "class": "ptr", x1: 60, y1: 50, x2: 60, y2: 36 }, svg) };
+    input.addEventListener("input", function () { paintKnob(input); });
+
+    function set(v) {
+      var min = +input.min, max = +input.max, step = +input.step || 1;
+      v = Math.min(max, Math.max(min, min + Math.round((v - min) / step) * step));
+      if (v !== +input.value) { input.value = v; input.dispatchEvent(new Event("input", { bubbles: true })); }
+    }
+    // A tap or click without dragging sets the value where the arc was touched,
+    // so the knob also works for people who cannot drag (WCAG 2.5.7).
+    function setAt(e) {
+      var r = dial.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      if (Math.sqrt(dx * dx + dy * dy) < r.width * .2) return; // the centre has no direction
+      var deg = Math.atan2(dx, -dy) * 180 / Math.PI; // 0 at the top, clockwise
+      var f = Math.abs(deg) > 135 ? (deg > 0 ? 1 : 0) : (deg + 135) / 270; // gap at the bottom: nearest end
+      set(+input.min + f * (input.max - input.min));
+    }
+
+    // Only the first finger or pointer on a dial turns it: a second touch is ignored.
+    var drag = null;
+    dial.addEventListener("pointerdown", function (e) {
+      if (e.button > 0 || drag) return;
+      e.preventDefault();
+      input.focus({ preventScroll: true });
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, v: +input.value, moved: false };
+      try { dial.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    dial.addEventListener("pointermove", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var min = +input.min, max = +input.max;
+      if (Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) > 3) drag.moved = true;
+      // 200 px of travel covers the whole range, 800 px with Shift.
+      drag.v += ((drag.y - e.clientY) + (e.clientX - drag.x)) / (e.shiftKey ? 800 : 200) * (max - min);
+      drag.v = Math.min(max, Math.max(min, drag.v));
+      drag.x = e.clientX; drag.y = e.clientY;
+      set(drag.v);
+    });
+    dial.addEventListener("pointerup", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      if (!drag.moved) setAt(e);
+      drag = null;
+    });
+    dial.addEventListener("pointercancel", function (e) {
+      if (drag && e.pointerId === drag.id) drag = null;
+    });
+  }
+  function paintKnob(input) {
+    var k = input.knob; if (!k) return;
+    var f = (input.value - input.min) / (input.max - input.min), lit = Math.round(f * (KNOB_DOTS - 1));
+    k.dots.forEach(function (d, i) { var on = i <= lit; d.classList.toggle("on", on); d.setAttribute("r", on ? 2.6 : 1.8); });
+    k.ptr.setAttribute("transform", "rotate(" + (-135 + f * 270).toFixed(1) + " 60 60)");
+  }
+  // Show the value under a knob, give it to screen readers, and redraw the dial
+  // (needed when the value is set from code, which fires no event).
+  function knobValue(id, txt) {
+    $(id + "v").textContent = txt;
+    $(id).setAttribute("aria-valuetext", txt);
+    paintKnob($(id));
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".dial input[type=range]"), initKnob);
+
   function readControls() {
     S.root = +$("root").value; S.scale = $("scale").value; S.oct = +$("oct").value;
     S.n = +$("n").value; S.style = $("style").value; S.dens = +$("dens").value;
     S.bpm = +$("bpm").value; S.swing = +$("swing").value; S.hum = +$("hum").value; S.rep = $("rep").checked;
-    $("densv").textContent = S.dens + "%"; $("bpmv").textContent = S.bpm + " bpm"; $("swingv").textContent = S.swing + "%"; $("humv").textContent = S.hum + "%";
+    knobValue("bpm", S.bpm + " bpm"); knobValue("swing", S.swing + "%"); knobValue("hum", S.hum + "%");
     applyFx();
   }
   ["root", "scale", "oct"].forEach(function (id) {
@@ -553,7 +638,8 @@
       render();
     });
   });
-  ["dens", "bpm", "swing", "hum"].forEach(function (id) { $(id).addEventListener("input", readControls); });
+  ["bpm", "swing", "hum"].forEach(function (id) { $(id).addEventListener("input", readControls); });
+  $("dens").addEventListener("change", readControls);
 
   $("gen").addEventListener("click", function () {
     readControls(); generate(); render(); status("New notes, same settings.");
@@ -565,7 +651,7 @@
     $("scale").value = (st.scale && Math.random() < .7) ? st.scale : rnd(Object.keys(SCALES));
     $("oct").value = rnd(["1", "2", "2"]);
     $("n").value = rnd(["16", "16", "8"]);
-    $("dens").value = 40 + Math.floor(Math.random() * 45);
+    $("dens").value = rnd(["35", "55", "55", "75"]);
     $("rep").checked = Math.random() < .7;
     $("bpm").value = st.bpm[0] + Math.floor(Math.random() * (st.bpm[1] - st.bpm[0] + 1));
     $("swing").value = rnd([0, 0, 0, 10, 20]);

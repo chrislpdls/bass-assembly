@@ -60,18 +60,39 @@ section[id] { scroll-margin-top: 16px; }
 }
 .field input[type=range] { accent-color: var(--accent); width: 100%; margin: 6px 0 0; }
 .field .val { color: var(--ink); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; }
+/* Generate panel. Desktop: 5 columns, the menus on the first row, Density and the knobs on
+   the second. Tablet and mobile: see the media queries at the end. */
+.gen { display: flex; flex-direction: column; gap: 32px; padding: 24px; }
+.gen h2 { margin: 0; line-height: 50px; }
+.setup { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px 24px; align-items: start; }
+.field-hint { display: flex; flex-direction: column; gap: 6px; }
+.hint { margin: 0; font-size: 11px; line-height: 1.45; letter-spacing: -0.05em; color: var(--ink-2); }
+.actions { display: flex; flex-direction: column; gap: 24px; }
+.gen .status { margin-top: -16px; }
+/* Knob: label, dial, value. The range input stays in the dial for the keyboard and
+   screen readers, invisible; the SVG drawn by app.js shows its value. */
+.knob { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.knob label { font-size: 12px; line-height: 1.45; letter-spacing: -0.05em; color: var(--ink-2); }
+.knob .val { font: 400 12px/1.45 var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.dial { position: relative; width: 120px; height: 120px; border-radius: 50%; cursor: ns-resize; touch-action: none; }
+.dial input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
+.dial:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dial svg { display: block; width: 100%; height: 100%; }
+.dial .d { fill: var(--root-row); }
+.dial .d.on { fill: var(--ink); }
+.dial .body { fill: var(--panel); stroke: var(--root-row); stroke-width: 1.5; }
+.dial .ptr { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
 .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 button { font: 600 13px var(--font-mono); letter-spacing: -0.02em; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: var(--cell); color: var(--ink); padding: 9px 14px; }
-button:hover { border-color: var(--live); }
+button:hover { border-color: var(--ink-2); }
 button.live { background: var(--live); color: var(--live-ink); border-color: var(--live); }
 button.live:hover { border-color: var(--ink); }
-button .hint { display: block; font-size: 11px; font-weight: 400; letter-spacing: 0; margin-top: 2px; }
-/* Main actions: filled. Secondary actions: outline only. */
-button.play { text-transform: uppercase; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); align-self: stretch; min-width: 88px; }
+/* Main actions (Play, Generate bassline): filled, white in the dark theme, black in the light one.
+   Play turns green only while playing. */
+button.primary, button.play { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.play { text-transform: uppercase; align-self: stretch; }
 button.play.on { background: var(--live); color: var(--live-ink); border-color: var(--live); }
 button.play.on:hover { border-color: var(--ink); }
-button.ghost { background: transparent; border-color: var(--ink-2); }
-button.ghost:hover { border-color: var(--live); }
 .panelbar { margin-bottom: 12px; }
 .panelbar.below { margin: 12px 0 0; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -161,6 +182,24 @@ a { color: var(--ink); }
 details a { font-weight: 600; }
 .skip { position: absolute; left: -9999px; }
 .skip:focus { left: 12px; top: 12px; background: var(--accent); color: var(--accent-ink); padding: 8px 12px; border-radius: 6px; z-index: 10; }
+
+/* Generate panel, tablet: menus on 3 columns (Density joins them, without its hint),
+   then the 3 knobs side by side, smaller (80px). Grid of 6: a menu or a knob spans 2. */
+@media (max-width: 900px) {
+  .gen { gap: 24px; }
+  .gen .actions { margin-top: 8px; }
+  .setup { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+  .setup > * { grid-column: span 2; }
+  .setup > .knob { margin-top: 12px; }
+  .setup .hint { display: none; }
+  .dial { width: 80px; height: 80px; }
+}
+/* Generate panel, mobile: menus on 2 columns (span 3 of 6), the knobs stay 3 across. */
+@media (max-width: 560px) {
+  .gen { padding: 16px; }
+  .gen .actions { margin-top: 0; }
+  .setup > :not(.knob) { grid-column: span 3; }
+}
 
 /* Smaller screens: scale the big titles down (full responsive pass to come).
    The logo fills the space left by the theme button at every width. */
