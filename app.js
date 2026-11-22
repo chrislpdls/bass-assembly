@@ -1622,4 +1622,21 @@
   setSound(styleSound(STYLES[S.style]));
   generate();
   render();
+
+  // Back from the payment page (Mollie redirects to ?thanks): say thank you once,
+  // then clean the address so a reload or a shared link does not show it again.
+  var back = null;
+  try { back = new URL(location.href); } catch (e) {}
+  if (back && back.searchParams.has("thanks")) {
+    $("thanks").hidden = false;
+    // Text set after the bar shows, so screen readers announce it.
+    setTimeout(function () { $("thanks").querySelector("p").textContent = "Thank you for the coffee and for supporting Bass Assembly!"; }, 300);
+    back.searchParams.delete("thanks");
+    try { history.replaceState(null, "", back.pathname + back.search + back.hash); } catch (e) {}
+  }
+  $("thanks-close").addEventListener("click", function () {
+    $("thanks").hidden = true;
+    // Keyboard: go on from the first header key, not from the top of the page.
+    document.querySelector("header .acts .key").focus();
+  });
 })();

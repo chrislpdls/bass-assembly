@@ -166,6 +166,55 @@ main {
   gap: 26px;
 }
 
+/* Thank you message after a coffee: a black bar above the header. */
+.thanks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 12px 8px 12px 16px;
+  border-radius: var(--r-panel);
+  background: var(--ink);
+  color: var(--surface);
+  font: 400 var(--fs-text)/1.35 var(--font-ui);
+}
+
+.thanks[hidden] {
+  display: none;
+}
+
+.thanks .cup {
+  flex: none;
+}
+
+.thanks p {
+  margin: 0;
+}
+
+.thanks button {
+  flex: none;
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 400 18px/1 var(--font-ui);
+  cursor: pointer;
+}
+
+/* The focus ring would be black on the black bar. */
+.thanks :focus-visible {
+  outline-color: var(--surface);
+}
+
+/* Touch: a 44px close key. */
+@media (pointer: coarse) {
+  .thanks button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 /* Header: keys on the right, then the logo, the intro and the anchor menu. */
 header {
   display: flex;
