@@ -1,220 +1,3661 @@
-/* Self-hosted fonts: Geist and Geist Mono, variable weight (SIL Open Font License, see fonts/).
-   The logo uses Geist Pixel Line, outlined in the SVG, so fonts/geist-pixel-line.woff2 is not loaded. */
-@font-face { font-family: "Geist"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/geist-variable.woff2") format("woff2"); }
-@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/geist-mono-variable.woff2") format("woff2"); }
+/* Bass Assembly styles
 
-:root, :root[data-skin="black"] {
-  --bg: #121212; --panel: #0a0a0a; --ink: #f2f2f2; --ink-2: #8f8f8f; --line: #2a2a2a;
-  --accent: #f2f2f2; --accent-ink: #000000; --hot: #7a7a7a;
-  --cell: #161616; --cell-beat: #212121; --root-row: #303030;
-  /* Live state: playing step, selected step, key and pad. Same in both themes. */
-  --live: #00ffb2; --live-ink: #000000;
-  /* Inline icons (data URIs, no request), one color per theme. */
-  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f2f2f2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M1 3l2 2 4-4' fill='none' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+   Contents
+    1. Fonts
+    2. Colors and design tokens
+    3. Page and header
+    4. Fields and selects
+    5. Generate panel
+    6. Sequence preview and scope
+    7. Tempo keys and knobs
+    8. Sound panel
+    9. Sequencer panel
+   10. Play it on your gear
+   11. Export panel
+   12. Copy on your instrument
+   13. Help bubbles
+   14. Saved ideas
+   15. About, FAQ and footer
+   16. Panels at smaller widths
+   17. Tablet and mobile
+   18. Keys
+   19. Slide switches
+   20. Named groups and locks
+   21. Floating bar
+   22. Anchor menu on small screens
+   23. Relief and touch screens
+   24. Wide screens (from 1900px)
+   25. Side by side (1024px to 1899px)
+
+   Do not move blocks around: when two rules match, the later one wins. */
+
+/* ======================================================================
+   1. Fonts
+   ====================================================================== */
+
+/* Self-hosted fonts: Geist and Geist Mono (SIL Open Font License, see fonts/).
+   The logo is outlined in the SVG, so Geist Pixel Line is not loaded. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/geist-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/geist-mono-variable.woff2") format("woff2");
+}
+
+
+/* ======================================================================
+   2. Colors and design tokens
+   ====================================================================== */
+
+/* Colors and design tokens. Orange (--live) is only for what plays or is selected. */
+:root {
+  /* Surfaces */
+  --bg: #dedad9; /* page background, same as the theme-color meta */
+  --surface: #e8e5e4; /* panels, keys, knobs */
+  --key: #f6f4f3; /* pads and piano keys at rest */
+  --key-pressed: #efedec; /* pads and piano keys pressed */
+  --surface-pressed: #e2dedd; /* text and square keys pressed in */
+  --track: #dcd8d7; /* slide switch tracks, sunk in the surface */
+  --knob: #dcd8d7; /* knob bodies */
+  --line: #d2d2d2; /* rules, separators, FAQ */
+  --lcd: #000000; /* sequence and scope previews */
+
+  /* Inks */
+  --ink: #0a0a0a; /* titles, text, values */
+  --ink-2: #555555; /* labels, the only label color */
+  --ink-3: #b5b0b0; /* inactive: step numbers, accents off */
+  --logo: #535353; /* wordmark */
+
+  /* Accent: active, playing, selected. Never green. */
+  --live: #f8280a;
+  --live-ink: #2a0602;
+
+  /* Older names, still used in places. */
+  --panel: var(--surface);
+  --accent: #0a0a0a;
+  --accent-ink: #ffffff;
+  --cell: #efedec;
+
+  /* Sequencer grid: empty cells, darker groups of 4, darker root rows, black notes. */
+  --seq-cell: #e3e0df;
+  --seq-cell-alt: #dedad9;
+  --seq-root: #dad6d5;
+  --seq-root-alt: #d1cdcc;
+  --seq-on: #000000;
+  --seq-gate: #4f4f4f;
+
+  /* Relief: shadows for keys, pads and empty slots (CSS only, no images). */
+  --relief-key: inset -2.25px -2.25px 5.25px -0.75px rgba(79, 79, 79, .25);
+  --relief-key-pressed: inset 2.25px 2.25px 5.25px -0.75px rgba(79, 79, 79, .32);
+  --relief-pad:
+    -1.5px -1.5px 3px rgba(255, 255, 255, .9),
+    2px 4px 9px rgba(0, 0, 0, .1),
+    .5px 1px 1.5px rgba(0, 0, 0, .1),
+    inset 1px 1px 1px rgba(255, 255, 255, .9),
+    inset -2px -2.5px 6px rgba(79, 79, 79, .16);
+  --relief-pad-pressed:
+    .5px .5px .5px rgba(255, 255, 255, .75),
+    inset 2.5px 3px 7px rgba(79, 79, 79, .3),
+    inset 1px 1px 1.5px rgba(0, 0, 0, .1);
+  --relief-recessed: inset 3px 3px 7px rgba(79, 79, 79, .16);
+
+  /* Shapes */
+  --r-panel: 10px;
+  --r-key: 6px;
+  --r-square: 8px;
+  --r-pad: 8px;
+
+  /* Type: Geist to read, Geist Mono for values and key labels. */
   --font-ui: "Geist", system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
-  color-scheme: dark;
-}
-:root[data-skin="white"] {
-  --bg: #e9e9e9; --panel: #ffffff; --ink: #0a0a0a; --ink-2: #6b6b6b; --line: #d2d2d2;
-  --accent: #0a0a0a; --accent-ink: #ffffff; --hot: #8a8a8a;
-  --cell: #f1f1f1; --cell-beat: #e3e3e3; --root-row: #d2d2d2;
-  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%230a0a0a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M1 3l2 2 4-4' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --fs-title: 32px; /* every panel title */
+  --fs-title-xl: 42px; /* "About Bass Assembly" */
+  --fs-intro: 14px;
+  --fs-text: 13px;
+  --fs-small: 11px; /* labels, values, key text */
+  --fs-step: 20px;
+  --fs-micro: 9px;
+
+  /* Inline icons (data URIs, no request). */
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8.625' height='4.875' viewBox='0 0 8.625 4.875'%3E%3Cpath d='M.5625.5625 4.3125 4.3125 8.0625.5625' fill='none' stroke='%230a0a0a' stroke-width='1.125' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   color-scheme: light;
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-ui); }
-body { padding: 67px 16px 48px; line-height: 1.45; }
-.wrap { max-width: 1040px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 51px; }
-main { display: flex; flex-direction: column; gap: 51px; }
-.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-h1.logo { margin: 0; line-height: 0; color: var(--ink); flex: 1; min-width: 0; }
-h1.logo svg { display: block; width: min(631px, 100%); height: auto; }
-#skin { padding: 6px 12px; font-size: 13px; background: transparent; border-color: var(--ink); flex: none; }
-/* Header actions: GitHub link (bare logo in the ink color, 31px click area) and theme button. */
-.acts { display: flex; align-items: center; gap: 8px; flex: none; }
-#skin { height: 31px; }
-.gh { display: flex; align-items: center; justify-content: center; width: 31px; height: 31px; border-radius: 8px; color: var(--ink); }
-.gh:hover { opacity: .7; }
-.gh svg { display: block; width: 20px; height: 20px; }
-h2 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.1; margin: 0 0 10px; }
-.sub { color: var(--accent); margin: 2px 0 0; font-size: 16px; font-weight: 400; }
-/* Anchor menu: what you can do, in order. Export MIDI stands out in green. */
-.tour { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
-.tour a { font: 600 13px var(--font-mono); letter-spacing: -0.02em; text-decoration: none; color: var(--ink); border: 1px solid var(--ink); border-radius: 999px; padding: 6px 12px; }
-.tour a.midi { background: var(--live); color: var(--live-ink); border-color: var(--live); }
-section[id] { scroll-margin-top: 16px; }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
-.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
-.field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; letter-spacing: -0.05em; color: var(--ink-2); }
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+
+
+/* ======================================================================
+   3. Page and header
+   ====================================================================== */
+
+/* Page: 48px on each side, up to 1360px wide. */
+body {
+  padding: 51px 48px 48px;
+  line-height: 1.45;
+}
+
+.wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* Header: keys on the right, then the logo, the intro and the anchor menu. */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 51px;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+}
+
+.hrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Theme switch: THEME, then the two names. Active: orange dot, black name. */
+.theme {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  margin: 0;
+  font: 400 var(--fs-small)/1 var(--font-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.theme svg {
+  flex: none;
+  display: block;
+  overflow: visible;
+}
+
+.theme svg .on {
+  fill: var(--live);
+}
+
+.theme .tn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: flex-start;
+  margin: 1px 0 0 -2px;
+  font-size: var(--fs-micro);
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+.theme .tn .on {
+  color: var(--ink);
+}
+
+/* Theme info: a round "i" on the "Coming soon" line. Its bubble opens below,
+   from the left edge of the Theme switch. */
+.theme {
+  position: relative;
+}
+
+.theme .themeinfo {
+  position: static;
+  align-self: flex-end;
+  margin-left: 0;
+}
+
+.themeinfo .bubble {
+  top: calc(100% + 8px);
+  bottom: auto;
+  left: 0;
+  right: auto;
+  text-transform: none;
+}
+
+.themeinfo .bubble::after {
+  top: auto;
+  bottom: 100%;
+}
+
+/* Logo and BETA tag, right of the slash. */
+.brand {
+  position: relative;
+  width: min(631px, calc(100% - 40px));
+}
+
+h1.logo {
+  margin: 0;
+  line-height: 0;
+  color: var(--logo);
+  min-width: 0;
+}
+
+h1.logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tag.beta {
+  position: absolute;
+  left: calc(100% + 8px);
+  bottom: 25.4%;
+}
+
+/* Pull the intro up under the logo. */
+@media (min-width: 761px) {
+  .brand {
+    margin-bottom: -16px;
+  }
+}
+
+/* Panel titles: 32px, "About Bass Assembly" 42px. */
+h2 {
+  font-size: var(--fs-title);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 1.1;
+  margin: 0 0 24px;
+}
+
+.tagline,
+.devnote {
+  display: none;
+} /* phones only, see the mobile block */
+
+.sub {
+  color: var(--ink);
+  margin: 0;
+  max-width: 680px;
+  font-size: var(--fs-intro);
+  font-weight: 400;
+  line-height: 1.31;
+  letter-spacing: 0.03em;
+}
+
+/* Anchor menu: one key per panel, in page order. */
+.tour {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+section[id] {
+  scroll-margin-top: 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.panel {
+  background: var(--surface);
+  border-radius: var(--r-panel);
+  padding: 24px;
+}
+
+
+/* ======================================================================
+   4. Fields and selects
+   ====================================================================== */
+
+/* Field: a control with its label. Select: a raised key with a chevron. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+}
+
 .field select {
-  font: 400 14px var(--font-mono); letter-spacing: 0; color: var(--ink); background: var(--cell);
-  border: 1px solid var(--line); border-radius: 6px; padding: 7px 30px 7px 8px;
-  appearance: none; -webkit-appearance: none; cursor: pointer;
-  background-image: var(--chevron); background-repeat: no-repeat; background-position: right 12px center;
+  height: 33px;
+  width: 100%;
+  padding: 0 28px 0 10.5px;
+  font: 400 var(--fs-small) var(--font-mono);
+  letter-spacing: 0;
+  color: var(--ink);
+  background: var(--surface) var(--chevron) no-repeat right 10.5px center / 7.5px 3.75px;
+  border: 0;
+  border-radius: var(--r-key);
+  box-shadow: var(--relief-key);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
   text-overflow: ellipsis;
 }
-.field input[type=range] { accent-color: var(--accent); width: 100%; margin: 6px 0 0; }
-.field .val { color: var(--ink); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; }
-/* Generate panel. Desktop: 5 columns, the menus on the first row, Density and the knobs on
-   the second. Tablet and mobile: see the media queries at the end. */
-.gen { display: flex; flex-direction: column; gap: 32px; padding: 24px; }
-.gen h2 { margin: 0; line-height: 50px; }
-.setup { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px 24px; align-items: start; }
-.field-hint { display: flex; flex-direction: column; gap: 6px; }
-.hint { margin: 0; font-size: 11px; line-height: 1.45; letter-spacing: -0.05em; color: var(--ink-2); }
-.actions { display: flex; flex-direction: column; gap: 24px; }
-.gen .status { margin-top: -16px; }
-/* Knob: label, dial, value. The range input stays in the dial for the keyboard and
-   screen readers, invisible; the SVG drawn by app.js shows its value. */
-.knob { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.knob label { font-size: 12px; line-height: 1.45; letter-spacing: -0.05em; color: var(--ink-2); }
-.knob .val { font: 400 12px/1.45 var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
-.dial { position: relative; width: 120px; height: 120px; border-radius: 50%; cursor: ns-resize; touch-action: none; }
-.dial input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
-.dial:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-.dial svg { display: block; width: 100%; height: 100%; }
-.dial .d { fill: var(--root-row); }
-.dial .d.on { fill: var(--ink); }
-.dial .body { fill: var(--panel); stroke: var(--root-row); stroke-width: 1.5; }
-.dial .ptr { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-button { font: 600 13px var(--font-mono); letter-spacing: -0.02em; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: var(--cell); color: var(--ink); padding: 9px 14px; }
-button:hover { border-color: var(--ink-2); }
-button.live { background: var(--live); color: var(--live-ink); border-color: var(--live); }
-button.live:hover { border-color: var(--ink); }
-/* Main actions (Play, Generate bassline): filled, white in the dark theme, black in the light one.
-   Play turns green only while playing. */
-button.primary, button.play { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-button.play { text-transform: uppercase; align-self: stretch; }
-button.play.on { background: var(--live); color: var(--live-ink); border-color: var(--live); }
-button.play.on:hover { border-color: var(--ink); }
-.panelbar { margin-bottom: 12px; }
-.panelbar.below { margin: 12px 0 0; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.check { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 300; line-height: 1.37; color: var(--ink); }
-.check input {
-  appearance: none; -webkit-appearance: none; margin: 0; flex: none; cursor: pointer;
-  width: 16px; height: 16px; border: 1px solid var(--ink-2); border-radius: 4px; background: var(--cell);
+
+
+/* ======================================================================
+   5. Generate panel
+   ====================================================================== */
+
+/* Generate panel: Play and Generate, then preview, Style, NOTES and LOOP,
+   then the knobs, the key groups and the saved ideas. Layout follows the panel width. */
+.gen, .snd {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
-.check input:checked { background: var(--accent) var(--tick) no-repeat center; border-color: var(--accent); }
-.gridwrap { overflow-x: auto; padding-bottom: 4px; }
-.grid { display: grid; gap: 3px; min-width: 560px; align-items: stretch; }
-.lbl { font: 500 11px var(--font-mono); color: var(--ink-2); display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
-.lbl.root { color: var(--accent); }
-.hd { font: 500 11px var(--font-mono); color: var(--ink-2); text-align: center; padding: 2px 0; border-radius: 4px; }
-.hd.beat { color: var(--ink); }
-.hd.now { background: var(--live); color: var(--live-ink); }
-.c { height: 24px; border-radius: 4px; border: 0; padding: 0; background: var(--cell); }
-.c.b { background: var(--cell-beat); }
-.c.r { background: var(--root-row); }
-.c.on { background: var(--accent); }
-.c.now { outline: 2px solid var(--ink); outline-offset: -2px; }
-.c.on.now { background: var(--live); outline: 0; }
-.c.flag { height: 28px; font: 500 11px var(--font-mono); color: var(--ink-2); }
-.c.flag.on { background: var(--accent); color: var(--accent-ink); }
-.c.bar { height: 60px; overflow: hidden; display: flex; flex-direction: column; cursor: ns-resize; touch-action: pan-x; user-select: none; -webkit-user-select: none; }
-.c.bar.off { cursor: default; }
-.c.bar span { flex: none; height: 15px; font: 500 10px/15px var(--font-mono); color: var(--ink); text-align: center; }
-.c.bar b { position: relative; flex: 1; display: block; }
-.c.bar i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--accent); opacity: .85; display: block; }
-.c.bar.g i { background: var(--hot); opacity: 1; }
-.c.bar:hover:not(.off) i { opacity: 1; }
-.kbwrap { overflow-x: auto; margin-top: 12px; padding-bottom: 6px; }
-.stp { display: flex; flex-direction: column; gap: 5px; align-items: stretch; }
-.stp small { font: 500 10px var(--font-mono); color: var(--ink-2); text-align: center; min-height: 13px; }
-#stepsel.row { display: grid; grid-template-columns: repeat(var(--n, 16), minmax(36px, 1fr)); gap: 6px; min-width: 600px; }
-.chip { padding: 5px 0; min-width: 34px; font: 500 12px var(--font-mono); letter-spacing: 0; }
-.chip.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.chip.sel { background: var(--live); border-color: var(--live); color: var(--live-ink); }
-.kb { position: relative; height: 120px; }
-.wk { position: absolute; top: 0; height: 120px; background: #f4f4f4; border: 1px solid #777; border-radius: 0 0 4px 4px; font: 500 10px var(--font-mono); color: #555; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; }
-.bk { position: absolute; top: 0; width: 16px; height: 72px; background: #111; border: 1px solid #555; border-radius: 0 0 3px 3px; z-index: 2; }
-.wk.used { background: #bdbdbd; }
-.bk.used { background: #777; }
-.wk.sel { background: var(--live); color: var(--live-ink); }
-.bk.sel { background: var(--live); }
-.wk.sel, .bk.sel { outline: 1px solid var(--ink); outline-offset: -1px; }
-.padgrid { display: grid; grid-template-columns: repeat(8, minmax(34px, 62px)); gap: 8px; margin-top: 14px; justify-content: start; }
-.pd { aspect-ratio: 1; border-radius: 8px; background: var(--cell-beat); border: 2px solid var(--ink-2); color: var(--ink); display: flex; align-items: center; justify-content: center; text-align: center; font: 500 10px var(--font-mono); }
-.pd.none { background: transparent; border-color: transparent; }
-.pd.used { background: var(--root-row); border-color: var(--ink); }
-.pd.sel { background: var(--live); border-color: var(--accent); color: var(--live-ink); }
-/* Selected step info: equal fixed columns, one line per value, so playback never shifts the page. */
-.kbinfo { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; max-width: 640px; }
-.kbinfo div { min-width: 0; }
-.kbinfo dt { font-size: 11px; color: var(--ink-2); }
-.kbinfo dd { margin: 2px 0 0; font: 500 15px var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
-th { font: 500 11px var(--font-ui); color: var(--ink-2); }
-td.off { color: var(--ink-2); }
-td strong { font-weight: 500; }
-.tablewrap { overflow-x: auto; max-height: 440px; overflow-y: auto; }
-.note { font-size: 11px; font-weight: 300; line-height: 1.37; color: var(--ink-2); margin: 10px 0 0; max-width: 65ch; }
-.saved { display: flex; flex-direction: column; gap: 6px; }
-.saved .item { display: flex; gap: 6px; }
-.saved .item button:first-child { flex: 1; text-align: left; font-weight: 400; font-size: 14px; letter-spacing: 0; }
-.saved .item button.x { padding: 9px 11px; }
-.empty { color: var(--ink-2); font-size: 13px; }
-.status { font-size: 12px; color: var(--ink-2); min-height: 18px; margin-top: 12px; }
 
-/* Content below the tool */
-.about h3 { font-size: 46px; font-weight: 500; letter-spacing: -0.06em; line-height: 1.45; margin: 31px 0 10px; }
-.about p { font-size: 13px; letter-spacing: 0.03em; color: var(--ink); margin: 0 0 10px; max-width: 620px; }
-.about ul { color: var(--ink); font-size: 13px; letter-spacing: 0.03em; margin: 0 0 10px; padding-left: 20px; max-width: 620px; }
-details { border-top: 1px solid var(--line); padding: 10px 0; }
-details:last-of-type { border-bottom: 1px solid var(--line); }
-summary { cursor: pointer; font-weight: 500; font-size: 15px; letter-spacing: -0.04em; list-style: none; display: flex; gap: 10px; }
-summary::-webkit-details-marker { display: none; }
-summary::before { content: "+"; font-family: var(--font-mono); width: 1ch; flex: none; }
-details[open] summary::before { content: "\2212"; }
-details.closing summary::before { content: "+"; }
-details p { margin: 8px 0 0; }
-footer { color: var(--ink-2); font-size: 12px; padding-top: 4px; }
-footer p { margin: 0; }
-/* Links never get a color: they use the text color (also once visited). FAQ links are bold. */
-a { color: var(--ink); }
-details a { font-weight: 600; }
-.skip { position: absolute; left: -9999px; }
-.skip:focus { left: 12px; top: 12px; background: var(--accent); color: var(--accent-ink); padding: 8px 12px; border-radius: 6px; z-index: 10; }
+.gen {
+  container: gen / inline-size;
+}
 
-/* Generate panel, tablet: menus on 3 columns (Density joins them, without its hint),
-   then the 3 knobs side by side, smaller (80px). Grid of 6: a menu or a knob spans 2. */
+.titlerow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.titlerow h2 {
+  margin: 0;
+}
+
+.mainkeys {
+  display: flex;
+  gap: 8px;
+}
+
+.setup {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.band {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+/* NOTES and LOOP: 48px apart, labels at the bottom. */
+.settings {
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 48px;
+  align-items: flex-end;
+}
+
+.group .ctrls {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.ns {
+  display: contents;
+}
+
+.settings .field {
+  padding: 9px 15px 6px;
+}
+
+.field.fnote {
+  width: 110px;
+}
+
+.field.fscale {
+  width: 200px;
+}
+
+/* Knob groups: two tiles each, spread over the width. */
+.dials {
+  --kg: max(37px, calc((100cqw + 16px) / 6 - 132px));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px var(--kg);
+}
+
+.dials .ctrls {
+  align-items: flex-start;
+  gap: var(--kg);
+}
+
+.dials .knob {
+  width: calc(132 * var(--u));
+}
+
+/* Key groups: PATTERN and LOCK left, SAVE and EXPORT right (wraps if needed). */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px 40px;
+}
+
+.tools, .output {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+}
+
+.actions .row {
+  gap: 6px;
+}
+
+/* Style and Wave selectors: a knob with one notch per choice, a line to each name.
+   Sizes are multiples of --ss. */
+.selbox {
+  --ss: 1px;
+  position: relative;
+  flex: none;
+  width: calc(var(--w) * var(--ss));
+  height: calc(133.12 * var(--ss));
+}
+
+.stylebox {
+  --w: 204.8;
+}
+
+.wavebox {
+  --w: 225.28;
+}
+
+.selknob {
+  --i: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.stylesel {
+  --a0: 30deg;
+  --da: 30deg;
+  --y0: 19.2;
+  --dy: 19.2;
+}
+
+.wavesel {
+  --a0: 45deg;
+  --da: 45deg;
+  --y0: 34.56;
+  --dy: 23.04;
+}
+
+.selknob:has(.sopt:nth-of-type(2) input:checked) {
+  --i: 1;
+}
+
+.selknob:has(.sopt:nth-of-type(3) input:checked) {
+  --i: 2;
+}
+
+.selknob:has(.sopt:nth-of-type(4) input:checked) {
+  --i: 3;
+}
+
+.selknob:has(.sopt:nth-of-type(5) input:checked) {
+  --i: 4;
+}
+
+.filets {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.filets path {
+  stroke: var(--ink-2);
+}
+
+.filets .notch {
+  stroke-width: 1.152;
+}
+
+.filets .filet {
+  stroke-width: .96;
+}
+
+.selknob:has(.sopt:nth-of-type(1) input:checked) .f0 .notch,
+.selknob:has(.sopt:nth-of-type(2) input:checked) .f1 .notch,
+.selknob:has(.sopt:nth-of-type(3) input:checked) .f2 .notch,
+.selknob:has(.sopt:nth-of-type(4) input:checked) .f3 .notch,
+.selknob:has(.sopt:nth-of-type(5) input:checked) .f4 .notch {
+  stroke: var(--live);
+  stroke-width: 1.6;
+}
+
+.selknob:has(.sopt:nth-of-type(1) input:checked) .f0 .filet,
+.selknob:has(.sopt:nth-of-type(2) input:checked) .f1 .filet,
+.selknob:has(.sopt:nth-of-type(3) input:checked) .f2 .filet,
+.selknob:has(.sopt:nth-of-type(4) input:checked) .f3 .filet,
+.selknob:has(.sopt:nth-of-type(5) input:checked) .f4 .filet {
+  stroke: var(--ink);
+}
+
+/* The knob. Only the knob takes clicks. */
+.selknob .sk {
+  --u: var(--ss);
+  position: absolute;
+  left: calc(-4.16 * var(--ss));
+  top: calc(17.6 * var(--ss));
+  cursor: default;
+  touch-action: auto;
+  pointer-events: none;
+}
+
+.selknob .sk .cap {
+  --a: calc(var(--a0) + var(--i) * var(--da));
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* A name row: the dot, then the name. */
+.sopt {
+  --k: 0;
+  position: absolute;
+  left: calc(86.4 * var(--ss));
+  top: calc((var(--y0) - 9.6 + var(--k) * var(--dy)) * var(--ss));
+  display: flex;
+  align-items: center;
+  gap: calc(4.48 * var(--ss));
+  height: calc(19.2 * var(--ss));
+  font: 400 calc(11.52 * var(--ss))/1 var(--font-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sopt:nth-of-type(2) {
+  --k: 1;
+}
+
+.sopt:nth-of-type(3) {
+  --k: 2;
+}
+
+.sopt:nth-of-type(4) {
+  --k: 3;
+}
+
+.sopt:nth-of-type(5) {
+  --k: 4;
+}
+
+.sopt input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.sopt i {
+  flex: none;
+  width: calc(5.376 * var(--ss));
+  height: calc(5.376 * var(--ss));
+  margin-inline: calc(.512 * var(--ss));
+  border: calc(.96 * var(--ss)) solid var(--ink-2);
+  border-radius: 50%;
+}
+
+.sopt .glyph {
+  flex: none;
+  width: calc(15.36 * var(--ss));
+  height: calc(6.4 * var(--ss));
+  margin-right: calc(.64 * var(--ss));
+  overflow: visible;
+  stroke: currentColor;
+  stroke-width: 1.152;
+}
+
+.sopt:has(input:checked) {
+  color: var(--ink);
+}
+
+.sopt:has(input:checked) i {
+  width: calc(6.4 * var(--ss));
+  height: calc(6.4 * var(--ss));
+  margin: 0;
+  border: 0;
+  background: var(--live);
+}
+
+.sopt:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.by-pointer .sopt:has(input:focus-visible) {
+  outline: none;
+}
+
+.selbox > .sname {
+  position: absolute;
+  left: calc(7.68 * var(--ss));
+  top: calc(115.2 * var(--ss));
+  font: 400 calc(11 * var(--ss))/normal var(--font-ui);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Style lock: 8px after "Style". */
+.stylebox .key.key-lock {
+  position: absolute;
+  left: calc(41.68 * var(--ss));
+  top: calc(108.2 * var(--ss));
+  width: calc(28 * var(--ss));
+  height: calc(28 * var(--ss));
+}
+
+.stylebox .key-lock .padlock {
+  width: calc(9 * var(--ss));
+  height: calc(12 * var(--ss));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .selknob .bar {
+    transition: transform .15s ease;
+  }
+}
+
+/* Play and Generate bassline: 48px high. */
+.key.key-lg {
+  height: 48px;
+  padding: 0 16px;
+  border-radius: var(--r-square);
+}
+
+.gen .status {
+  margin-top: -16px;
+}
+
+
+/* ======================================================================
+   6. Sequence preview and scope
+   ====================================================================== */
+
+/* Sequence preview: a black screen, one column per step, a bar per note.
+   Orange: notes the last action changed. */
+.lcd {
+  flex: none;
+  display: block;
+  width: 202px;
+  height: 100px;
+  padding: 8.5px 10px 9px;
+  background: var(--lcd);
+  border: .75px solid #fff;
+  border-radius: 3px;
+  box-shadow: 0 -3px 6px rgba(0, 0, 0, .08);
+}
+
+.lcd .screen {
+  position: relative;
+  display: flex;
+  height: 100%;
+  border-radius: 1.5px;
+  overflow: hidden;
+}
+
+.lcd .col {
+  position: relative;
+  flex: 1 1 0;
+  --fg: #dcdddf;
+}
+
+.lcd .col.lt {
+  --fg: #141318;
+}
+
+.lcd .nt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4.7%;
+  background: var(--fg);
+}
+
+.lcd .nt.new {
+  background: var(--live);
+}
+
+.lcd .num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1px;
+  font: 400 8.33px/1 var(--font-mono);
+  font-style: normal;
+  color: var(--fg);
+  text-align: center;
+}
+
+.lcd .ph {
+  position: absolute;
+  left: 50%;
+  bottom: 1.5px;
+  width: 3.85px;
+  height: 3.85px;
+  margin-left: -1.92px;
+  border-radius: 50%;
+  background: var(--fg);
+}
+
+.lcd .num, .lcd .ph {
+  display: none;
+}
+
+.lcd .col.now .num, .lcd .col.now .ph {
+  display: block;
+}
+
+/* The preview scales with --k. */
+.gen .lcd {
+  --k: 1;
+  width: calc(202px * var(--k));
+  height: calc(100px * var(--k));
+  padding: calc(8.5px * var(--k)) calc(10px * var(--k)) calc(9px * var(--k));
+}
+
+.gen .lcd .num {
+  font-size: calc(8.33px * var(--k));
+}
+
+.gen .lcd .ph {
+  bottom: calc(1.5px * var(--k));
+  width: calc(3.85px * var(--k));
+  height: calc(3.85px * var(--k));
+  margin-left: calc(-1.92px * var(--k));
+}
+
+/* Scope: same black screen, a grid and the trace. */
+.lcd.scope {
+  width: 191px;
+  padding: 7.5px 6.75px 7.75px 9.5px;
+}
+
+.scope .screen {
+  display: block;
+  background: #090a0c;
+}
+
+.scope svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.scope .grid {
+  fill: none;
+  stroke: #1d1e21;
+  stroke-width: .77;
+}
+
+.scope .trace {
+  fill: none;
+  stroke: #dcdddf;
+  stroke-width: .96;
+  stroke-linejoin: round;
+}
+
+.scope .wname {
+  position: absolute;
+  left: 4.6px;
+  top: 3px;
+  font: 400 8.33px/1 var(--font-mono);
+  color: #8f8f8f;
+  text-transform: uppercase;
+}
+
+
+/* ======================================================================
+   7. Tempo keys and knobs
+   ====================================================================== */
+
+/* Tempo keys: Tap and Metronome, in a tile the size of a knob. */
+.tempokeys {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  width: 132px;
+  padding-top: 36px;
+}
+
+.tk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+
+.tklbl {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.key.key-tk {
+  position: relative;
+  flex-direction: column;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border-radius: 12px;
+}
+
+.key.key-tk .dot {
+  width: 6px;
+  height: 6px;
+}
+
+#metro .dot {
+  position: absolute;
+  top: 7px;
+  right: 6px;
+  width: 5px;
+  height: 5px;
+}
+
+.key.key-tk[aria-pressed="true"] svg {
+  color: var(--ink);
+}
+
+.key-tk:active .dot, .key-tk.is-pressed .dot {
+  background: var(--live);
+}
+
+/* Knob: the dial, the label and the value. The range input stays inside, invisible,
+   for the keyboard and screen readers. Sizes are multiples of --u. */
+.knob {
+  --u: 1px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 6px;
+  width: min(calc(132 * var(--u)), 100%);
+  padding: calc(21.35 * var(--u)) 6px 0;
+}
+
+.knob .dial {
+  grid-column: 1 / -1;
+  margin: 0 auto calc(12.65 * var(--u));
+}
+
+.knob label {
+  grid-row: 2;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.knob .val {
+  grid-row: 2;
+  font: 400 var(--fs-small)/1.45 var(--font-mono);
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dial {
+  position: relative;
+  width: calc(80 * var(--u));
+  height: calc(80 * var(--u));
+  border-radius: 50%;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.dial input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dial:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dial svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dial .d {
+  fill: var(--ink);
+}
+
+.dial .d.on {
+  fill: var(--live);
+}
+
+/* Cast shadow. */
+.dial .cast {
+  position: absolute;
+  left: calc(50% - 24.14 * var(--u));
+  top: calc(50% - 1.7 * var(--u));
+  width: calc(43.875 * var(--u));
+  height: calc(57.5 * var(--u));
+  border-radius: 0 0 calc(18.75 * var(--u)) calc(18.75 * var(--u));
+  background: linear-gradient(rgba(42, 32, 28, .58), rgba(42, 32, 28, .57) 48.76%, rgba(42, 32, 28, .34));
+  filter: blur(calc(10 * var(--u)));
+  opacity: .61;
+  transform-origin: 50% 0;
+  transform: rotate(-47.83deg);
+  pointer-events: none;
+}
+
+/* The body, lit from the top left. */
+.dial .cap {
+  --a: -135deg;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(40 * var(--u));
+  height: calc(40 * var(--u));
+  margin: calc(-20 * var(--u)) 0 0 calc(-20 * var(--u));
+  border-radius: 50%;
+  overflow: hidden;
+  border: calc(.94 * var(--u)) solid transparent;
+  background:
+    linear-gradient(var(--knob), var(--knob)) padding-box,
+    linear-gradient(131.5deg, #ffffff, #8a8584) border-box;
+  box-shadow:
+    calc(3.75 * var(--u)) calc(3.125 * var(--u)) calc(9.7 * var(--u)) rgba(59, 48, 44, .34),
+    calc(-3.75 * var(--u)) calc(-2.5 * var(--u)) calc(9.7 * var(--u)) rgba(255, 255, 255, .9);
+}
+
+/* The well in the middle. */
+.dial .well {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(18.75 * var(--u));
+  height: calc(18.75 * var(--u));
+  margin: calc(-9.375 * var(--u)) 0 0 calc(-9.375 * var(--u));
+  border-radius: 50%;
+  background:
+    radial-gradient(circle calc(6 * var(--u)) at 91.7% 75%, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0)),
+    #0a0a0a;
+  box-shadow: inset calc(2.19 * var(--u)) calc(.94 * var(--u)) calc(8.75 * var(--u)) #000000;
+}
+
+/* The bar, turns with the value. */
+.dial .bar {
+  position: absolute;
+  left: calc(50% - 2.5 * var(--u));
+  top: calc(50% - 25 * var(--u));
+  width: calc(5 * var(--u));
+  height: calc(18.125 * var(--u));
+  border-radius: calc(2.19 * var(--u));
+  transform-origin: 50% calc(25 * var(--u));
+  transform: rotate(var(--a));
+  background: linear-gradient(90deg, #0a0a0a -31.25%, #2a2726 64.2%, #ffffff 118.75%);
+  box-shadow: inset calc(2.19 * var(--u)) 0 calc(7.2 * var(--u)) calc(1.25 * var(--u)) #000000;
+}
+
+.dial .cap.on .well {
+  background:
+    radial-gradient(circle calc(6 * var(--u)) at 91.7% 75%, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0)),
+    var(--live);
+  box-shadow: inset calc(.87 * var(--u)) calc(.87 * var(--u)) calc(1.74 * var(--u)) rgba(138, 21, 5, .4);
+}
+
+.dial .cap.on .bar {
+  background: var(--live);
+  box-shadow: inset calc(.87 * var(--u)) 0 calc(.87 * var(--u)) rgba(22, 21, 31, .2);
+}
+
+
+/* ======================================================================
+   8. Sound panel
+   ====================================================================== */
+
+/* Sound panel: OSC (scope and Wave) on the left, the knob tiles on a grid.
+   Layout follows the panel width. */
+.snd {
+  container: snd / inline-size;
+}
+
+.sbody {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.gosc {
+  flex: none;
+}
+
+.oscrow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+.controls {
+  flex: 1 1 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 132px);
+  justify-content: space-between;
+  row-gap: 24px;
+  align-items: start;
+}
+
+.kgroup {
+  display: contents;
+}
+
+.controls .knob, .controls .locktile {
+  position: relative;
+  margin-top: 30px;
+}
+
+.controls .knob > .tag, .controls .locktile > .tag {
+  position: absolute;
+  left: 0;
+  top: -30px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  font: 600 13px var(--font-mono);
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--cell);
+  color: var(--ink);
+  padding: 9px 14px;
+}
+
+button:hover {
+  border-color: var(--ink-2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* No focus ring after a mouse or touch press (keyboard only). */
+.by-pointer :focus-visible, .by-pointer .dial:has(input:focus-visible) {
+  outline: none;
+}
+
+
+/* ======================================================================
+   9. Sequencer panel
+   ====================================================================== */
+
+/* Sequencer panel: title and Clear, the grid, the export keys. */
+.seq {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.titlerow.seqtitle {
+  align-items: center;
+}
+
+.gridwrap {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* Step pages (phones, 16 steps): keys 1-8 and 9-16. */
+.seqpages {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seqpages[hidden] {
+  display: none;
+}
+
+.seqpages .lab {
+  font: 400 var(--fs-small) var(--font-ui);
+  color: var(--ink-2);
+}
+
+.seqpages .key.now {
+  color: var(--live);
+} /* the half being played */
+
+/* Phones: no minimum width (see app.js). */
+.grid.fit {
+  min-width: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 3px;
+  min-width: 560px;
+  align-items: stretch;
+}
+
+.lbl {
+  font: 400 var(--fs-small) var(--font-ui);
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+}
+
+.lbl.root {
+  color: var(--ink);
+}
+
+/* Step numbers: grey, black on the beats, orange on the current step. */
+.hd {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 400 var(--fs-small) var(--font-mono);
+  color: var(--ink-2);
+}
+
+.hd.beat {
+  color: var(--ink);
+}
+
+.hd.now {
+  color: var(--live);
+}
+
+/* Note cells: a note is black, the current note orange. */
+.c {
+  position: relative;
+  height: 26px;
+  border-radius: 5px;
+  border: 0;
+  padding: 0;
+  background: var(--seq-cell);
+}
+
+.c.alt {
+  background: var(--seq-cell-alt);
+}
+
+.c.r {
+  background: var(--seq-root);
+}
+
+.c.r.alt {
+  background: var(--seq-root-alt);
+}
+
+.grid .c.on {
+  background: var(--seq-on);
+  box-shadow: inset -1.5px -1.5px 3px -0.5px rgba(79, 79, 79, .15);
+}
+
+.grid .c.on::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.grid .c.on.now {
+  background: var(--live);
+  box-shadow: inset 1.5px 1.5px 3.5px -0.5px rgba(79, 79, 79, .32);
+}
+
+.c:not(.on):hover {
+  filter: brightness(.97);
+}
+
+/* Accent and Tie: grey when off, black when on. */
+.c.flag, .c.flag.on {
+  height: 26px;
+  background: transparent;
+  box-shadow: none;
+  font: 400 var(--fs-micro) var(--font-mono);
+  color: var(--ink-3);
+}
+
+.c.flag.on {
+  color: var(--ink);
+}
+
+.grid .c.flag::after {
+  content: none;
+}
+
+.c.flag:hover {
+  filter: none;
+  color: var(--ink-2);
+}
+
+.c.flag.on:hover {
+  color: var(--ink);
+}
+
+/* Vel and Gate: the value, then a bar. The whole cell can be dragged. */
+.c.bar {
+  height: 44px;
+  padding: 2px 0 4px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: ns-resize;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c.bar:hover {
+  filter: none;
+}
+
+.c.bar.off {
+  cursor: default;
+}
+
+.c.bar span {
+  flex: none;
+  height: 12px;
+  font: 400 var(--fs-micro)/12px var(--font-mono);
+  color: var(--ink);
+}
+
+.c.bar b {
+  position: relative;
+  flex: 1;
+  width: 6px;
+  margin-top: 4px;
+  display: block;
+}
+
+.c.bar i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--seq-on);
+  display: block;
+}
+
+.c.bar.g span {
+  color: var(--seq-gate);
+}
+
+.c.bar.g i {
+  background: var(--seq-gate);
+}
+
+.c.bar.now span {
+  color: var(--live);
+}
+
+.c.bar.now i {
+  background: var(--live);
+}
+
+
+/* ======================================================================
+   10. Play it on your gear
+   ====================================================================== */
+
+/* Play it on your gear: step keys, keyboard, pads, legend and the selected step. */
+.gear {
+  container: gear / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.gear h2 {
+  margin: 0;
+}
+
+.cap {
+  margin: 8px 0 0;
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+}
+
+/* Step keys: the note above, orange when selected. 8 per row when 16 do not fit. */
+.stepsel {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 16), 56px);
+  gap: 8px 3px;
+}
+
+.stp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.stp small {
+  min-height: 14px;
+  font: 400 var(--fs-small)/14px var(--font-mono);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.key.chip {
+  width: 100%;
+  padding: 0;
+  justify-content: center;
+}
+
+.key.chip.off {
+  color: var(--ink-3);
+}
+
+.key.chip.sel {
+  background: var(--live);
+  color: #fff;
+  box-shadow: var(--relief-pad-pressed);
+}
+
+.tag {
+  align-self: flex-start;
+  padding: 2px;
+  border: 1px solid var(--ink-2);
+  font: 400 var(--fs-micro)/12px var(--font-ui);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.gearrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+}
+
+.gblock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Same space under the keyboard and the pads, so their bottoms line up. */
+.pblock {
+  justify-content: flex-end;
+  gap: 22px;
+  padding-bottom: 20.7px;
+}
+
+/* Keyboard: white pill keys, round black keys on top. Selected note: orange. */
+.kbwrap {
+  overflow-x: auto;
+}
+
+.kb {
+  /* --s narrows the keys when more than 3 octaves are needed. */
+  --s: calc(15 / max(15, var(--nw, 15)));
+  --w: calc(44px * var(--s));
+  --wh: 146px;
+  --bb: calc(36px * var(--s));
+  --bt: calc(12px * var(--s));
+  --pad: 10px;
+  --pin: 10.7px calc(6.1px * var(--s));
+  --lab: var(--fs-micro);
+  --lab-b: 13px;
+  --dot: 4px;
+  --dot-gap: 6px;
+  --rl:
+    -1.125px -1.125px 2.25px rgba(255, 255, 255, .9),
+    1.5px 3px 6.75px rgba(0, 0, 0, .1),
+    .375px .75px 1.125px rgba(0, 0, 0, .1),
+    inset 1px 1px 1px rgba(255, 255, 255, .9),
+    inset -1.5px -1.875px 4.5px -1px rgba(79, 79, 79, .16);
+  --rp:
+    .5px .5px 1px rgba(255, 255, 255, .75),
+    inset 1px 1px 1.5px rgba(0, 0, 0, .1),
+    inset 1.875px 2.25px 5.25px -1px rgba(79, 79, 79, .3);
+  --rb: 0 0 6px rgba(0, 0, 0, .35), inset 1px 1px 5px rgba(255, 255, 255, .18);
+  --rbp: 0 0 2px rgba(0, 0, 0, .15), inset 1px 1px 5px rgba(255, 255, 255, .25);
+  position: relative;
+  width: calc(var(--nw, 15) * var(--w) + 2 * var(--pad));
+  height: calc(2 * var(--pad) + var(--wh));
+}
+
+.wk, .bk {
+  position: absolute;
+  top: var(--pad);
+}
+
+.wk {
+  left: calc(var(--pad) + var(--i) * var(--w));
+  width: var(--w);
+  height: var(--wh);
+}
+
+.bk {
+  z-index: 1;
+  margin-top: var(--bt);
+  left: calc(var(--pad) + var(--i) * var(--w) - var(--bb) / 2);
+  width: var(--bb);
+  height: var(--bb);
+}
+
+.wk span, .bk span {
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.wk span {
+  inset: var(--pin);
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--dot-gap);
+  padding-bottom: var(--lab-b);
+  border-radius: 999px;
+  background: var(--key);
+  box-shadow: var(--rl);
+  color: var(--ink);
+  font: 400 var(--lab)/1 var(--font-mono);
+}
+
+.bk span {
+  inset: 0;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #353434, #0a0a0a);
+  box-shadow: var(--rb);
+  color: #fff;
+}
+
+.wk i, .bk i {
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: currentColor;
+  visibility: hidden;
+}
+
+.wk.used i, .bk.used i, .wk.sel i, .bk.sel i {
+  visibility: visible;
+}
+
+.wk.sel span {
+  background: var(--live);
+  box-shadow: var(--rp);
+  color: #fff;
+}
+
+.bk.sel span {
+  background: var(--live);
+  box-shadow: var(--rbp);
+}
+
+/* Pads: 8 columns plus the octave pads. */
+.padgrid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 56px));
+  gap: 8px;
+}
+
+.pd {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 400 var(--fs-small) var(--font-mono);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.pd i {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  visibility: hidden;
+}
+
+.pd.used i, .pd.sel i {
+  visibility: visible;
+}
+
+.pd.sel {
+  background: var(--live);
+  box-shadow: var(--relief-pad-pressed);
+  color: #fff;
+}
+
+.pd.oct.up {
+  grid-area: 1 / 9;
+}
+
+.pd.oct.down {
+  grid-area: 2 / 9;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000;
+}
+
+.legend i.sel {
+  background: var(--live);
+}
+
+/* Selected step: fixed widths, so playback never shifts the page. */
+.kbinfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 48px;
+  margin: 0;
+}
+
+.kbinfo div {
+  min-width: 48px;
+}
+
+.kbinfo dt {
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+}
+
+.kbinfo dd {
+  margin: 4px 0 0;
+  font: 400 var(--fs-text) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Not enough room: keyboard and pads stacked. */
+@container gear (max-width: 1295px) {
+  .gblock {
+    flex: 1 1 100%;
+  }
+
+  .kb {
+    margin-inline: auto;
+  }
+
+  .pblock {
+    justify-content: flex-start;
+    gap: 8px;
+    padding-bottom: 0;
+  }
+
+  .padgrid {
+    grid-template-columns: repeat(9, minmax(0, 62px));
+    justify-content: center;
+    padding-block: 24px;
+  }
+
+  .kbinfo {
+    gap: 16px 32px;
+  }
+}
+
+.note {
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.37;
+  color: var(--ink);
+  margin: 10px 0 0;
+  max-width: 65ch;
+}
+
+
+/* ======================================================================
+   11. Export panel
+   ====================================================================== */
+
+/* Export panel: Bars, the two export keys, the download link. */
+.exp {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.exp h2, .exp .note {
+  margin: 0;
+}
+
+.exp .note:empty {
+  margin-top: -24px;
+} /* the download link line, empty until a file is ready */
+
+.exports {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.exports .field {
+  width: 180px;
+  padding: 9px 15px 6px;
+}
+
+.exports .key {
+  margin-top: 9px;
+}
+
+.key[aria-busy="true"] {
+  cursor: progress;
+}
+
+
+/* ======================================================================
+   12. Copy on your instrument
+   ====================================================================== */
+
+/* Copy on your instrument: one row per step, fixed columns. Two tables side by side
+   when they fit. */
+.copy {
+  container: copy / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.copy h2 {
+  margin: 0;
+}
+
+.copytables {
+  display: flex;
+  flex-direction: column;
+}
+
+.copytables table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font: 400 var(--fs-small)/16px var(--font-mono);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.copytables th, .copytables td {
+  padding: 6px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copytables th {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  color: var(--ink-2);
+}
+
+.copytables td:last-child {
+  white-space: normal;
+} /* "accent, tie" wraps instead of being cut */
+
+.copytables th:nth-child(1) {
+  width: 48px;
+}
+
+.copytables th:nth-child(2) {
+  width: 64px;
+}
+
+.copytables th:nth-child(3) {
+  width: 56px;
+}
+
+.copytables th:nth-child(4) {
+  width: 88px;
+}
+
+.copytables th:nth-child(5), .copytables th:nth-child(6) {
+  width: 56px;
+}
+
+.copytables table + table th {
+  padding: 0;
+  border: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+@container copy (min-width: 940px) {
+  .copytables {
+    flex-direction: row;
+    gap: 48px;
+  }
+
+  .copytables table {
+    width: calc(50% - 24px);
+  }
+
+  .copytables table + table th {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-small);
+    line-height: 16px;
+  }
+}
+
+.copykeys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.copyout {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.37;
+  color: var(--ink);
+}
+
+
+/* ======================================================================
+   13. Help bubbles
+   ====================================================================== */
+
+/* INFO tag and its help bubble. Hover with a mouse, tap or Enter otherwise. */
+.info {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.infotag {
+  position: relative;
+  padding: 2px;
+  border: 1px solid var(--ink-2);
+  border-radius: 0;
+  background: none;
+  font: 400 var(--fs-micro)/12px var(--font-ui);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.infotag:hover {
+  border-color: var(--ink-2);
+}
+
+.infotag[aria-expanded="true"] {
+  border-color: var(--live);
+  color: var(--live);
+}
+
+/* Touch: a 44px high target. */
+@media (pointer: coarse) {
+  .infotag::before {
+    content: "";
+    position: absolute;
+    inset: -13px -4px;
+  }
+}
+
+.bubble {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  padding: 14px 16px;
+  border-radius: var(--r-panel);
+  background: var(--ink);
+  color: var(--surface);
+  font: 400 var(--fs-small)/15px var(--font-ui);
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, .15), 0 6px 9px rgba(0, 0, 0, .2);
+}
+
+.bubble[hidden] {
+  display: none;
+}
+
+/* Value bubble above the finger (bars and knobs). */
+.bartip {
+  position: fixed;
+  z-index: 6;
+  padding: 8px 12px;
+  border-radius: var(--r-panel);
+  pointer-events: none;
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--surface);
+  font: 400 var(--fs-text)/1 var(--font-mono);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, .15), 0 6px 9px rgba(0, 0, 0, .2);
+}
+
+.bartip[hidden] {
+  display: none;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 8px;
+} /* keeps the hover over the gap */
+
+.bubble p {
+  margin: 0;
+}
+
+.bubble a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.bubble :focus-visible {
+  outline-color: var(--surface);
+} /* the black ring would vanish on the bubble */
+
+.legendrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.exports .info {
+  height: 33px;
+  margin-top: 9px;
+}
+
+/* Narrow phones: the tag goes under the keys. */
+@media (max-width: 400px) {
+  .exp .exports {
+    flex-wrap: wrap;
+  } /* beats the nowrap of the mobile block further down */
+
+  .exp .exports .info {
+    flex-basis: 100%;
+    justify-content: flex-end;
+    height: auto;
+    margin-top: 0;
+  }
+}
+
+
+/* ======================================================================
+   14. Saved ideas
+   ====================================================================== */
+
+/* Saved ideas: a line that opens and closes, then one row per idea.
+   A new idea flashes orange once. */
+.gen .ideas {
+  margin-top: -16px;
+  padding: 12px 10px 0;
+  border-bottom: 0;
+}
+
+.ideas summary {
+  font: 400 var(--fs-small)/30px var(--font-mono);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.ideas .count {
+  color: var(--ink-2);
+}
+
+.saved {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.saved .item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.saved .load {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font: 400 var(--fs-small)/1.45 var(--font-mono);
+  letter-spacing: 0;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved .load:hover {
+  text-decoration: underline;
+}
+
+.saved .x {
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .saved .item.new .load {
+    animation: idea-in 1.6s ease-out;
+  }
+}
+
+@keyframes idea-in {
+  from, 40% {
+    color: var(--live);
+  }
+
+  to {
+    color: var(--ink);
+  }
+}
+
+.status {
+  font-size: 12px;
+  color: var(--ink-2);
+  min-height: 18px;
+  margin-top: 12px;
+}
+
+
+/* ======================================================================
+   15. About, FAQ and footer
+   ====================================================================== */
+
+/* About: three sections. Desktop: About on the left, What you can do and the FAQ
+   on the right. */
+.about h2 {
+  font-size: var(--fs-title-xl);
+  margin-bottom: 32px;
+}
+
+.acols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 64px;
+  row-gap: 48px;
+  align-items: start;
+}
+
+.acol {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  min-width: 0;
+}
+
+.asec {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.asec.faq {
+  gap: 0;
+}
+
+.acol > .asec + .asec {
+  border-top: 1px solid var(--line);
+  padding-top: 40px;
+}
+
+.about h3 {
+  font-size: var(--fs-title);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 1.1;
+  margin: 0 0 8px;
+}
+
+.asec.faq h3 {
+  margin-bottom: 24px;
+}
+
+.about p, .about ul {
+  font-size: var(--fs-text);
+  line-height: 1.31;
+  color: var(--ink);
+  margin: 0;
+  max-width: 688px;
+}
+
+.about ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Bullets: a dot, wrapped lines start under it. */
+.about li::before {
+  content: "\2022\00a0\00a0";
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+/* Buy me a coffee and its "i" stay together, on every screen.
+   The bubble opens right above them, as wide as the pair. */
+.paygroup {
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+.payinfo {
+  position: static;
+  margin-left: 0;
+}
+
+/* Round "i" tags: payment and themes. */
+.payinfo .infotag,
+.themeinfo .infotag {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border-radius: 50%;
+  font: 400 var(--fs-micro)/12px var(--font-mono);
+  text-transform: none;
+}
+
+.payinfo .bubble {
+  left: 0;
+  right: 0;
+  width: auto;
+}
+
+/* Undo the About text style inside the bubble. */
+.about .payinfo .bubble p {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* The coffee cup at the start of the bubble, in the bubble's light color. */
+.payinfo .cup {
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: -2px;
+  color: var(--surface);
+}
+
+/* FAQ items: a rule above each, + / - before the question. */
+.faq details {
+  padding: 12px 0;
+}
+
+.faq details:last-of-type {
+  border-bottom: 0;
+}
+
+.faq summary {
+  font-weight: 400;
+  font-size: var(--fs-intro);
+  line-height: 1.3;
+  letter-spacing: 0;
+  gap: 12px;
+}
+
+/* Fixed marker width, so the answer lines up with the question. */
+.faq summary::before {
+  width: 9px;
+}
+
+.faq details p {
+  margin-top: 10px;
+  padding-left: 21px;
+}
+
+details {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+details:last-of-type {
+  border-bottom: 1px solid var(--line);
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.04em;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: "+";
+  font-family: var(--font-mono);
+  width: 1ch;
+  flex: none;
+}
+
+details[open] summary::before {
+  content: "\2212";
+}
+
+details.closing summary::before {
+  content: "+";
+}
+
+details p {
+  margin: 8px 0 0;
+}
+
+/* Footer. */
+footer {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  line-height: 1.27;
+  margin-top: 26px;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Legal notice, in grey. */
+footer .legal {
+  margin-top: 10px;
+  color: var(--ink-2);
+}
+
+footer .legal a {
+  color: inherit;
+}
+
+/* Links use the text color. FAQ links are bold. */
+a {
+  color: var(--ink);
+}
+
+details a {
+  font-weight: 600;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip:focus {
+  left: 12px;
+  top: 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 8px 12px;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+
+/* ======================================================================
+   16. Panels at smaller widths
+   ====================================================================== */
+
+/* Generate, narrower: preview and Style on one row, NOTES and LOOP on the next. */
+@container gen (max-width: 1099px) {
+  .band {
+    column-gap: 24px;
+  }
+
+  .settings {
+    grid-column: 1 / -1;
+    align-self: start;
+  }
+
+  .gen .lcd {
+    --k: 1.32;
+  }
+
+  .setup {
+    gap: 28px;
+  }
+}
+
+/* Generate on phones: smaller preview and Style, one key group per row. */
+@container gen (max-width: 559px) {
+  .band {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+    row-gap: 28px;
+    align-items: center;
+  }
+
+  .gen .lcd {
+    --k: .847;
+    width: 100%;
+    max-width: 266px;
+    height: auto;
+    aspect-ratio: 202 / 100;
+  }
+
+  /* Narrower on small phones. */
+  .stylebox {
+    --ss: min(.796px, (100cqw - 8px) * .002383);
+  }
+
+  /* First column: the width of the Octave switch. */
+  .settings {
+    display: grid;
+    grid-template-columns: 94px minmax(0, 1fr);
+    gap: 0 clamp(16px, 100cqw - 238px, 48px);
+    align-items: end;
+    justify-items: start;
+  }
+
+  .settings .gnotes, .gnotes > .ctrls {
+    display: contents;
+  }
+
+  .gnotes > .tag {
+    grid-column: 1 / -1;
+  }
+
+  .ns {
+    display: grid;
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    grid-template-columns: minmax(0, 97fr) minmax(0, 203fr);
+    gap: 17px;
+    max-width: 317px;
+    margin: 8px 0 16px;
+  }
+
+  .settings .field {
+    width: auto;
+    padding-inline: 0;
+  }
+
+  .dials {
+    --kg: 15px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .gtempo .ctrls {
+    gap: clamp(15px, 100cqw - 240px, 62px);
+  }
+
+  .tools, .output {
+    flex-direction: column;
+  }
+}
+
+/* Sound, narrower: OSC on top, then 4 tiles per row. */
+@container snd (max-width: 1144px) {
+  .sbody {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .gosc {
+    align-self: stretch;
+  }
+
+  .oscrow {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .controls {
+    flex: none;
+    width: 100%;
+    grid-template-columns: repeat(4, 132px);
+  }
+
+  .gdelay > * {
+    order: 1;
+  }
+
+  .glock > * {
+    order: 2;
+  }
+}
+
+/* Sound on phones: smaller scope and Wave, 3 tiles per row. */
+@container snd (max-width: 543px) {
+  .oscrow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    align-self: stretch;
+    gap: 8px;
+  }
+
+  .lcd.scope {
+    width: 100%;
+    max-width: 191px;
+    height: auto;
+    aspect-ratio: 191 / 100;
+    padding: 6.1px 5.5px 6.3px 7.7px;
+  }
+
+  .wavebox {
+    --ss: min(.795px, (100cqw - 8px) * .002381);
+  }
+
+  .controls {
+    grid-template-columns: repeat(3, minmax(0, 132px));
+    row-gap: 20px;
+  }
+
+  .gdelay > *, .glock > * {
+    order: 0;
+  }
+}
+
+
+/* ======================================================================
+   17. Tablet and mobile
+   ====================================================================== */
+
+/* Below 941px: step keys on 2 rows of 8. */
+@media (max-width: 1084px) {
+  .stepsel {
+    grid-template-columns: repeat(8, 56px);
+  }
+}
+
+/* Tablet: 16px around the page. */
 @media (max-width: 900px) {
-  .gen { gap: 24px; }
-  .gen .actions { margin-top: 8px; }
-  .setup { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-  .setup > * { grid-column: span 2; }
-  .setup > .knob { margin-top: 12px; }
-  .setup .hint { display: none; }
-  .dial { width: 80px; height: 80px; }
-}
-/* Generate panel, mobile: menus on 2 columns (span 3 of 6), the knobs stay 3 across. */
-@media (max-width: 560px) {
-  .gen { padding: 16px; }
-  .gen .actions { margin-top: 0; }
-  .setup > :not(.knob) { grid-column: span 3; }
+  body {
+    padding-inline: 16px;
+  }
+
+  /* About: one column. */
+  .acols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    border-top: 1px solid var(--line);
+    padding-top: 40px;
+  }
 }
 
-/* Smaller screens: scale the big titles down (full responsive pass to come).
-   The logo fills the space left by the theme button at every width. */
+/* Mobile: 16px inside panels, smaller knobs. */
+@media (max-width: 560px) {
+  /* 8px around the page on phones. */
+  body {
+    padding-inline: 8px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  /* Logo at 80%. */
+  .brand {
+    width: 80%;
+  }
+
+  /* Phones: one short tagline instead of the intro. */
+  .sub {
+    display: none;
+  }
+
+  .tagline {
+    display: block;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.31;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+  }
+
+  /* "Best on a tablet or a computer": a grey line under the tagline. */
+  .devnote {
+    display: block;
+    margin: -8px 0 0;
+    font-size: var(--fs-small);
+    line-height: 1.31;
+    color: var(--ink-2);
+  }
+
+  /* About: 40px between sections. */
+  .about h2 {
+    margin-bottom: 24px;
+  }
+
+  .acols {
+    row-gap: 40px;
+  }
+
+  .acol {
+    gap: 40px;
+  }
+
+  .acol > .asec + .asec, .aside {
+    padding-top: 32px;
+  }
+
+  footer {
+    margin-top: 16px;
+    font-size: var(--fs-micro);
+  }
+
+  .titlerow {
+    flex-direction: column;
+  }
+
+  .titlerow.seqtitle {
+    flex-direction: row;
+  }
+
+  .mainkeys {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+
+  .mainkeys .key {
+    padding-inline: 12px;
+  }
+
+  .dials .knob {
+    --u: calc(104px / 132);
+    padding-inline: 0;
+  }
+
+  .tempokeys {
+    width: auto;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 0;
+  }
+
+  .tk {
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .key.key-tk {
+    width: 56px;
+    height: 56px;
+  }
+
+  /* Sound panel: smaller tiles and tags. */
+  .snd .knob, .snd .locktile {
+    --u: calc(104px / 132);
+    padding-inline: 0;
+  }
+
+  .controls {
+    grid-template-columns: repeat(3, minmax(0, 104px));
+  }
+
+  .controls .knob, .controls .locktile {
+    margin-top: 14px;
+  }
+
+  .controls .knob > .tag, .controls .locktile > .tag {
+    top: -14px;
+    font-size: 6px;
+    line-height: 8px;
+  }
+
+  /* Play it on your gear: the keyboard shrinks to fill the width, pads too. */
+  .gblock {
+    flex: 1 1 100%;
+  }
+
+  .stepsel {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .kbwrap {
+    container-type: inline-size;
+    overflow-x: visible;
+  }
+
+  .kb {
+    --w: calc((100cqw - 2 * var(--pad)) / var(--nw, 15));
+    --wh: 67px;
+    --bb: calc(var(--w) * 16 / 22);
+    --bt: calc(var(--w) * 4 / 22);
+    --pad: 1px;
+    --pin: 2.4px calc(var(--w) * 2.5 / 22) 4.6px;
+    --lab: 6px;
+    --lab-b: 6px;
+    --dot: 2px;
+    --dot-gap: 2px;
+    --rl:
+      -.75px -.75px 1.5px rgba(255, 255, 255, .9),
+      1px 2px 4.5px rgba(0, 0, 0, .1),
+      .3px .6px .9px rgba(0, 0, 0, .1),
+      inset .75px .75px .75px rgba(255, 255, 255, .9),
+      inset -1px -1.25px 3px -1px rgba(79, 79, 79, .16);
+    --rp:
+      .5px .5px 1px rgba(255, 255, 255, .75),
+      inset 1px 1px 1.5px rgba(0, 0, 0, .1),
+      inset 1.25px 1.5px 3.5px -1px rgba(79, 79, 79, .3);
+    --rb: 0 0 3px rgba(0, 0, 0, .35), inset .5px .5px 2.5px rgba(255, 255, 255, .18);
+    --rbp: 0 0 1px rgba(0, 0, 0, .15), inset .5px .5px 2.5px rgba(255, 255, 255, .25);
+    margin-inline: auto;
+  }
+
+  /* Fallback without container query units (iOS Safari before 16). */
+  @supports not (width: 1cqw) {
+    .kb {
+      --w: calc((100vw - 50px) / var(--nw, 15));
+    }
+  }
+
+  .padgrid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 6px;
+    padding-block: 0;
+  }
+
+  .pd.oct {
+    aspect-ratio: 81 / 37.5;
+  }
+
+  .pd.oct.down {
+    grid-area: 3 / 1 / 4 / 3;
+  }
+
+  .pd.oct.up {
+    grid-area: 3 / 3 / 4 / 5;
+  }
+
+  .pblock {
+    gap: 8px;
+    padding-bottom: 5.6px;
+  }
+
+  .kbinfo {
+    gap: 16px;
+  }
+
+  /* Export keys only show ".mid" / ".wav". */
+  .key .long {
+    display: none;
+  }
+
+  .exports {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .exports .field {
+    flex: none;
+    width: 86px;
+    padding-inline: 0;
+  }
+
+  .exports .key {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Copy on your instrument: narrower columns, in %. */
+  .copytables th:nth-child(1), .copytables th:nth-child(3) {
+    width: 11.7%;
+  }
+
+  .copytables th:nth-child(2), .copytables th:nth-child(6) {
+    width: 12.9%;
+  }
+
+  .copytables th:nth-child(4) {
+    width: 19.3%;
+  }
+
+  .copytables th:nth-child(5) {
+    width: 10.5%;
+  }
+}
+
+/* Smaller screens. The logo fills the space left by the header keys. */
 @media (max-width: 760px) {
-  body { padding-top: 28px; }
-  .wrap, main { gap: 24px; }
-  h2, .about h3 { font-size: 32px; }
-  /* Smaller theme button, with a 44px touch area kept by the ::after overlay. */
-  #skin { position: relative; padding: 3px 7px; font-size: 11px; border-radius: 6px; }
-  #skin::after { content: ""; position: absolute; inset: -12px -8px; }
-  .acts { gap: 16px; }
-  #skin { height: 22px; }
-  .gh { position: relative; width: 22px; height: 22px; border-radius: 6px; }
-  .gh svg { width: 16px; height: 16px; }
-  .gh::after { content: ""; position: absolute; inset: -12px -8px; }
-  .sub { margin-top: 8px; }
-  .kbinfo { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 10px; }
+  body {
+    padding-top: 28px;
+  }
+
+  main {
+    gap: 24px;
+  }
+
+  header {
+    margin-bottom: 24px;
+  }
+}
+
+
+/* ======================================================================
+   18. Keys
+   ====================================================================== */
+
+/* Keys: 30px high, mono uppercase label, an optional dot or glyph.
+   Pressed in: orange dot. Square keys: 40px, glyph only. */
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  height: 30px;
+  padding: 0 12px;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  font: 400 var(--fs-small)/1 var(--font-mono);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key svg {
+  display: block;
+  flex: none;
+}
+
+.key .dot {
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--ink);
+  flex: none;
+}
+
+.key[aria-pressed="true"] svg, .key.is-pressed svg {
+  color: var(--live);
+}
+
+.key[aria-pressed="true"] .dot, .key.is-pressed .dot {
+  background: var(--live);
+}
+
+.key[aria-disabled="true"] {
+  opacity: .45;
+  cursor: default;
+}
+
+/* Play keys: a triangle, or an orange square while playing. */
+.play .g-stop, .play.is-pressed .g-play {
+  display: none;
+}
+
+.play.is-pressed .g-stop {
+  display: block;
+}
+
+.key-sq {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+} /* radius: see the relief classes below */
+
+
+/* ======================================================================
+   19. Slide switches
+   ====================================================================== */
+
+/* Slide switch (Octave, Steps, Half loop): a cap that slides in a slot.
+   Radio inputs underneath, invisible, for the keyboard and screen readers. */
+.slide {
+  --n: 3;
+  --i: 0;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--n), 30px);
+  padding: 0 2px;
+}
+
+.slide .opt {
+  position: relative;
+  display: grid;
+  grid-template-rows: 15px 10.5px 5px;
+  justify-items: center;
+  align-items: center;
+  cursor: pointer;
+  font: 400 11.5px/15px var(--font-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slide .opt input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.slide .opt i {
+  width: 5.4px;
+  height: 5.4px;
+  border: .96px solid var(--ink-2);
+  border-radius: 50%;
+}
+
+.slide .opt::after {
+  content: "";
+  width: .96px;
+  height: 5px;
+  align-self: stretch;
+  background: var(--ink-2);
+}
+
+.slide .opt:has(input:checked) {
+  color: var(--ink);
+}
+
+.slide .opt:has(input:checked) i {
+  width: 6.4px;
+  height: 6.4px;
+  border: 0;
+  background: var(--live);
+}
+
+.slide .opt:has(input:checked)::after {
+  background: var(--ink);
+}
+
+.slide .slot {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 18px;
+  margin: 3.5px 4px 0;
+  border-radius: 3px;
+  background: var(--track);
+  cursor: pointer;
+  box-shadow:
+    inset -1.5px -1.5px 4.5px rgba(255, 255, 255, .8),
+    inset 1.5px 1.5px 4.5px rgba(0, 0, 0, .25);
+}
+
+.slide .thumb {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 18px;
+  height: 14px;
+  border-radius: 2px;
+  transform: translateX(calc(var(--i) * 30px));
+  background:
+    repeating-linear-gradient(90deg, #000000 0 1px, rgba(255, 255, 255, .14) 1px 2px, transparent 2px 3px) 4px 2px / 12px 10px no-repeat,
+    var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), .75px 1.5px 2.25px rgba(0, 0, 0, .4);
+}
+
+.slide .sname {
+  grid-column: 1 / -1;
+  margin: 10px 4px 0;
+  font: 400 var(--fs-small)/normal var(--font-ui);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.slide:has(.opt:nth-of-type(2) input:checked) {
+  --i: 1;
+}
+
+.slide:has(.opt:nth-of-type(3) input:checked) {
+  --i: 2;
+}
+
+.slide:has(input:focus-visible) .slot {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.by-pointer .slide:has(input:focus-visible) .slot {
+  outline: none;
+}
+
+/* Vertical slide switch: names on the right. */
+.slide.vert {
+  grid-template-columns: 18px auto;
+  grid-template-rows: repeat(var(--n), 19px) auto;
+  padding: 1.5px 0 0;
+}
+
+.slide.vert .opt {
+  grid-column: 2;
+  grid-template-rows: none;
+  grid-template-columns: 10px 8.4px auto;
+  grid-template-areas: "line dot name";
+  margin-left: 4px;
+}
+
+.slide.vert .opt span {
+  grid-area: name;
+  margin-left: 3.6px;
+}
+
+.slide.vert .opt i {
+  grid-area: dot;
+}
+
+.slide.vert .opt::after {
+  grid-area: line;
+  width: 10px;
+  height: .96px;
+  align-self: center;
+}
+
+.slide.vert .slot {
+  grid-column: 1;
+  grid-row: 1 / span var(--n);
+  width: 18px;
+  height: auto;
+  margin: -1.5px 0;
+}
+
+.slide.vert .thumb {
+  width: 14px;
+  height: 18px;
+  transform: translateY(calc(var(--i) * 19px));
+  background:
+    repeating-linear-gradient(180deg, #000000 0 1px, rgba(255, 255, 255, .14) 1px 2px, transparent 2px 3px) 2px 4px / 10px 12px no-repeat,
+    var(--ink);
+}
+
+.slide.vert .sname {
+  grid-row: -2;
+  margin: 11.5px 0 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .slide .thumb {
+    transition: transform .15s ease;
+  }
+}
+
+
+/* ======================================================================
+   20. Named groups and locks
+   ====================================================================== */
+
+/* Named group: a tag (NOTES, LOOP, FILTER...) above its controls. */
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .group {
+    gap: 4px;
+  }
+
+  .group:has(.knob) {
+    gap: 0;
+  }
+
+  .group > .tag {
+    font-size: 6px;
+    line-height: 8px;
+  }
+}
+
+/* Lock key: a padlock. Locked: pressed in, orange padlock. */
+.key.key-lock {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: var(--r-square);
+  color: var(--ink-2);
+}
+
+.key-lock .padlock {
+  overflow: visible;
+}
+
+.key-lock .shut, .key-lock[aria-pressed="true"] .open {
+  display: none;
+}
+
+.key-lock[aria-pressed="true"] .shut {
+  display: inline;
+}
+
+/* Octave lock: 8px after the "Octave" label. */
+.octbox {
+  position: relative;
+  display: flex;
+}
+
+.octbox .key.key-lock {
+  position: absolute;
+  left: 50px;
+  bottom: 7px;
+  transform: translateY(50%);
+}
+
+@media (max-width: 560px) {
+  .key.key-lock {
+    width: 22px;
+    height: 22px;
+  }
+
+  .key-lock .padlock {
+    width: 7.2px;
+    height: 9.6px;
+  }
+
+  .octbox .key.key-lock {
+    left: 48px;
+  }
+}
+
+/* Touch area: 44px around the key. */
+@media (pointer: coarse) {
+  .key.key-lock::after {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((100% - 44px) / 2));
+  }
+
+  /* Octave padlock: the touch area grows down only, so it never covers the switch. */
+  .octbox .key.key-lock::after {
+    top: 0;
+    bottom: min(0px, calc(100% - 44px));
+  }
+}
+
+/* Lock tile: a lock key in a tile the size of a knob, at the end of the Sound grid. */
+.locktile {
+  --u: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(calc(132 * var(--u)), 100%);
+  padding: calc(35.35 * var(--u)) 6px 0;
+}
+
+.locktile .key.key-lock {
+  width: calc(52 * var(--u));
+  height: calc(52 * var(--u));
+  border-radius: calc(12 * var(--u));
+}
+
+.locktile .padlock {
+  width: calc(12.6 * var(--u));
+  height: calc(16.8 * var(--u));
+}
+
+.locktile label {
+  align-self: flex-start;
+  margin-top: calc(26.65 * var(--u));
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.controls .locktile > .tag {
+  left: 50%;
+  top: calc(35.35 * var(--u) - 30px);
+  translate: -50% 0;
+}
+
+@media (max-width: 560px) {
+  /* Phones: smaller tag above the key. */
+  .controls .locktile > .tag {
+    top: calc(35.35 * var(--u) - 26px);
+  }
+}
+
+
+/* ======================================================================
+   21. Floating bar
+   ====================================================================== */
+
+/* Floating bar: Play, Generate, back to the top. Desktop: a column on the left.
+   Tablet and mobile: a row at the bottom. */
+.fbar {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 4px;
+  background: var(--surface);
+  border-radius: 0 14px 14px 0;
+  box-shadow:
+    0 1px 1.5px rgba(0, 0, 0, .1),
+    0 6px 9px rgba(0, 0, 0, .14),
+    inset -2.25px -2.25px 5.25px rgba(79, 79, 79, .18);
+}
+
+.fbar.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-12px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fbar {
+    transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+}
+
+/* Tablet and mobile: at the bottom, with room under the footer. */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 112px;
+  }
+
+  .fbar {
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+    top: auto;
+    bottom: 24px;
+    left: 50%;
+    translate: -50% 0;
+    border-radius: 14px;
+    box-shadow:
+      0 1px 1.5px rgba(0, 0, 0, .1),
+      0 6px 9px rgba(0, 0, 0, .14),
+      inset -2.25px -2.25px 5.25px rgba(79, 79, 79, .18);
+  }
+
+  .fbar.is-hidden {
+    transform: translateY(12px);
+  }
+}
+
+
+/* ======================================================================
+   22. Anchor menu on small screens
+   ====================================================================== */
+
+/* Anchor menu: shorter labels on tablets, a grid of keys on phones. */
+@media (max-width: 900px) {
+  .tour .long {
+    display: none;
+  }
+}
+
+@media (max-width: 660px) {
+  .tour {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tour .key {
+    justify-content: flex-start;
+    min-width: 0;
+  }
+
+  .tour .wide {
+    display: none;
+  }
+}
+
+@media (max-width: 359px) {
+  .tour {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phones: closer to the bottom edge, so it covers less of the page. */
+@media (max-width: 560px) {
+  .fbar {
+    bottom: 12px;
+  }
+}
+
+
+/* ======================================================================
+   23. Relief and touch screens
+   ====================================================================== */
+
+/* Relief classes, shared by every control. Kept at the end so they win.
+   .hw-key: keys and selects. .hw-pad: pads and piano keys. .hw-slot: empty slot. */
+.hw-key, .key {
+  background: var(--surface);
+  border: 0;
+  border-radius: var(--r-key);
+  box-shadow: var(--relief-key);
+}
+
+.key-sq {
+  border-radius: var(--r-square);
+}
+
+.hw-key.is-pressed,
+.hw-key[aria-pressed="true"],
+.key.is-pressed,
+.key[aria-pressed="true"],
+.key:not([aria-disabled="true"]):active {
+  background: var(--surface-pressed);
+  box-shadow: var(--relief-key-pressed);
+}
+
+.hw-pad {
+  background: var(--key);
+  border: 0;
+  border-radius: var(--r-pad);
+  box-shadow: var(--relief-pad);
+}
+
+.hw-pad.is-pressed, .hw-pad[aria-pressed="true"] {
+  background: var(--key-pressed);
+  box-shadow: var(--relief-pad-pressed);
+}
+
+.hw-slot {
+  background: var(--surface);
+  border: 0;
+  border-radius: var(--r-pad);
+  box-shadow: var(--relief-recessed);
+}
+
+.is-lit {
+  color: var(--live);
+}
+
+/* Touch screens: 40px high keys and menus, easier to tap. */
+@media (pointer: coarse) {
+  .key:not(.key-lg):not(.key-sq):not(.key-tk):not(.key-lock) {
+    height: 40px;
+  }
+
+  .field select {
+    height: 40px;
+  }
+
+  .exports .info {
+    height: 40px;
+  }
+}
+
+/* Narrow phones: no THEME label. */
+@media (max-width: 359px) {
+  .theme .tl {
+    display: none;
+  }
+}
+
+
+/* ======================================================================
+   24. Wide screens (from 1900px)
+   ====================================================================== */
+
+/* Wide screens (from 1900px): panels two by two. */
+@media (min-width: 1900px) {
+  body {
+    padding-inline: 80px;
+  }
+
+  .wrap {
+    max-width: 1760px;
+  }
+
+  .sub {
+    max-width: 880px;
+  }
+
+  main {
+    flex-flow: row wrap;
+  }
+
+  main > .panel {
+    flex: none;
+    min-width: 0;
+  }
+
+  .gen {
+    width: calc((100% - 26px) / 2);
+  }
+
+  .seq {
+    width: calc((100% - 26px) * 1120 / 1734);
+  }
+
+  .gear {
+    width: calc((100% - 26px) * 891 / 1734);
+    order: 2;
+  }
+
+  main > :is(.snd, .exp, .copy) {
+    flex: 1 1 0;
+  }
+
+  .exp {
+    order: 1;
+    align-self: flex-start;
+  }
+
+  .copy {
+    order: 2;
+    align-self: flex-start;
+  }
+
+  /* Step keys on 2 rows of 8. */
+  .stepsel {
+    grid-template-columns: repeat(8, 56px);
+  }
+
+  /* Wider white keys, keyboard and pads on the left. */
+  .kb {
+    --w: calc(52px * var(--s));
+    margin-inline: 0;
+  }
+
+  .padgrid {
+    justify-content: start;
+    padding-inline: 24px;
+  }
+
+  /* About and FAQ: two panels. */
+  .about {
+    order: 3;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 891fr 843fr;
+    grid-template-rows: auto auto 1fr;
+    column-gap: 26px;
+    align-items: start;
+    background: none;
+    padding: 0;
+  }
+
+  .about > h2 {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding: 24px 24px 32px;
+    background: var(--surface);
+    border-radius: var(--r-panel) var(--r-panel) 0 0;
+  }
+
+  .acols, .aside {
+    display: contents;
+  }
+
+  .acol:not(.aside) {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 0 24px;
+    background: var(--surface);
+  }
+
+  .aside > .asec:first-child {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: stretch;
+    padding: 89px 24px 24px;
+    border-radius: 0 0 var(--r-panel) var(--r-panel);
+    background:
+      linear-gradient(var(--line), var(--line)) 24px 48px / calc(100% - 48px) 1px no-repeat,
+      var(--surface);
+  }
+
+  .about .asec.faq {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    background: var(--surface);
+    border-radius: var(--r-panel);
+    padding: 24px;
+    border-top: 0;
+  }
+
+  /* Half a wide screen: OSC on top, 6 tiles per row. */
+  @container snd (min-width: 792px) and (max-width: 1144px) {
+    .controls {
+      grid-template-columns: repeat(6, 132px);
+    }
+
+    .gdelay > *, .glock > * {
+      order: 0;
+    }
+  }
+}
+
+
+/* ======================================================================
+   25. Side by side (1024px to 1899px)
+   ====================================================================== */
+
+/* Side by side (1024px to 1900px): Generate and Sound on one row.
+   Sound: 4, 3, then 2 tiles per row as it gets narrower. */
+@media (min-width: 1024px) and (max-width: 1439.98px) {
+  body {
+    padding-right: 16px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1899.98px) {
+  main {
+    flex-flow: row wrap;
+  }
+
+  main > .panel {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  main > .gen {
+    flex: none;
+    width: clamp(648px, 100% - 312px, 694px);
+  }
+
+  main > .snd {
+    flex: 1 1 0;
+  }
+
+  /* Generate: tighter gaps. */
+  @container gen (max-width: 1099px) {
+    .gen .lcd {
+      --k: 1;
+    }
+
+    .band {
+      column-gap: 56px;
+    }
+
+    .settings {
+      column-gap: clamp(20px, 100cqw - 580px, 48px);
+    }
+
+    .dials {
+      --kg: 12px;
+      column-gap: 32px;
+    }
+
+    .tools {
+      column-gap: clamp(16px, 100cqw - 584px, 40px);
+    }
+  }
+
+  /* Sound, 3 or 4 tiles per row: LOCK tag back in line. */
+  .controls .locktile > .tag {
+    left: 0;
+    top: -30px;
+    translate: none;
+  }
+
+  .locktile label {
+    align-self: center;
+  }
+
+  /* 3 tiles: scope and Wave side by side. */
+  @container snd (max-width: 543px) {
+    .controls {
+      grid-template-columns: repeat(3, min(132px, (100cqw - 30px) / 3));
+    }
+
+    .snd .knob, .snd .locktile {
+      --u: min(1px, (100cqw - 30px) / 396);
+    }
+
+    .wavebox {
+      --ss: 1px;
+    }
+  }
+
+  /* Too narrow: scope above Wave. */
+  @container snd (max-width: 423px) {
+    .oscrow {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .lcd.scope {
+      width: 191px;
+      max-width: 100%;
+    }
+  }
+
+  /* 2 tiles per row. */
+  @container snd (max-width: 341px) {
+    .controls {
+      grid-template-columns: repeat(2, min(132px, (100cqw - 30px) / 2));
+      row-gap: 20px;
+    }
+
+    .snd .knob, .snd .locktile {
+      --u: min(1px, (100cqw - 30px) / 264);
+    }
+
+    .greverb > * {
+      order: 1;
+    }
+
+    .gdelay > * {
+      order: 2;
+    }
+
+    .glock > * {
+      order: 3;
+    }
+
+    .controls .locktile > .tag {
+      left: 50%;
+      top: calc(35.35 * var(--u) - 30px);
+      translate: -50% 0;
+    }
+  }
+
+  /* Small tiles: small tags, smaller scope and Wave. */
+  @container snd (max-width: 293px) {
+    .snd .knob, .snd .locktile {
+      padding-inline: 0;
+    }
+
+    .controls .knob, .controls .locktile {
+      margin-top: 14px;
+    }
+
+    .controls .knob > .tag, .controls .locktile > .tag {
+      top: -14px;
+      font-size: 6px;
+      line-height: 8px;
+    }
+
+    .controls .locktile > .tag {
+      left: 50%;
+      top: calc(35.35 * var(--u) - 26px);
+      translate: -50% 0;
+    }
+
+    .gosc {
+      gap: 4px;
+    }
+
+    .gosc > .tag {
+      font-size: 6px;
+      line-height: 8px;
+    }
+
+    .lcd.scope {
+      width: 155px;
+    }
+
+    .wavebox {
+      --ss: .795px;
+    }
+  }
+}
+
+/* About from 1200px: two panels side by side. */
+@media (min-width: 1200px) and (max-width: 1899.98px) {
+  .about {
+    display: grid;
+    grid-template-columns: clamp(648px, 100% - 312px, 694px) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 26px;
+    align-items: start;
+    background: none;
+    padding: 0;
+  }
+
+  .about > h2 {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding: 24px 24px 32px;
+    background: var(--surface);
+    border-radius: var(--r-panel) var(--r-panel) 0 0;
+  }
+
+  .acols {
+    display: contents;
+  }
+
+  .acol:not(.aside) {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: stretch;
+    padding: 0 24px 24px;
+    background: var(--surface);
+    border-radius: 0 0 var(--r-panel) var(--r-panel);
+  }
+
+  .aside {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: stretch;
+    padding: 24px;
+    background: var(--surface);
+    border-radius: var(--r-panel);
+  }
 }

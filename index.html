@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-skin="black">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Security and privacy: the page may only load files from this site and may not connect anywhere. -->
+<!-- Security: load files from this site only, connect nowhere. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src blob:; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bass Assembly | Free Bassline Generator and Step Sequencer</title>
 <meta name="description" content="Bass Assembly is a free bassline generator and step sequencer. Create acid, EBM, industrial and dark wave basslines, listen in your browser and export MIDI.">
-<meta name="theme-color" content="#121212">
+<meta name="theme-color" content="#dedad9">
 <link rel="canonical" href="https://bassassembly.app/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -16,18 +16,17 @@
 <meta property="og:title" content="Bass Assembly | Free Bassline Generator and Step Sequencer">
 <meta property="og:description" content="Bass Assembly is a free bassline generator and step sequencer. Create acid, EBM, industrial and dark wave basslines, listen in your browser and export MIDI.">
 <meta property="og:url" content="https://bassassembly.app/">
-<meta property="og:image" content="https://bassassembly.app/og.png">
+<meta property="og:image" content="https://bassassembly.app/og.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Bass Assembly, a bassline generator and step sequencer">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bass Assembly | Free Bassline Generator and Step Sequencer">
 <meta name="twitter:description" content="Bass Assembly is a free bassline generator and step sequencer. Create acid, EBM, industrial and dark wave basslines, listen in your browser and export MIDI.">
-<meta name="twitter:image" content="https://bassassembly.app/og.png">
+<meta name="twitter:image" content="https://bassassembly.app/og.png?v=2">
 <link rel="preload" href="fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
-<script src="theme.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,6 +43,12 @@
     "priceCurrency": "EUR"
   },
   "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Chris Bonnet",
+    "alternateName": "LPDLS",
+    "url": "https://notimenolife.lpdls.com/"
+  },
   "license": "https://opensource.org/license/mit"
 }
 </script>
@@ -65,7 +70,15 @@
       "name": "How do I make an acid bassline?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Choose the Acid style, keep the minor pentatonic scale and raise the density a little. Use ties for slides, add accents on a few steps, and push the resonance in the Sound panel. Generate again until a pattern grooves, then fine tune notes, velocity and gate in the grid."
+        "text": "Choose the Acid style and keep the minor pentatonic scale. Lock the style so Generate bassline keeps it. Use ties for slides, add accents on a few steps, and push the resonance in the Sound panel. Generate again until a pattern grooves, then fine tune notes, velocity and gate in the grid."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do the locks work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each lock tells Generate bassline what to keep. Rhythm keeps which steps play, the accents, ties, velocity, gate, tempo, swing, step count and Half loop. Notes keeps the note, scale, octave and pitches. Sound keeps the Sound panel settings, and Style keeps the style. The padlock next to Octave keeps only the octave. Lock the rhythm you like and generate again to hear new notes on it, or lock the notes and try new rhythms."
       }
     },
     {
@@ -81,7 +94,7 @@
       "name": "How do I play the pattern on my own synth or pad controller?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text."
+        "text": "The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text or download it as a .txt file."
       }
     },
     {
@@ -105,7 +118,39 @@
       "name": "Does Bass Assembly track me?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. There are no cookies, no analytics, no ads and no trackers, and the page loads nothing from other sites: even the fonts are hosted here. The basslines, the sound and the MIDI files are made in your browser, nothing is sent to a server. Your theme and saved ideas are kept in your browser storage and never leave your device. Like any website, the web host may keep standard technical logs, such as IP addresses, for security. As the code is open source, you can also download it from GitHub and run Bass Assembly on your own computer: https://github.com/chrislpdls/bass-assembly"
+        "text": "No. There are no cookies, no analytics, no ads and no trackers, and the page loads nothing from other sites: even the fonts are hosted here. The basslines, the sound and the MIDI files are made in your browser, nothing is sent to a server. Your saved ideas are kept in your browser storage and never leave your device. Like any website, the web host may keep standard technical logs, such as IP addresses, for security. As the code is open source, you can also download it from GitHub and run Bass Assembly on your own computer: https://github.com/chrislpdls/bass-assembly"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Bass Assembly work on a phone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Everything works on a phone, but it is best on a tablet or a computer: you see all 16 steps at once, the keyboard and the pads side by side, and the knobs are easier to turn."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I support Bass Assembly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bass Assembly stays free, with no ads and no account. If it helps your music, you can buy me a coffee: you choose the amount, from €1, and pay by card, Apple Pay or Google Pay (https://payment-links.mollie.com/payment/RKG594G5VN6YuhhtBjTP8). The payment happens on the secure page of Mollie, a European payment provider, with no donation platform in between: your coffee comes straight to me, minus the usual payment fees. Bass Assembly never sees your card details, and this site still loads nothing from other sites."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I design a theme for Bass Assembly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Bass Assembly has one theme for now, ABS, and more are coming. If you know Figma and want to make one, write to hello@bassassembly.app: I will send you the Figma file with the components and colors. Design the theme you like. I choose the themes that go on the site, and each one is credited with the name of its designer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I contact you or report a bug?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Write to hello@bassassembly.app or open an issue on GitHub: https://github.com/chrislpdls/bass-assembly/issues. For a bug, please give your browser, your device and the steps that lead to it, so it can be reproduced."
       }
     }
   ]
@@ -118,144 +163,325 @@
 <div class="wrap">
   <header>
       <div class="top">
+        <!-- Top row: Theme switch on the left, keys on the right. Docs is greyed for now. -->
+        <div class="hrow">
+        <!-- Theme switch: only ABS exists for now, so it is a label, not a control. -->
+        <div class="theme"><span class="sr">Theme: ABS. More themes are coming soon.</span><span class="tl" aria-hidden="true">Theme</span><svg aria-hidden="true" focusable="false" width="23" height="30" viewBox="0 0 23 30" fill="none"><path d="M0 14.975h8.375M8.375 6.6v16.75M8 6.975h8M8 22.975h8" stroke="currentColor" stroke-width=".75"/><circle class="on" cx="20" cy="7" r="2.5"/><circle cx="20" cy="23" r="2.125" stroke="currentColor" stroke-width=".75"/></svg><span class="tn" aria-hidden="true"><span class="on">ABS</span><span>Coming soon</span></span><div class="info themeinfo"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-theme" aria-describedby="info-theme-text" aria-label="Info: design a theme">i</button><div class="bubble" id="info-theme" hidden><p id="info-theme-text">If you know Figma and want to design a theme, write to <a href="mailto:hello@bassassembly.app">hello@bassassembly.app</a>. I will send you the Figma file. Make the theme you like: the ones I choose go on the site, with your name in the credits.</p></div></div></div>
+        <div class="acts">
+          <a class="key" href="#about">About</a>
+          <a class="key" href="https://github.com/chrislpdls/bass-assembly" rel="noopener" title="Source code on GitHub"><span class="sr">Source code on GitHub</span><svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
+          <span class="key" role="link" aria-disabled="true" title="Docs are coming soon"><span class="dot" aria-hidden="true"></span>Docs <span aria-hidden="true">↗</span><span class="sr"> (coming soon)</span></span>
+        </div>
+        </div>
+        <div class="brand">
         <h1 class="logo"><span class="sr">Bass Assembly</span>
         <svg aria-hidden="true" focusable="false" width="631" height="138" viewBox="0 0 631 138" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.22 38.02V36.215H14.44V38.02H7.22ZM7.22 41.63V39.825H14.44V41.63H7.22ZM7.22 45.24V43.435H14.44V45.24H7.22ZM7.22 48.85V47.045H14.44V48.85H7.22ZM7.22 52.46V50.655H14.44V52.46H7.22ZM21.66 56.07V54.265H39.71V56.07H21.66ZM7.22 56.07V54.265H14.44V56.07H7.22ZM18.05 59.68V57.875H43.32V59.68H18.05ZM7.22 59.68V57.875H14.44V59.68H7.22ZM36.1 63.29V61.485H46.93V63.29H36.1ZM7.22 63.29V61.485H18.05V63.29H7.22ZM7.22 66.9V65.095H18.05V66.9H7.22ZM39.71 66.9V65.095H46.93V66.9H39.71ZM7.22 70.51V68.705H14.44V70.51H7.22ZM43.32 70.51V68.705H50.54V70.51H43.32ZM43.32 74.12V72.315H50.54V74.12H43.32ZM7.22 74.12V72.315H14.44V74.12H7.22ZM7.22 77.73V75.925H14.44V77.73H7.22ZM43.32 77.73V75.925H50.54V77.73H43.32ZM7.22 81.34V79.535H14.44V81.34H7.22ZM43.32 81.34V79.535H50.54V81.34H43.32ZM43.32 84.95V83.145H50.54V84.95H43.32ZM7.22 84.95V83.145H14.44V84.95H7.22ZM43.32 88.56V86.755H50.54V88.56H43.32ZM7.22 88.56V86.755H14.44V88.56H7.22ZM7.22 92.17V90.365H18.05V92.17H7.22ZM39.71 92.17V90.365H46.93V92.17H39.71ZM36.1 95.78V93.975H46.93V95.78H36.1ZM7.22 95.78V93.975H18.05V95.78H7.22ZM18.05 99.39V97.585H43.32V99.39H18.05ZM7.22 99.39V97.585H14.44V99.39H7.22ZM21.66 103V101.195H39.71V103H21.66ZM7.22 103V101.195H14.44V103H7.22ZM66.5297 56.07V54.265H84.5797V56.07H66.5297ZM59.3097 59.68V57.875H91.7997V59.68H59.3097ZM55.6997 63.29V61.485H66.5297V63.29H55.6997ZM84.5797 63.29V61.485H91.7997V63.29H84.5797ZM55.6997 66.9V65.095H62.9197V66.9H55.6997ZM88.1897 66.9V65.095H95.4097V66.9H88.1897ZM88.1897 70.51V68.705H95.4097V70.51H88.1897ZM84.5797 74.12V72.315H95.4097V74.12H84.5797ZM66.5297 77.73V75.925H95.4097V77.73H66.5297ZM88.1897 81.34V79.535H95.4097V81.34H88.1897ZM59.3097 81.34V79.535H84.5797V81.34H59.3097ZM55.6997 84.95V83.145H66.5297V84.95H55.6997ZM88.1897 84.95V83.145H95.4097V84.95H88.1897ZM55.6997 88.56V86.755H62.9197V88.56H55.6997ZM88.1897 88.56V86.755H95.4097V88.56H88.1897ZM88.1897 92.17V90.365H95.4097V92.17H88.1897ZM55.6997 92.17V90.365H62.9197V92.17H55.6997ZM84.5797 95.78V93.975H95.4097V95.78H84.5797ZM55.6997 95.78V93.975H62.9197V95.78H55.6997ZM88.1897 99.39V97.585H99.0197V99.39H88.1897ZM59.3097 99.39V97.585H84.5797V99.39H59.3097ZM91.7997 103V101.195H99.0197V103H91.7997ZM62.9197 103V101.195H80.9697V103H62.9197ZM107.789 56.07V54.265H133.059V56.07H107.789ZM104.179 59.68V57.875H136.669V59.68H104.179ZM133.059 63.29V61.485H140.279V63.29H133.059ZM104.179 63.29V61.485H111.399V63.29H104.179ZM133.059 66.9V65.095H140.279V66.9H133.059ZM100.569 66.9V65.095H107.789V66.9H100.569ZM100.569 70.51V68.705H107.789V70.51H100.569ZM104.179 74.12V72.315H111.399V74.12H104.179ZM104.179 77.73V75.925H125.839V77.73H104.179ZM111.399 81.34V79.535H136.669V81.34H111.399ZM125.839 84.95V83.145H140.279V84.95H125.839ZM133.059 88.56V86.755H140.279V88.56H133.059ZM100.569 92.17V90.365H107.789V92.17H100.569ZM133.059 92.17V90.365H140.279V92.17H133.059ZM100.569 95.78V93.975H111.399V95.78H100.569ZM133.059 95.78V93.975H140.279V95.78H133.059ZM104.179 99.39V97.585H136.669V99.39H104.179ZM107.789 103V101.195H133.059V103H107.789ZM149.033 56.07V54.265H174.303V56.07H149.033ZM145.423 59.68V57.875H177.913V59.68H145.423ZM174.303 63.29V61.485H181.523V63.29H174.303ZM145.423 63.29V61.485H152.643V63.29H145.423ZM174.303 66.9V65.095H181.523V66.9H174.303ZM141.813 66.9V65.095H149.033V66.9H141.813ZM141.813 70.51V68.705H149.033V70.51H141.813ZM145.423 74.12V72.315H152.643V74.12H145.423ZM145.423 77.73V75.925H167.083V77.73H145.423ZM152.643 81.34V79.535H177.913V81.34H152.643ZM167.083 84.95V83.145H181.523V84.95H167.083ZM174.303 88.56V86.755H181.523V88.56H174.303ZM141.813 92.17V90.365H149.033V92.17H141.813ZM174.303 92.17V90.365H181.523V92.17H174.303ZM141.813 95.78V93.975H152.643V95.78H141.813ZM174.303 95.78V93.975H181.523V95.78H174.303ZM145.423 99.39V97.585H177.913V99.39H145.423ZM149.033 103V101.195H174.303V103H149.033ZM183.056 106.61V104.805H226.376V106.61H183.056ZM183.056 110.22V108.415H226.376V110.22H183.056ZM242.358 56.07V54.265H260.408V56.07H242.358ZM235.138 59.68V57.875H267.628V59.68H235.138ZM231.528 63.29V61.485H242.358V63.29H231.528ZM260.408 63.29V61.485H267.628V63.29H260.408ZM231.528 66.9V65.095H238.748V66.9H231.528ZM264.018 66.9V65.095H271.238V66.9H264.018ZM264.018 70.51V68.705H271.238V70.51H264.018ZM260.408 74.12V72.315H271.238V74.12H260.408ZM242.358 77.73V75.925H271.238V77.73H242.358ZM264.018 81.34V79.535H271.238V81.34H264.018ZM235.138 81.34V79.535H260.408V81.34H235.138ZM231.528 84.95V83.145H242.358V84.95H231.528ZM264.018 84.95V83.145H271.238V84.95H264.018ZM231.528 88.56V86.755H238.748V88.56H231.528ZM264.018 88.56V86.755H271.238V88.56H264.018ZM264.018 92.17V90.365H271.238V92.17H264.018ZM231.528 92.17V90.365H238.748V92.17H231.528ZM260.408 95.78V93.975H271.238V95.78H260.408ZM231.528 95.78V93.975H238.748V95.78H231.528ZM264.018 99.39V97.585H274.848V99.39H264.018ZM235.138 99.39V97.585H260.408V99.39H235.138ZM267.628 103V101.195H274.848V103H267.628ZM238.748 103V101.195H256.798V103H238.748ZM283.617 56.07V54.265H308.887V56.07H283.617ZM280.007 59.68V57.875H312.497V59.68H280.007ZM308.887 63.29V61.485H316.107V63.29H308.887ZM280.007 63.29V61.485H287.227V63.29H280.007ZM308.887 66.9V65.095H316.107V66.9H308.887ZM276.397 66.9V65.095H283.617V66.9H276.397ZM276.397 70.51V68.705H283.617V70.51H276.397ZM280.007 74.12V72.315H287.227V74.12H280.007ZM280.007 77.73V75.925H301.667V77.73H280.007ZM287.227 81.34V79.535H312.497V81.34H287.227ZM301.667 84.95V83.145H316.107V84.95H301.667ZM308.887 88.56V86.755H316.107V88.56H308.887ZM276.397 92.17V90.365H283.617V92.17H276.397ZM308.887 92.17V90.365H316.107V92.17H308.887ZM276.397 95.78V93.975H287.227V95.78H276.397ZM308.887 95.78V93.975H316.107V95.78H308.887ZM280.007 99.39V97.585H312.497V99.39H280.007ZM283.617 103V101.195H308.887V103H283.617ZM324.861 56.07V54.265H350.131V56.07H324.861ZM321.251 59.68V57.875H353.741V59.68H321.251ZM350.131 63.29V61.485H357.351V63.29H350.131ZM321.251 63.29V61.485H328.471V63.29H321.251ZM350.131 66.9V65.095H357.351V66.9H350.131ZM317.641 66.9V65.095H324.861V66.9H317.641ZM317.641 70.51V68.705H324.861V70.51H317.641ZM321.251 74.12V72.315H328.471V74.12H321.251ZM321.251 77.73V75.925H342.911V77.73H321.251ZM328.471 81.34V79.535H353.741V81.34H328.471ZM342.911 84.95V83.145H357.351V84.95H342.911ZM350.131 88.56V86.755H357.351V88.56H350.131ZM317.641 92.17V90.365H324.861V92.17H317.641ZM350.131 92.17V90.365H357.351V92.17H350.131ZM317.641 95.78V93.975H328.471V95.78H317.641ZM350.131 95.78V93.975H357.351V95.78H350.131ZM321.251 99.39V97.585H353.741V99.39H321.251ZM324.861 103V101.195H350.131V103H324.861ZM369.714 56.07V54.265H391.374V56.07H369.714ZM366.104 59.68V57.875H394.984V59.68H366.104ZM362.494 63.29V61.485H373.324V63.29H362.494ZM387.764 63.29V61.485H398.594V63.29H387.764ZM391.374 66.9V65.095H398.594V66.9H391.374ZM362.494 66.9V65.095H369.714V66.9H362.494ZM394.984 70.51V68.705H402.204V70.51H394.984ZM358.884 70.51V68.705H366.104V70.51H358.884ZM358.884 74.12V72.315H366.104V74.12H358.884ZM394.984 74.12V72.315H402.204V74.12H394.984ZM358.884 77.73V75.925H402.204V77.73H358.884ZM358.884 81.34V79.535H402.204V81.34H358.884ZM358.884 84.95V83.145H366.104V84.95H358.884ZM358.884 88.56V86.755H366.104V88.56H358.884ZM362.494 92.17V90.365H369.714V92.17H362.494ZM394.984 92.17V90.365H402.204V92.17H394.984ZM362.494 95.78V93.975H373.324V95.78H362.494ZM391.374 95.78V93.975H402.204V95.78H391.374ZM366.104 99.39V97.585H398.594V99.39H366.104ZM369.714 103V101.195H391.374V103H369.714ZM421.796 56.07V54.265H432.626V56.07H421.796ZM443.456 56.07V54.265H457.896V56.07H443.456ZM407.356 56.07V54.265H414.576V56.07H407.356ZM418.186 59.68V57.875H436.236V59.68H418.186ZM439.846 59.68V57.875H461.506V59.68H439.846ZM407.356 59.68V57.875H414.576V59.68H407.356ZM429.016 63.29V61.485H439.846V63.29H429.016ZM407.356 63.29V61.485H418.186V63.29H407.356ZM454.286 63.29V61.485H465.116V63.29H454.286ZM407.356 66.9V65.095H414.576V66.9H407.356ZM457.896 66.9V65.095H465.116V66.9H457.896ZM432.626 66.9V65.095H439.846V66.9H432.626ZM407.356 70.51V68.705H414.576V70.51H407.356ZM457.896 70.51V68.705H465.116V70.51H457.896ZM432.626 70.51V68.705H439.846V70.51H432.626ZM457.896 74.12V72.315H465.116V74.12H457.896ZM432.626 74.12V72.315H439.846V74.12H432.626ZM407.356 74.12V72.315H414.576V74.12H407.356ZM432.626 77.73V75.925H439.846V77.73H432.626ZM457.896 77.73V75.925H465.116V77.73H457.896ZM407.356 77.73V75.925H414.576V77.73H407.356ZM432.626 81.34V79.535H439.846V81.34H432.626ZM407.356 81.34V79.535H414.576V81.34H407.356ZM457.896 81.34V79.535H465.116V81.34H457.896ZM432.626 84.95V83.145H439.846V84.95H432.626ZM457.896 84.95V83.145H465.116V84.95H457.896ZM407.356 84.95V83.145H414.576V84.95H407.356ZM457.896 88.56V86.755H465.116V88.56H457.896ZM432.626 88.56V86.755H439.846V88.56H432.626ZM407.356 88.56V86.755H414.576V88.56H407.356ZM432.626 92.17V90.365H439.846V92.17H432.626ZM407.356 92.17V90.365H414.576V92.17H407.356ZM457.896 92.17V90.365H465.116V92.17H457.896ZM432.626 95.78V93.975H439.846V95.78H432.626ZM407.356 95.78V93.975H414.576V95.78H407.356ZM457.896 95.78V93.975H465.116V95.78H457.896ZM432.626 99.39V97.585H439.846V99.39H432.626ZM457.896 99.39V97.585H465.116V99.39H457.896ZM407.356 99.39V97.585H414.576V99.39H407.356ZM407.356 103V101.195H414.576V103H407.356ZM457.896 103V101.195H465.116V103H457.896ZM432.626 103V101.195H439.846V103H432.626ZM473.833 38.02V36.215H481.053V38.02H473.833ZM473.833 41.63V39.825H481.053V41.63H473.833ZM473.833 45.24V43.435H481.053V45.24H473.833ZM473.833 48.85V47.045H481.053V48.85H473.833ZM473.833 52.46V50.655H481.053V52.46H473.833ZM488.273 56.07V54.265H506.323V56.07H488.273ZM473.833 56.07V54.265H481.053V56.07H473.833ZM484.663 59.68V57.875H509.933V59.68H484.663ZM473.833 59.68V57.875H481.053V59.68H473.833ZM502.713 63.29V61.485H513.543V63.29H502.713ZM473.833 63.29V61.485H484.663V63.29H473.833ZM473.833 66.9V65.095H484.663V66.9H473.833ZM506.323 66.9V65.095H513.543V66.9H506.323ZM473.833 70.51V68.705H481.053V70.51H473.833ZM509.933 70.51V68.705H517.153V70.51H509.933ZM509.933 74.12V72.315H517.153V74.12H509.933ZM473.833 74.12V72.315H481.053V74.12H473.833ZM473.833 77.73V75.925H481.053V77.73H473.833ZM509.933 77.73V75.925H517.153V77.73H509.933ZM473.833 81.34V79.535H481.053V81.34H473.833ZM509.933 81.34V79.535H517.153V81.34H509.933ZM509.933 84.95V83.145H517.153V84.95H509.933ZM473.833 84.95V83.145H481.053V84.95H473.833ZM509.933 88.56V86.755H517.153V88.56H509.933ZM473.833 88.56V86.755H481.053V88.56H473.833ZM473.833 92.17V90.365H484.663V92.17H473.833ZM506.323 92.17V90.365H513.543V92.17H506.323ZM502.713 95.78V93.975H513.543V95.78H502.713ZM473.833 95.78V93.975H484.663V95.78H473.833ZM484.663 99.39V97.585H509.933V99.39H484.663ZM473.833 99.39V97.585H481.053V99.39H473.833ZM488.273 103V101.195H506.323V103H488.273ZM473.833 103V101.195H481.053V103H473.833ZM518.703 38.02V36.215H529.533V38.02H518.703ZM518.703 41.63V39.825H533.143V41.63H518.703ZM529.533 45.24V43.435H536.753V45.24H529.533ZM529.533 48.85V47.045H536.753V48.85H529.533ZM529.533 52.46V50.655H536.753V52.46H529.533ZM529.533 56.07V54.265H536.753V56.07H529.533ZM529.533 59.68V57.875H536.753V59.68H529.533ZM529.533 63.29V61.485H536.753V63.29H529.533ZM529.533 66.9V65.095H536.753V66.9H529.533ZM529.533 70.51V68.705H536.753V70.51H529.533ZM529.533 74.12V72.315H536.753V74.12H529.533ZM529.533 77.73V75.925H536.753V77.73H529.533ZM529.533 81.34V79.535H536.753V81.34H529.533ZM529.533 84.95V83.145H536.753V84.95H529.533ZM529.533 88.56V86.755H536.753V88.56H529.533ZM529.533 92.17V90.365H536.753V92.17H529.533ZM529.533 95.78V93.975H536.753V95.78H529.533ZM518.703 99.39V97.585H547.583V99.39H518.703ZM518.703 103V101.195H547.583V103H518.703ZM585.192 56.07V54.265H592.412V56.07H585.192ZM549.092 56.07V54.265H556.312V56.07H549.092ZM549.092 59.68V57.875H556.312V59.68H549.092ZM585.192 59.68V57.875H592.412V59.68H585.192ZM549.092 63.29V61.485H556.312V63.29H549.092ZM585.192 63.29V61.485H592.412V63.29H585.192ZM552.702 66.9V65.095H559.922V66.9H552.702ZM581.582 66.9V65.095H588.802V66.9H581.582ZM552.702 70.51V68.705H559.922V70.51H552.702ZM581.582 70.51V68.705H588.802V70.51H581.582ZM581.582 74.12V72.315H588.802V74.12H581.582ZM552.702 74.12V72.315H559.922V74.12H552.702ZM577.972 77.73V75.925H585.192V77.73H577.972ZM556.312 77.73V75.925H563.532V77.73H556.312ZM577.972 81.34V79.535H585.192V81.34H577.972ZM556.312 81.34V79.535H563.532V81.34H556.312ZM577.972 84.95V83.145H585.192V84.95H577.972ZM556.312 84.95V83.145H563.532V84.95H556.312ZM559.922 88.56V86.755H567.142V88.56H559.922ZM574.362 88.56V86.755H581.582V88.56H574.362ZM574.362 92.17V90.365H581.582V92.17H574.362ZM559.922 92.17V90.365H567.142V92.17H559.922ZM559.922 95.78V93.975H567.142V95.78H559.922ZM574.362 95.78V93.975H581.582V95.78H574.362ZM563.532 99.39V97.585H577.972V99.39H563.532ZM563.532 103V101.195H577.972V103H563.532ZM567.142 106.61V104.805H574.362V106.61H567.142ZM567.142 110.22V108.415H574.362V110.22H567.142ZM552.702 113.83V112.025H570.752V113.83H552.702ZM552.702 117.44V115.635H567.142V117.44H552.702ZM619.223 30.8V28.995H626.443V30.8H619.223ZM619.223 34.41V32.605H626.443V34.41H619.223ZM619.223 38.02V36.215H626.443V38.02H619.223ZM615.613 41.63V39.825H622.833V41.63H615.613ZM615.613 45.24V43.435H622.833V45.24H615.613ZM615.613 48.85V47.045H622.833V48.85H615.613ZM612.003 52.46V50.655H619.223V52.46H612.003ZM612.003 56.07V54.265H619.223V56.07H612.003ZM612.003 59.68V57.875H619.223V59.68H612.003ZM608.393 63.29V61.485H615.613V63.29H608.393ZM608.393 66.9V65.095H615.613V66.9H608.393ZM608.393 70.51V68.705H615.613V70.51H608.393ZM604.783 74.12V72.315H612.003V74.12H604.783ZM604.783 77.73V75.925H612.003V77.73H604.783ZM604.783 81.34V79.535H612.003V81.34H604.783ZM601.173 84.95V83.145H608.393V84.95H601.173ZM601.173 88.56V86.755H608.393V88.56H601.173ZM601.173 92.17V90.365H608.393V92.17H601.173ZM597.563 95.78V93.975H604.783V95.78H597.563ZM597.563 99.39V97.585H604.783V99.39H597.563ZM597.563 103V101.195H604.783V103H597.563ZM593.953 106.61V104.805H601.173V106.61H593.953ZM593.953 110.22V108.415H601.173V110.22H593.953ZM593.953 113.83V112.025H601.173V113.83H593.953Z" fill="currentColor"/>
         </svg>
         </h1>
-        <div class="acts">
-          <a class="gh" href="https://github.com/chrislpdls/bass-assembly" title="Source code on GitHub"><span class="sr">Source code on GitHub</span><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
-          <button id="skin">DK<span class="sr"> dark theme, switch to light</span></button>
+        <span class="tag beta">Beta</span>
         </div>
       </div>
-      <p class="sub">A free bassline generator for ideas, with a step sequencer. It writes the notes, your synth makes the sound: the sound here is just a demo. Create acid, EBM, industrial and dark wave basslines, edit every step and export MIDI.</p>
+      <p class="sub">A free, open source bassline generator for ideas, with a step sequencer. It writes the notes, your synth makes the sound: the sound here is just a demo. Create acid, EBM, industrial and dark wave basslines, edit every step and export MIDI and .wav audio. <a href="https://github.com/chrislpdls/bass-assembly" rel="noopener">Source code on GitHub</a></p>
+      <!-- Phones: one short line instead of the paragraph. -->
+      <p class="tagline">Bass Assembly is a free, open source bassline generator and step sequencer for acid, EBM, industrial and dark wave.</p>
+      <p class="devnote">Works on phones, best on a tablet or a computer.</p>
+      <!-- Anchor menu: one key per panel. -->
       <nav class="tour" aria-label="What you can do">
-        <a href="#generate">Generate</a>
-        <a href="#sequence">Edit the steps</a>
-        <a href="#keys">Play it on your gear</a>
-        <a class="midi" href="#export">Export MIDI</a>
-        <a href="#copy-notes">Copy on your instrument</a>
-        <a href="#sound">Sound for demo</a>
+        <a class="key" href="#generate"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 12 9"><path fill="currentColor" d="M0 6.96434H0.8571V7.17854H0V6.96434ZM3.4286 6.96434H4.7143V7.17854H3.4286V6.96434ZM7.2857 6.96434H8.5714V7.17854H7.2857V6.96434ZM10.7143 6.96434H12V7.17854H10.7143V6.96434ZM0 6.53574H0.8571V6.75004H0V6.53574ZM3 6.53574H4.7143V6.75004H3V6.53574ZM6.8571 6.53574H8.5714V6.75004H6.8571V6.53574ZM10.7143 6.53574H11.5714V6.75004H10.7143V6.53574ZM0 6.10714H0.8571V6.32144H0V6.10714ZM3 6.10714H4.7143V6.32144H3V6.10714ZM6.8571 6.10714H8.5714V6.32144H6.8571V6.10714ZM10.2857 6.10714H11.5714V6.32144H10.2857V6.10714ZM0 5.67854H0.8571V5.89284H0V5.67854ZM2.5714 5.67854H4.7143V5.89284H2.5714V5.67854ZM6.4286 5.67854H8.5714V5.89284H6.4286V5.67854ZM9.8571 5.67854H11.1429V5.89284H9.8571V5.67854ZM0 5.25004H0.8571V5.46434H0V5.25004ZM2.1429 5.25004H3.4286V5.46434H2.1429V5.25004ZM3.8571 5.25004H4.7143V5.46434H3.8571V5.25004ZM6 5.25004H7.2857V5.46434H6V5.25004ZM7.7143 5.25004H8.5714V5.46434H7.7143V5.25004ZM9.8571 5.25004H10.7143V5.46434H9.8571V5.25004ZM0 4.82144H0.8571V5.03574H0V4.82144ZM1.7143 4.82144H3V5.03574H1.7143V4.82144ZM3.8571 4.82144H4.7143V5.03574H3.8571V4.82144ZM5.5714 4.82144H6.8571V5.03574H5.5714V4.82144ZM7.7143 4.82144H8.5714V5.03574H7.7143V4.82144ZM9.4286 4.82144H10.7143V5.03574H9.4286V4.82144ZM0 4.39284H0.8571V4.60714H0V4.39284ZM1.7143 4.39284H2.5714V4.60714H1.7143V4.39284ZM3.8571 4.39284H4.7143V4.60714H3.8571V4.39284ZM5.5714 4.39284H6.4286V4.60714H5.5714V4.39284ZM7.7143 4.39284H8.5714V4.60714H7.7143V4.39284ZM9 4.39284H10.2857V4.60714H9V4.39284ZM0 3.96434H0.8571V4.17854H0V3.96434ZM1.2857 3.96434H2.5714V4.17854H1.2857V3.96434ZM3.8571 3.96434H4.7143V4.17854H3.8571V3.96434ZM5.1429 3.96434H6.4286V4.17854H5.1429V3.96434ZM7.7143 3.96434H8.5714V4.17854H7.7143V3.96434ZM9 3.96434H9.8571V4.17854H9V3.96434ZM0 3.53574H2.1429V3.75004H0V3.53574ZM3.8571 3.53574H6V3.75004H3.8571V3.53574ZM7.7143 3.53574H9.8571V3.75004H7.7143V3.53574ZM0 3.10714H1.7143V3.32144H0V3.10714ZM3.8571 3.10714H5.5714V3.32144H3.8571V3.10714ZM7.7143 3.10714H9.4286V3.32144H7.7143V3.10714ZM0 2.67854H1.2857V2.89284H0V2.67854ZM3.8571 2.67854H5.1429V2.89284H3.8571V2.67854ZM7.7143 2.67854H9V2.89284H7.7143V2.67854ZM0 2.25004H1.2857V2.46434H0V2.25004ZM3.8571 2.25004H5.1429V2.46434H3.8571V2.25004ZM7.7143 2.25004H9V2.46434H7.7143V2.25004ZM0 1.82144H0.8571V2.03574H0V1.82144ZM3.8571 1.82144H4.7143V2.03574H3.8571V1.82144ZM7.7143 1.82144H8.5714V2.03574H7.7143V1.82144Z"/></svg>Generate</a>
+        <a class="key" href="#sound"><span>Sound<span class="long"> for demo</span></span></a>
+        <a class="key" href="#sequence">Sequencer</a>
+        <a class="key" href="#keys"><span>Keyboard<span class="wide"> &amp; pads</span></span></a>
+        <a class="key" href="#export"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><rect x=".375" y=".375" width="17.25" height="12.75" rx="2.325" fill="none" stroke="currentColor" stroke-width=".75"/><path d="M4.5 0v13.5M9 0v13.5M13.5 0v13.5M0 4.5h18M0 9h18" fill="none" stroke="currentColor" stroke-width=".675" stroke-opacity=".45"/><g fill="currentColor"><circle cx="11.25" cy="2.25" r="1.125"/><circle cx="15.75" cy="2.25" r="1.125"/><circle cx="2.25" cy="6.75" r="1.125"/><circle cx="11.25" cy="6.75" r="1.125"/><circle cx="6.75" cy="11.25" r="1.125"/><circle cx="15.75" cy="11.25" r="1.125"/></g></svg><span>Export<span class="long"> MIDI / .wav</span></span></a>
+        <a class="key" href="#copy-notes">Copy by hand</a>
       </nav>
   </header>
   <main>
 
   <section class="panel gen" id="generate" aria-label="Settings">
-    <h2>Generate bassline</h2>
-    <!-- Choices to assemble yourself: menus. Continuous values: knobs.
-         One grid, in reading order: the menus come first, then the knobs, at every width. -->
+    <div class="titlerow">
+      <h2>Generate bassline</h2>
+    </div>
+    <!-- The two main keys. -->
+    <div class="mainkeys">
+      <button class="key key-lg play" id="play"><svg class="ico g-play" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><path transform="translate(2.25 1.45)" fill="currentColor" d="M1.33 10.61C.57 10.61 0 10.08 0 9.47V1.14C0 .54.56 0 1.33 0 1.57 0 1.81.06 2.02.17L9.97 4.33C10.37 4.54 10.61 4.91 10.61 5.3 10.61 5.7 10.37 6.07 9.97 6.27L2.02 10.44C1.81 10.55 1.57 10.61 1.33 10.61Z"/></svg><svg class="ico g-stop" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><rect x="2.68" y="1.88" width="9.75" height="9.75" rx="1.5" fill="currentColor"/></svg><span class="ptxt">Play</span></button>
+      <button class="key key-lg" id="rand"><svg class="ico" aria-hidden="true" focusable="false" width="24" height="18" viewBox="0 0 24 18"><path fill="currentColor" d="M0 13.9287H1.7142V14.3571H0V13.9287ZM6.8572 13.9287H9.4286V14.3571H6.8572V13.9287ZM14.5714 13.9287H17.1428V14.3571H14.5714V13.9287ZM21.4286 13.9287H24V14.3571H21.4286V13.9287ZM0 13.0715H1.7142V13.5001H0V13.0715ZM6 13.0715H9.4286V13.5001H6V13.0715ZM13.7142 13.0715H17.1428V13.5001H13.7142V13.0715ZM21.4286 13.0715H23.1428V13.5001H21.4286V13.0715ZM0 12.2143H1.7142V12.6429H0V12.2143ZM6 12.2143H9.4286V12.6429H6V12.2143ZM13.7142 12.2143H17.1428V12.6429H13.7142V12.2143ZM20.5714 12.2143H23.1428V12.6429H20.5714V12.2143ZM0 11.3571H1.7142V11.7857H0V11.3571ZM5.1428 11.3571H9.4286V11.7857H5.1428V11.3571ZM12.8572 11.3571H17.1428V11.7857H12.8572V11.3571ZM19.7142 11.3571H22.2858V11.7857H19.7142V11.3571ZM0 10.5001H1.7142V10.9287H0V10.5001ZM4.2858 10.5001H6.8572V10.9287H4.2858V10.5001ZM7.7142 10.5001H9.4286V10.9287H7.7142V10.5001ZM12 10.5001H14.5714V10.9287H12V10.5001ZM15.4286 10.5001H17.1428V10.9287H15.4286V10.5001ZM19.7142 10.5001H21.4286V10.9287H19.7142V10.5001ZM0 9.64286H1.7142V10.0715H0V9.64286ZM3.4286 9.64286H6V10.0715H3.4286V9.64286ZM7.7142 9.64286H9.4286V10.0715H7.7142V9.64286ZM11.1428 9.64286H13.7142V10.0715H11.1428V9.64286ZM15.4286 9.64286H17.1428V10.0715H15.4286V9.64286ZM18.8572 9.64286H21.4286V10.0715H18.8572V9.64286ZM0 8.78566H1.7142V9.21426H0V8.78566ZM3.4286 8.78566H5.1428V9.21426H3.4286V8.78566ZM7.7142 8.78566H9.4286V9.21426H7.7142V8.78566ZM11.1428 8.78566H12.8572V9.21426H11.1428V8.78566ZM15.4286 8.78566H17.1428V9.21426H15.4286V8.78566ZM18 8.78566H20.5714V9.21426H18V8.78566ZM0 7.92866H1.7142V8.35706H0V7.92866ZM2.5714 7.92866H5.1428V8.35706H2.5714V7.92866ZM7.7142 7.92866H9.4286V8.35706H7.7142V7.92866ZM10.2858 7.92866H12.8572V8.35706H10.2858V7.92866ZM15.4286 7.92866H17.1428V8.35706H15.4286V7.92866ZM18 7.92866H19.7142V8.35706H18V7.92866ZM0 7.07146H4.2858V7.50006H0V7.07146ZM7.7142 7.07146H12V7.50006H7.7142V7.07146ZM15.4286 7.07146H19.7142V7.50006H15.4286V7.07146ZM0 6.21426H3.4286V6.64286H0V6.21426ZM7.7142 6.21426H11.1428V6.64286H7.7142V6.21426ZM15.4286 6.21426H18.8572V6.64286H15.4286V6.21426ZM0 5.35706H2.5714V5.78566H0V5.35706ZM7.7142 5.35706H10.2858V5.78566H7.7142V5.35706ZM15.4286 5.35706H18V5.78566H15.4286V5.35706ZM0 4.50006H2.5714V4.92866H0V4.50006ZM7.7142 4.50006H10.2858V4.92866H7.7142V4.50006ZM15.4286 4.50006H18V4.92866H15.4286V4.50006ZM0 3.64286H1.7142V4.07146H0V3.64286ZM7.7142 3.64286H9.4286V4.07146H7.7142V3.64286ZM15.4286 3.64286H17.1428V4.07146H15.4286V3.64286Z"/></svg>Generate bassline</button>
+    </div>
+    <!-- Preview and Style, then NOTES and LOOP, then the TEMPO and GROOVE knobs. -->
     <div class="setup">
-      <label class="field">Style
-        <select id="style"></select>
-      </label>
-      <label class="field">Note
-        <select id="root"></select>
-      </label>
-      <label class="field">Scale
-        <select id="scale"></select>
-      </label>
-      <label class="field">Octave
-        <select id="oct"><option value="1">1 (very low)</option><option value="2" selected>2 (bass)</option><option value="3">3 (mid)</option></select>
-      </label>
-      <label class="field">Steps
-        <select id="n"><option value="16" selected>16 steps</option><option value="8">8 steps</option></select>
-      </label>
-      <div class="field-hint">
-        <label class="field">Density
-          <select id="dens" aria-describedby="dens-hint"><option value="20">Very low (20%)</option><option value="35">Low (35%)</option><option value="55" selected>Medium (55%)</option><option value="75">High (75%)</option><option value="90">Very high (90%)</option></select>
-        </label>
-        <p class="hint" id="dens-hint">How many steps get a note. Low is sparse, high is busy.</p>
+      <div class="band">
+        <!-- Sequence preview, drawn by app.js. A click opens the sequencer. -->
+        <a class="lcd" id="lcd" href="#sequence" aria-label="Sequence preview: go to the sequencer"><span class="screen" id="lcdscreen" aria-hidden="true"></span></a>
+        <!-- Style selector: radio inputs. A click on the knob goes to the next style. -->
+        <div class="selbox stylebox">
+          <div class="selknob stylesel" id="style" role="radiogroup" aria-labelledby="style-l">
+            <svg class="filets" aria-hidden="true" focusable="false" viewBox="0 0 204.8 133.12" fill="none"><g class="f0"><path class="notch" d="M49.04 34.74 52.24 29.19"/><path class="filet" d="M52.24 29.19 79.36 26.56V19.2h5.12"/></g><g class="f1"><path class="notch" d="M58.7 44.4 64.25 41.2"/><path class="filet" d="M64.25 41.2 79.36 39.68V38.4h5.12"/></g><g class="f2"><path class="notch" d="M62.24 57.6h6.4"/><path class="filet" d="M68.64 57.6h15.84"/></g><g class="f3"><path class="notch" d="M58.7 70.8 64.25 74"/><path class="filet" d="M64.25 74 79.36 75.52v1.28h5.12"/></g><g class="f4"><path class="notch" d="M49.04 80.46 52.24 86.01"/><path class="filet" d="M52.24 86.01 79.36 88.64V96h5.12"/></g></svg>
+            <span class="dial sk" aria-hidden="true"><span class="cast"></span><span class="cap"><span class="well"></span><span class="bar"></span></span></span>
+            <label class="sopt"><input type="radio" name="style" value="acid" checked><i aria-hidden="true"></i>Acid</label>
+            <label class="sopt"><input type="radio" name="style" value="ebm"><i aria-hidden="true"></i>EBM</label>
+            <label class="sopt"><input type="radio" name="style" value="indus"><i aria-hidden="true"></i>Industrial</label>
+            <label class="sopt"><input type="radio" name="style" value="roll"><i aria-hidden="true"></i>Rolling</label>
+            <label class="sopt"><input type="radio" name="style" value="dark"><i aria-hidden="true"></i>Dark Wave</label>
+          </div>
+          <span class="sname" id="style-l">Style</span>
+          <button class="key key-lock" id="stylelock" type="button" aria-pressed="false" aria-label="Lock the style" title="Lock the style: Generate bassline keeps it"><svg class="padlock" aria-hidden="true" focusable="false" viewBox="0 0 9 12" width="9" height="12" fill="none" stroke="currentColor" stroke-width="1.125"><rect x=".5625" y="5.8125" width="7.875" height="5.625"/><path class="open" d="M2.25 3.525v-1.5c0-2.7 4.5-2.7 4.5 0v1.5" stroke-linecap="square"/><path class="shut" d="M2.25 5.25V3.335c0-3.447 4.5-3.447 4.5 0V5.25" stroke-linecap="square"/></svg></button>
+        </div>
+        <div class="settings">
+          <div class="group gnotes" role="group" aria-labelledby="g-notes">
+            <span class="tag" id="g-notes">Notes</span>
+            <div class="ctrls">
+              <div class="ns">
+                <label class="field fnote">
+                  <select id="root"></select>
+                  <span>Note</span>
+                </label>
+                <label class="field fscale">
+                  <select id="scale"></select>
+                  <span>Scale</span>
+                </label>
+              </div>
+              <!-- Octave shows -1 / 0 / +1 but stores 1 / 2 / 3. -->
+              <div class="octbox">
+                <div class="slide" id="oct" role="radiogroup" aria-labelledby="oct-l" style="--n: 3">
+                  <label class="opt"><input type="radio" name="oct" value="1"><span>-1</span><i></i></label>
+                  <label class="opt"><input type="radio" name="oct" value="2" checked><span>0</span><i></i></label>
+                  <label class="opt"><input type="radio" name="oct" value="3"><span>+1</span><i></i></label>
+                  <span class="slot" aria-hidden="true"><span class="thumb"></span></span><span class="sname" id="oct-l">Octave</span>
+                </div>
+                <button class="key key-lock" id="octlock" type="button" aria-pressed="false" aria-label="Lock the octave" title="Lock the octave: Generate bassline keeps it"><svg class="padlock" aria-hidden="true" focusable="false" viewBox="0 0 9 12" width="9" height="12" fill="none" stroke="currentColor" stroke-width="1.125"><rect x=".5625" y="5.8125" width="7.875" height="5.625"/><path class="open" d="M2.25 3.525v-1.5c0-2.7 4.5-2.7 4.5 0v1.5" stroke-linecap="square"/><path class="shut" d="M2.25 5.25V3.335c0-3.447 4.5-3.447 4.5 0V5.25" stroke-linecap="square"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="group gloop" role="group" aria-labelledby="g-loop">
+            <span class="tag" id="g-loop">Loop</span>
+            <div class="ctrls">
+              <div class="slide" id="n" role="radiogroup" aria-labelledby="n-l" style="--n: 2">
+                <label class="opt"><input type="radio" name="n" value="8"><span>8</span><i></i></label>
+                <label class="opt"><input type="radio" name="n" value="16" checked><span>16</span><i></i></label>
+                <span class="slot" aria-hidden="true"><span class="thumb"></span></span><span class="sname" id="n-l">Steps</span>
+              </div>
+              <div class="slide" id="rep" role="radiogroup" aria-labelledby="rep-l" style="--n: 2" title="Repeat the first half, with a variation">
+                <label class="opt"><input type="radio" name="rep" value="0"><span>Off</span><i></i></label>
+                <label class="opt"><input type="radio" name="rep" value="1" checked><span>On</span><i></i></label>
+                <span class="slot" aria-hidden="true"><span class="thumb"></span></span><span class="sname" id="rep-l">Half loop</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="knob">
-        <label for="bpm">Tempo</label>
-        <div class="dial"><input type="range" id="bpm" min="60" max="170" value="100"></div>
-        <output class="val" id="bpmv" for="bpm"></output>
-      </div>
-      <div class="knob">
-        <label for="swing">Swing</label>
-        <div class="dial"><input type="range" id="swing" min="0" max="60" value="0"></div>
-        <output class="val" id="swingv" for="swing"></output>
-      </div>
-      <div class="knob">
-        <label for="hum">Humanize</label>
-        <div class="dial"><input type="range" id="hum" min="0" max="100" value="0"></div>
-        <output class="val" id="humv" for="hum"></output>
+      <div class="dials">
+        <div class="group gtempo" role="group" aria-labelledby="g-tempo">
+          <span class="tag" id="g-tempo">Tempo</span>
+          <div class="ctrls">
+            <div class="knob">
+              <label for="bpm">Tempo</label>
+              <div class="dial"><input type="range" id="bpm" min="60" max="170" value="100"></div>
+              <output class="val" id="bpmv" for="bpm"></output>
+            </div>
+            <!-- Tap tempo and metronome. -->
+            <div class="tempokeys" role="group" aria-label="Tempo keys">
+              <div class="tk">
+                <button class="key key-tk" id="tap" type="button" title="Tap at least twice to set the tempo"><span class="dot" aria-hidden="true"></span>Tap</button>
+                <span class="tklbl" aria-hidden="true">Tap</span>
+              </div>
+              <div class="tk">
+                <button class="key key-tk" id="metro" type="button" aria-pressed="false" aria-label="Metronome" title="Metronome: a click on every beat while playing"><span class="dot" aria-hidden="true"></span><svg aria-hidden="true" focusable="false" width="16" height="18" viewBox="0 0 16 18" fill="none"><path d="M5.5 1.5h5L14 16.5H2L5.5 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8 13l4-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="13" r="1.2" fill="currentColor"/></svg></button>
+                <span class="tklbl" aria-hidden="true">Metronome</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group ggroove" role="group" aria-labelledby="g-groove">
+          <span class="tag" id="g-groove">Groove</span>
+          <div class="ctrls">
+            <div class="knob">
+              <label for="swing">Swing</label>
+              <div class="dial"><input type="range" id="swing" min="0" max="60" value="0"></div>
+              <output class="val" id="swingv" for="swing"></output>
+            </div>
+            <div class="knob">
+              <label for="hum">Humanize</label>
+              <div class="dial"><input type="range" id="hum" min="0" max="100" value="0"></div>
+              <output class="val" id="humv" for="hum"></output>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- Actions: PATTERN, LOCK, SAVE and EXPORT. -->
     <div class="actions">
-      <div class="row">
-        <button class="play" id="play" aria-pressed="false">Play</button>
-        <button class="primary" id="rand">Generate bassline</button>
-        <button id="gen">Change notes</button>
-        <button id="mut">Vary a little</button>
-        <button id="clr">Clear</button>
-        <button id="keep">Keep this idea</button>
+      <div class="tools">
+        <div class="group" role="group" aria-labelledby="g-pattern">
+          <span class="tag" id="g-pattern">Pattern</span>
+          <div class="row">
+            <button class="key" id="gen" title="Same settings and sound, new steps">New pattern</button>
+            <button class="key" id="mut" title="Change a few steps">Vary steps</button>
+            <!-- Undo / Redo: greyed when there is nothing to undo or redo. -->
+            <button class="key" id="undo" type="button" aria-label="Undo" aria-disabled="true"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 12 9" fill="none"><path d="M3.4 .7 .9 3.2l2.5 2.5M.9 3.2h6.9a2.6 2.6 0 0 1 0 5.2H5.2" stroke="currentColor" stroke-width=".75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="key" id="redo" type="button" aria-label="Redo" aria-disabled="true"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 12 9" fill="none"><path d="M8.6 .7 11.1 3.2 8.6 5.7M11.1 3.2H4.2a2.6 2.6 0 0 0 0 5.2h2.6" stroke="currentColor" stroke-width=".75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+        <div class="group" role="group" aria-labelledby="g-lock">
+          <span class="tag" id="g-lock">Lock</span>
+          <div class="row locks">
+            <button class="key" id="lock-rhythm" type="button" aria-pressed="false" title="Lock the rhythm: which steps play, accents, ties, velocity, gate, tempo, swing, step count and Half loop"><span class="dot" aria-hidden="true"></span>Rhythm</button>
+            <button class="key" id="lock-notes" type="button" aria-pressed="false" title="Lock the notes: note, scale, octave and pitches"><span class="dot" aria-hidden="true"></span>Notes</button>
+            <button class="key" id="lock-sound" type="button" aria-pressed="false" title="Lock the sound: Generate keeps the Sound panel settings"><span class="dot" aria-hidden="true"></span>Sound</button>
+            <button class="key" id="lock-style" type="button" aria-pressed="false" title="Lock the style: Generate bassline keeps it"><span class="dot" aria-hidden="true"></span>Style</button>
+          </div>
+        </div>
       </div>
-      <div class="row">
-        <label class="check"><input type="checkbox" id="rep" checked> Repeat 1st half + variation</label>
-      </div>
-      <div class="row">
-        <button class="midi-btn">Export MIDI</button>
+      <div class="output">
+        <div class="group" role="group" aria-labelledby="g-save">
+          <span class="tag" id="g-save">Save</span>
+          <div class="row"><button class="key" id="keep">Save this idea</button></div>
+        </div>
+        <div class="group" role="group" aria-labelledby="g-export">
+          <span class="tag" id="g-export">Export</span>
+          <div class="row">
+            <button class="key midi-btn" aria-label="Export as MIDI (.mid)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><rect x=".375" y=".375" width="17.25" height="12.75" rx="2.325" fill="none" stroke="currentColor" stroke-width=".75"/><path d="M4.5 0v13.5M9 0v13.5M13.5 0v13.5M0 4.5h18M0 9h18" fill="none" stroke="currentColor" stroke-width=".675" stroke-opacity=".45"/><g fill="currentColor"><circle cx="11.25" cy="2.25" r="1.125"/><circle cx="15.75" cy="2.25" r="1.125"/><circle cx="2.25" cy="6.75" r="1.125"/><circle cx="11.25" cy="6.75" r="1.125"/><circle cx="6.75" cy="11.25" r="1.125"/><circle cx="15.75" cy="11.25" r="1.125"/></g></svg><span><span class="long">Export as MIDI (</span>.mid<span class="long">)</span></span></button>
+            <button class="key wav-btn" aria-label="Export audio (.wav)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><path fill="currentColor" d="M0 6.47978C0.0945 6.47978 0.37575 6.52028 0.5625 6.47978C0.74925 6.43928 0.93825 6.37853 1.125 6.24128C1.31175 6.10403 1.50075 5.76878 1.6875 5.65853C1.87425 5.54828 2.06325 5.50103 2.25 5.57978C2.43675 5.65628 2.62575 6.08603 2.8125 6.12428C2.99925 6.16028 3.18825 6.14228 3.375 5.79578C3.56175 5.44928 3.75075 4.52453 3.9375 4.04753C4.12425 3.56828 4.31325 2.92478 4.5 2.92478C4.68675 2.92478 4.87575 3.56828 5.0625 4.04753C5.24925 4.52453 5.43825 5.55053 5.625 5.79578C5.81175 6.04103 6.00075 5.69453 6.1875 5.52128C6.37425 5.34803 6.56325 4.81928 6.75 4.75178C6.93675 4.68653 7.12575 5.03753 7.3125 5.12753C7.49925 5.21753 7.68825 5.71028 7.875 5.29178C8.06175 4.87328 8.25075 3.34778 8.4375 2.61653C8.62425 1.88303 8.81325 0.89978 9 0.89978C9.18675 0.89978 9.37575 1.88303 9.5625 2.61653C9.74925 3.34778 9.93825 4.93403 10.125 5.29178C10.3118 5.64953 10.5007 4.98803 10.6875 4.76303C10.8743 4.53578 11.0632 3.93728 11.25 3.93728C11.4368 3.93728 11.6257 4.43228 11.8125 4.76303C11.9993 5.09153 12.1882 6.03428 12.375 5.91053C12.5618 5.78903 12.7507 4.62128 12.9375 4.02053C13.1243 3.41978 13.3132 2.45678 13.5 2.31278C13.6868 2.16653 13.8757 2.65028 14.0625 3.14753C14.2493 3.64253 14.4382 4.82153 14.625 5.28953C14.8118 5.75753 15.0007 5.95778 15.1875 5.95328C15.3743 5.94653 15.5632 5.35928 15.75 5.26028C15.9368 5.16128 16.1257 5.21978 16.3125 5.35928C16.4993 5.50103 16.6882 5.91503 16.875 6.10178C17.0618 6.28853 17.2507 6.41678 17.4375 6.47978C17.6243 6.54278 17.9055 6.47978 18 6.47978V7.01978C17.9055 7.01978 17.6243 6.95678 17.4375 7.01978C17.2507 7.08278 17.0618 7.21103 16.875 7.39778C16.6882 7.58453 16.4993 7.99853 16.3125 8.14028C16.1257 8.27978 15.9368 8.33828 15.75 8.23928C15.5632 8.14028 15.3743 7.55303 15.1875 7.54628C15.0007 7.54178 14.8118 7.74203 14.625 8.21003C14.4382 8.67803 14.2493 9.85703 14.0625 10.352C13.8757 10.8493 13.6868 11.333 13.5 11.1868C13.3132 11.0428 13.1243 10.0798 12.9375 9.47903C12.7507 8.87828 12.5618 7.71053 12.375 7.58903C12.1882 7.46528 11.9993 8.40803 11.8125 8.73653C11.6257 9.06728 11.4368 9.56228 11.25 9.56228C11.0632 9.56228 10.8743 8.96378 10.6875 8.73653C10.5007 8.51153 10.3118 7.85003 10.125 8.20778C9.93825 8.56553 9.74925 10.1518 9.5625 10.883C9.37575 11.6165 9.18675 12.5998 9 12.5998C8.81325 12.5998 8.62425 11.6165 8.4375 10.883C8.25075 10.1518 8.06175 8.62628 7.875 8.20778C7.68825 7.78928 7.49925 8.28203 7.3125 8.37203C7.12575 8.46203 6.93675 8.81303 6.75 8.74778C6.56325 8.68028 6.37425 8.15153 6.1875 7.97828C6.00075 7.80503 5.81175 7.45853 5.625 7.70378C5.43825 7.94903 5.24925 8.97503 5.0625 9.45203C4.87575 9.93128 4.68675 10.5748 4.5 10.5748C4.31325 10.5748 4.12425 9.93128 3.9375 9.45203C3.75075 8.97503 3.56175 8.05028 3.375 7.70378C3.18825 7.35728 2.99925 7.33928 2.8125 7.37528C2.62575 7.41353 2.43675 7.84328 2.25 7.91978C2.06325 7.99853 1.87425 7.95128 1.6875 7.84103C1.50075 7.73078 1.31175 7.39553 1.125 7.25828C0.93825 7.12103 0.74925 7.06028 0.5625 7.01978C0.37575 6.97928 0.0945 7.01978 0 7.01978V6.47978Z"/></svg><span><span class="long">Export audio (</span>.wav<span class="long">)</span></span></button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="status" id="status" aria-live="polite"></div>
+    <!-- Saved ideas: hidden until the first one. A click loads an idea. -->
+    <details class="ideas" id="ideas" hidden>
+      <summary>Saved ideas <span class="count" id="ideascount"></span></summary>
+      <div class="saved" id="saved"></div>
+    </details>
   </section>
 
-  <section class="panel" id="sound" aria-label="Sound">
-    <h2>Sound for demo</h2>
-    <div class="controls">
-      <label class="field">Wave
-        <select id="wave"><option value="square">Square</option><option value="sawtooth">Sawtooth</option><option value="triangle">Triangle</option></select>
-      </label>
-      <label class="field">Filter <span class="val" id="cutv"></span>
-        <input type="range" id="cut" min="200" max="6000" value="1500">
-      </label>
-      <label class="field">Resonance <span class="val" id="qv"></span>
-        <input type="range" id="q" min="1" max="20" value="6">
-      </label>
-      <label class="field">Filter decay <span class="val" id="decv"></span>
-        <input type="range" id="dec" min="5" max="60" value="22">
-      </label>
-      <label class="field">Drive <span class="val" id="drivev"></span>
-        <input type="range" id="drive" min="0" max="100" value="0">
-      </label>
-      <label class="field">Sub <span class="val" id="subv"></span>
-        <input type="range" id="sub" min="0" max="100" value="0">
-      </label>
-      <label class="field">Glide <span class="val" id="glidev"></span>
-        <input type="range" id="glide" min="10" max="200" value="50">
-      </label>
-      <label class="field">Delay <span class="val" id="delayv"></span>
-        <input type="range" id="delay" min="0" max="100" value="15">
-      </label>
-      <label class="field">Delay time
-        <select id="dtime"><option value="0.5">Eighth (1/8)</option><option value="0.75" selected>Dotted eighth (3/16)</option><option value="1">Quarter (1/4)</option></select>
-      </label>
-      <label class="field">Repeats <span class="val" id="dfbv"></span>
-        <input type="range" id="dfb" min="0" max="85" value="35">
-      </label>
-      <label class="field">Reverb <span class="val" id="revv"></span>
-        <input type="range" id="rev" min="0" max="100" value="10">
-      </label>
-      <label class="field">Reverb size <span class="val" id="rsizev"></span>
-        <input type="range" id="rsize" min="5" max="40" value="20">
-      </label>
+  <section class="panel snd" id="sound" aria-label="Sound">
+    <div class="titlerow">
+      <h2>Sound for demo</h2>
+    </div>
+    <!-- OSC (scope and Wave), then FILTER, VOICE, DELAY, REVERB and the lock. -->
+    <div class="sbody">
+      <div class="group gosc" role="group" aria-labelledby="g-osc">
+        <span class="tag" id="g-osc">Osc</span>
+        <div class="oscrow">
+          <!-- Scope: the shape of the sound, drawn by app.js. -->
+          <div class="lcd scope" role="img" aria-label="Waveform scope">
+            <div class="screen" aria-hidden="true">
+              <svg viewBox="0 0 173 83" preserveAspectRatio="none" focusable="false">
+                <path class="grid" d="M0 41.22H173M45.07 0V83M90.14 0V83M135.21 0V83"/>
+                <path class="trace" id="scopetrace" d=""/>
+              </svg>
+              <span class="wname" id="scopename"></span>
+            </div>
+          </div>
+          <!-- Wave selector: like Style. A click on the knob goes to the next wave. -->
+          <div class="selbox wavebox">
+            <div class="selknob wavesel" id="wave" role="radiogroup" aria-labelledby="wave-l">
+              <svg class="filets" aria-hidden="true" focusable="false" viewBox="0 0 225.28 133.12" fill="none"><g class="f0"><path class="notch" d="M54.51 38.93 59.03 34.41"/><path class="filet" d="M59.03 34.41 79.36 32.26v2.3h5.12"/></g><g class="f1"><path class="notch" d="M62.24 57.6h6.4"/><path class="filet" d="M68.64 57.6h15.84"/></g><g class="f2"><path class="notch" d="M54.51 76.27 59.03 80.79"/><path class="filet" d="M59.03 80.79 79.36 82.94v-2.3h5.12"/></g></svg>
+              <span class="dial sk" aria-hidden="true"><span class="cast"></span><span class="cap"><span class="well"></span><span class="bar"></span></span></span>
+              <label class="sopt"><input type="radio" name="wave" value="square" checked><i aria-hidden="true"></i><svg class="glyph" aria-hidden="true" focusable="false" viewBox="0 0 15.36 6.4" fill="none"><path d="M0 6.4V0h5.12v6.4h5.12V0h5.12"/></svg>Square</label>
+              <label class="sopt"><input type="radio" name="wave" value="sawtooth"><i aria-hidden="true"></i><svg class="glyph" aria-hidden="true" focusable="false" viewBox="0 0 15.36 6.4" fill="none"><path d="M0 6.4 7.68 0v6.4L15.36 0v6.4"/></svg>Sawtooth</label>
+              <label class="sopt"><input type="radio" name="wave" value="triangle"><i aria-hidden="true"></i><svg class="glyph" aria-hidden="true" focusable="false" viewBox="0 0 15.36 6.4" fill="none"><path d="M0 6.4 3.84 0l3.84 6.4L11.52 0l3.84 6.4"/></svg>Triangle</label>
+            </div>
+            <span class="sname" id="wave-l">Wave</span>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="kgroup gfilter" role="group" aria-labelledby="g-filter">
+          <div class="knob">
+            <span class="tag" id="g-filter">Filter</span>
+            <label for="cut">Cutoff</label>
+            <div class="dial"><input type="range" id="cut" min="200" max="6000" value="1500"></div>
+            <output class="val" id="cutv" for="cut"></output>
+          </div>
+          <div class="knob">
+            <label for="q">Resonance</label>
+            <div class="dial"><input type="range" id="q" min="1" max="20" value="6"></div>
+            <output class="val" id="qv" for="q"></output>
+          </div>
+          <div class="knob">
+            <label for="dec">Decay</label>
+            <div class="dial"><input type="range" id="dec" min="5" max="60" value="22"></div>
+            <output class="val" id="decv" for="dec"></output>
+          </div>
+          <div class="knob">
+            <label for="drive">Drive</label>
+            <div class="dial"><input type="range" id="drive" min="0" max="100" value="0"></div>
+            <output class="val" id="drivev" for="drive"></output>
+          </div>
+        </div>
+        <div class="kgroup gvoice" role="group" aria-labelledby="g-voice">
+          <div class="knob">
+            <span class="tag" id="g-voice">Voice</span>
+            <label for="sub">Sub</label>
+            <div class="dial"><input type="range" id="sub" min="0" max="100" value="0"></div>
+            <output class="val" id="subv" for="sub"></output>
+          </div>
+          <div class="knob">
+            <label for="glide">Glide</label>
+            <div class="dial"><input type="range" id="glide" min="10" max="200" value="50"></div>
+            <output class="val" id="glidev" for="glide"></output>
+          </div>
+        </div>
+        <div class="kgroup gdelay" role="group" aria-labelledby="g-delay">
+          <div class="knob">
+            <span class="tag" id="g-delay">Delay</span>
+            <label for="delay">Delay</label>
+            <div class="dial"><input type="range" id="delay" min="0" max="100" value="15"></div>
+            <output class="val" id="delayv" for="delay"></output>
+          </div>
+          <!-- Detent knob: Off, 1/8, 3/16, 1/4 of a beat. -->
+          <div class="knob">
+            <label for="dtime">Delay time</label>
+            <div class="dial detent"><input type="range" id="dtime" min="0" max="3" value="2"></div>
+            <output class="val" id="dtimev" for="dtime"></output>
+          </div>
+          <div class="knob">
+            <label for="dfb">Delay repeats</label>
+            <div class="dial"><input type="range" id="dfb" min="0" max="85" value="35"></div>
+            <output class="val" id="dfbv" for="dfb"></output>
+          </div>
+        </div>
+        <div class="kgroup greverb" role="group" aria-labelledby="g-reverb">
+          <div class="knob">
+            <span class="tag" id="g-reverb">Reverb</span>
+            <label for="rev">Reverb</label>
+            <div class="dial"><input type="range" id="rev" min="0" max="100" value="10"></div>
+            <output class="val" id="revv" for="rev"></output>
+          </div>
+          <div class="knob">
+            <label for="rsize">Reverb time</label>
+            <div class="dial"><input type="range" id="rsize" min="5" max="40" value="20"></div>
+            <output class="val" id="rsizev" for="rsize"></output>
+          </div>
+        </div>
+        <!-- Same lock as LOCK > Sound. -->
+        <div class="kgroup glock" role="group" aria-labelledby="g-slock">
+          <div class="locktile">
+            <span class="tag" id="g-slock">Lock</span>
+            <button class="key key-lock" id="soundlock" type="button" aria-pressed="false" title="Generate keeps this sound"><svg class="padlock" aria-hidden="true" focusable="false" viewBox="0 0 9 12" width="9" height="12" fill="none" stroke="currentColor" stroke-width="1.125"><rect x=".5625" y="5.8125" width="7.875" height="5.625"/><path class="open" d="M2.25 3.525v-1.5c0-2.7 4.5-2.7 4.5 0v1.5" stroke-linecap="square"/><path class="shut" d="M2.25 5.25V3.335c0-3.447 4.5-3.447 4.5 0V5.25" stroke-linecap="square"/></svg></button>
+            <label for="soundlock">Keep on generate</label>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="panel" id="sequence" aria-label="Sequence">
-    <h2>Edit the steps</h2>
+  <section class="panel seq" id="sequence" aria-label="Sequence">
+    <div class="titlerow seqtitle"><h2>Edit the steps</h2><button class="key" id="clr">Clear</button></div>
+    <!-- Phones, 16 steps: pick steps 1-8 or 9-16. -->
+    <div class="seqpages" id="seqpages" role="group" aria-label="Steps shown" hidden><span class="lab" aria-hidden="true">Steps</span><button class="key" type="button" data-page="0" aria-pressed="true"><span class="dot" aria-hidden="true"></span>1-8</button><button class="key" type="button" data-page="1" aria-pressed="false"><span class="dot" aria-hidden="true"></span>9-16</button></div>
     <div class="gridwrap"><div class="grid" id="grid"></div></div>
-    <div class="row panelbar below"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
-    <p class="note">Click a cell to place a note on a step, click again to remove it. Accent: a stronger step. Tie: the note glides into the next step without being retriggered. Vel and Gate: drag a bar up or down, or across several steps to draw them all at once. Higher means louder or longer. Arrow keys also work.</p>
+    <div class="row seqbar"><button class="key midi-btn" aria-label="Export as MIDI (.mid)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><rect x=".375" y=".375" width="17.25" height="12.75" rx="2.325" fill="none" stroke="currentColor" stroke-width=".75"/><path d="M4.5 0v13.5M9 0v13.5M13.5 0v13.5M0 4.5h18M0 9h18" fill="none" stroke="currentColor" stroke-width=".675" stroke-opacity=".45"/><g fill="currentColor"><circle cx="11.25" cy="2.25" r="1.125"/><circle cx="15.75" cy="2.25" r="1.125"/><circle cx="2.25" cy="6.75" r="1.125"/><circle cx="11.25" cy="6.75" r="1.125"/><circle cx="6.75" cy="11.25" r="1.125"/><circle cx="15.75" cy="11.25" r="1.125"/></g></svg><span><span class="long">Export as MIDI (</span>.mid<span class="long">)</span></span></button><button class="key wav-btn" aria-label="Export audio (.wav)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><path fill="currentColor" d="M0 6.47978C0.0945 6.47978 0.37575 6.52028 0.5625 6.47978C0.74925 6.43928 0.93825 6.37853 1.125 6.24128C1.31175 6.10403 1.50075 5.76878 1.6875 5.65853C1.87425 5.54828 2.06325 5.50103 2.25 5.57978C2.43675 5.65628 2.62575 6.08603 2.8125 6.12428C2.99925 6.16028 3.18825 6.14228 3.375 5.79578C3.56175 5.44928 3.75075 4.52453 3.9375 4.04753C4.12425 3.56828 4.31325 2.92478 4.5 2.92478C4.68675 2.92478 4.87575 3.56828 5.0625 4.04753C5.24925 4.52453 5.43825 5.55053 5.625 5.79578C5.81175 6.04103 6.00075 5.69453 6.1875 5.52128C6.37425 5.34803 6.56325 4.81928 6.75 4.75178C6.93675 4.68653 7.12575 5.03753 7.3125 5.12753C7.49925 5.21753 7.68825 5.71028 7.875 5.29178C8.06175 4.87328 8.25075 3.34778 8.4375 2.61653C8.62425 1.88303 8.81325 0.89978 9 0.89978C9.18675 0.89978 9.37575 1.88303 9.5625 2.61653C9.74925 3.34778 9.93825 4.93403 10.125 5.29178C10.3118 5.64953 10.5007 4.98803 10.6875 4.76303C10.8743 4.53578 11.0632 3.93728 11.25 3.93728C11.4368 3.93728 11.6257 4.43228 11.8125 4.76303C11.9993 5.09153 12.1882 6.03428 12.375 5.91053C12.5618 5.78903 12.7507 4.62128 12.9375 4.02053C13.1243 3.41978 13.3132 2.45678 13.5 2.31278C13.6868 2.16653 13.8757 2.65028 14.0625 3.14753C14.2493 3.64253 14.4382 4.82153 14.625 5.28953C14.8118 5.75753 15.0007 5.95778 15.1875 5.95328C15.3743 5.94653 15.5632 5.35928 15.75 5.26028C15.9368 5.16128 16.1257 5.21978 16.3125 5.35928C16.4993 5.50103 16.6882 5.91503 16.875 6.10178C17.0618 6.28853 17.2507 6.41678 17.4375 6.47978C17.6243 6.54278 17.9055 6.47978 18 6.47978V7.01978C17.9055 7.01978 17.6243 6.95678 17.4375 7.01978C17.2507 7.08278 17.0618 7.21103 16.875 7.39778C16.6882 7.58453 16.4993 7.99853 16.3125 8.14028C16.1257 8.27978 15.9368 8.33828 15.75 8.23928C15.5632 8.14028 15.3743 7.55303 15.1875 7.54628C15.0007 7.54178 14.8118 7.74203 14.625 8.21003C14.4382 8.67803 14.2493 9.85703 14.0625 10.352C13.8757 10.8493 13.6868 11.333 13.5 11.1868C13.3132 11.0428 13.1243 10.0798 12.9375 9.47903C12.7507 8.87828 12.5618 7.71053 12.375 7.58903C12.1882 7.46528 11.9993 8.40803 11.8125 8.73653C11.6257 9.06728 11.4368 9.56228 11.25 9.56228C11.0632 9.56228 10.8743 8.96378 10.6875 8.73653C10.5007 8.51153 10.3118 7.85003 10.125 8.20778C9.93825 8.56553 9.74925 10.1518 9.5625 10.883C9.37575 11.6165 9.18675 12.5998 9 12.5998C8.81325 12.5998 8.62425 11.6165 8.4375 10.883C8.25075 10.1518 8.06175 8.62628 7.875 8.20778C7.68825 7.78928 7.49925 8.28203 7.3125 8.37203C7.12575 8.46203 6.93675 8.81303 6.75 8.74778C6.56325 8.68028 6.37425 8.15153 6.1875 7.97828C6.00075 7.80503 5.81175 7.45853 5.625 7.70378C5.43825 7.94903 5.24925 8.97503 5.0625 9.45203C4.87575 9.93128 4.68675 10.5748 4.5 10.5748C4.31325 10.5748 4.12425 9.93128 3.9375 9.45203C3.75075 8.97503 3.56175 8.05028 3.375 7.70378C3.18825 7.35728 2.99925 7.33928 2.8125 7.37528C2.62575 7.41353 2.43675 7.84328 2.25 7.91978C2.06325 7.99853 1.87425 7.95128 1.6875 7.84103C1.50075 7.73078 1.31175 7.39553 1.125 7.25828C0.93825 7.12103 0.74925 7.06028 0.5625 7.01978C0.37575 6.97928 0.0945 7.01978 0 7.01978V6.47978Z"/></svg><span><span class="long">Export audio (</span>.wav<span class="long">)</span></span></button><div class="info"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-seq" aria-describedby="info-seq-text" aria-label="Info: Edit the steps">Info</button><div class="bubble" id="info-seq" hidden><p id="info-seq-text">Click a step to add or remove a note. Accent makes a step stronger. Tie glides into the next step. Drag the Vel and Gate bars to set loudness and length.</p><a class="docs" href="docs/#sequencer" hidden>See the docs <span aria-hidden="true">↗</span></a></div></div></div>
   </section>
 
-  <section class="panel" id="keys" aria-label="Keys and pads">
-    <h2>Play it on your gear</h2>
-    <div class="row panelbar"><button class="play" aria-pressed="false">Play</button><button class="live midi-btn">Export MIDI</button></div>
-    <div class="kbwrap"><div class="row" id="stepsel"></div></div>
-    <div class="kbwrap"><div class="kb" id="kb"></div></div>
-    <div class="padgrid" id="pads" aria-label="Generic pad layout"></div>
+  <section class="panel gear" id="keys" aria-label="Keys and pads">
+    <div><h2>Play it on your gear</h2><p class="cap">Pick a step to see its note on the keyboard and the pads</p></div>
+    <div class="stepsel" id="stepsel"></div>
+    <div class="gearrow">
+      <div class="gblock"><span class="tag">Keyboard</span><div class="kbwrap"><div class="kb" id="kb"></div></div></div>
+      <div class="gblock pblock"><span class="tag">Pads</span><div class="padgrid" id="pads" aria-label="Generic pad layout"></div></div>
+    </div>
+    <div class="legendrow"><ul class="legend"><li><i class="sel"></i>Selected</li><li><i></i>Used in the sequence</li></ul><div class="info"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-keys" aria-describedby="info-keys-text" aria-label="Info: Play it on your gear">Info</button><div class="bubble" id="info-keys" hidden><p id="info-keys-text">Pick a step to see its note on the keyboard and the pads. On the keyboard, the sharps are the round black keys between the white keys. Bottom pad row: white keys. Top pad row: sharps. Use your controller's octave buttons to reach the right octave.</p><a class="docs" href="docs/#keys" hidden>See the docs <span aria-hidden="true">↗</span></a></div></div></div>
     <dl class="kbinfo" aria-label="Selected step">
       <div><dt>Step</dt><dd id="ki-step"></dd></div>
       <div><dt>Note</dt><dd id="ki-note"></dd></div>
@@ -266,56 +492,90 @@
       <div><dt>Accent</dt><dd id="ki-acc"></dd></div>
       <div><dt>Tie</dt><dd id="ki-tie"></dd></div>
     </dl>
-    <p class="note">Pick a step to see its note. Octave counts up from the lowest octave of your sequence (+0 is the lowest). The top row shows the note of every step. The keyboard shows the same note on a piano, starting from the lowest C your sequence needs. The two pad rows are a generic layout, like on most pad controllers: the bottom row holds the white keys, the top row the sharps. Selected note: highlighted. Other notes of the sequence: lightly marked. While playing, everything follows the current step. If your controller has octave buttons, use them to reach the right octave.</p>
   </section>
 
-  <section class="panel" id="export" aria-label="Export MIDI">
-    <h2>Export MIDI</h2>
-    <div class="row">
-      <label class="field" style="flex-direction:row;align-items:center;gap:6px">Bars
+  <!-- Export: bars, MIDI and .wav, then the download link. -->
+  <section class="panel exp" id="export" aria-label="Export MIDI and audio">
+    <h2>Export MIDI / .wav</h2>
+    <div class="exports">
+      <label class="field">
         <select id="midibars"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select>
+        <span>Bars</span>
       </label>
-      <button class="live" id="midi">Export as MIDI (.mid)</button>
+      <button class="key" id="midi" aria-label="Export as MIDI (.mid)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><rect x=".375" y=".375" width="17.25" height="12.75" rx="2.325" fill="none" stroke="currentColor" stroke-width=".75"/><path d="M4.5 0v13.5M9 0v13.5M13.5 0v13.5M0 4.5h18M0 9h18" fill="none" stroke="currentColor" stroke-width=".675" stroke-opacity=".45"/><g fill="currentColor"><circle cx="11.25" cy="2.25" r="1.125"/><circle cx="15.75" cy="2.25" r="1.125"/><circle cx="2.25" cy="6.75" r="1.125"/><circle cx="11.25" cy="6.75" r="1.125"/><circle cx="6.75" cy="11.25" r="1.125"/><circle cx="15.75" cy="11.25" r="1.125"/></g></svg><span><span class="long">Export as MIDI (</span>.mid<span class="long">)</span></span></button>
+      <button class="key" id="wav" aria-label="Export audio (.wav)"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5"><path fill="currentColor" d="M0 6.47978C0.0945 6.47978 0.37575 6.52028 0.5625 6.47978C0.74925 6.43928 0.93825 6.37853 1.125 6.24128C1.31175 6.10403 1.50075 5.76878 1.6875 5.65853C1.87425 5.54828 2.06325 5.50103 2.25 5.57978C2.43675 5.65628 2.62575 6.08603 2.8125 6.12428C2.99925 6.16028 3.18825 6.14228 3.375 5.79578C3.56175 5.44928 3.75075 4.52453 3.9375 4.04753C4.12425 3.56828 4.31325 2.92478 4.5 2.92478C4.68675 2.92478 4.87575 3.56828 5.0625 4.04753C5.24925 4.52453 5.43825 5.55053 5.625 5.79578C5.81175 6.04103 6.00075 5.69453 6.1875 5.52128C6.37425 5.34803 6.56325 4.81928 6.75 4.75178C6.93675 4.68653 7.12575 5.03753 7.3125 5.12753C7.49925 5.21753 7.68825 5.71028 7.875 5.29178C8.06175 4.87328 8.25075 3.34778 8.4375 2.61653C8.62425 1.88303 8.81325 0.89978 9 0.89978C9.18675 0.89978 9.37575 1.88303 9.5625 2.61653C9.74925 3.34778 9.93825 4.93403 10.125 5.29178C10.3118 5.64953 10.5007 4.98803 10.6875 4.76303C10.8743 4.53578 11.0632 3.93728 11.25 3.93728C11.4368 3.93728 11.6257 4.43228 11.8125 4.76303C11.9993 5.09153 12.1882 6.03428 12.375 5.91053C12.5618 5.78903 12.7507 4.62128 12.9375 4.02053C13.1243 3.41978 13.3132 2.45678 13.5 2.31278C13.6868 2.16653 13.8757 2.65028 14.0625 3.14753C14.2493 3.64253 14.4382 4.82153 14.625 5.28953C14.8118 5.75753 15.0007 5.95778 15.1875 5.95328C15.3743 5.94653 15.5632 5.35928 15.75 5.26028C15.9368 5.16128 16.1257 5.21978 16.3125 5.35928C16.4993 5.50103 16.6882 5.91503 16.875 6.10178C17.0618 6.28853 17.2507 6.41678 17.4375 6.47978C17.6243 6.54278 17.9055 6.47978 18 6.47978V7.01978C17.9055 7.01978 17.6243 6.95678 17.4375 7.01978C17.2507 7.08278 17.0618 7.21103 16.875 7.39778C16.6882 7.58453 16.4993 7.99853 16.3125 8.14028C16.1257 8.27978 15.9368 8.33828 15.75 8.23928C15.5632 8.14028 15.3743 7.55303 15.1875 7.54628C15.0007 7.54178 14.8118 7.74203 14.625 8.21003C14.4382 8.67803 14.2493 9.85703 14.0625 10.352C13.8757 10.8493 13.6868 11.333 13.5 11.1868C13.3132 11.0428 13.1243 10.0798 12.9375 9.47903C12.7507 8.87828 12.5618 7.71053 12.375 7.58903C12.1882 7.46528 11.9993 8.40803 11.8125 8.73653C11.6257 9.06728 11.4368 9.56228 11.25 9.56228C11.0632 9.56228 10.8743 8.96378 10.6875 8.73653C10.5007 8.51153 10.3118 7.85003 10.125 8.20778C9.93825 8.56553 9.74925 10.1518 9.5625 10.883C9.37575 11.6165 9.18675 12.5998 9 12.5998C8.81325 12.5998 8.62425 11.6165 8.4375 10.883C8.25075 10.1518 8.06175 8.62628 7.875 8.20778C7.68825 7.78928 7.49925 8.28203 7.3125 8.37203C7.12575 8.46203 6.93675 8.81303 6.75 8.74778C6.56325 8.68028 6.37425 8.15153 6.1875 7.97828C6.00075 7.80503 5.81175 7.45853 5.625 7.70378C5.43825 7.94903 5.24925 8.97503 5.0625 9.45203C4.87575 9.93128 4.68675 10.5748 4.5 10.5748C4.31325 10.5748 4.12425 9.93128 3.9375 9.45203C3.75075 8.97503 3.56175 8.05028 3.375 7.70378C3.18825 7.35728 2.99925 7.33928 2.8125 7.37528C2.62575 7.41353 2.43675 7.84328 2.25 7.91978C2.06325 7.99853 1.87425 7.95128 1.6875 7.84103C1.50075 7.73078 1.31175 7.39553 1.125 7.25828C0.93825 7.12103 0.74925 7.06028 0.5625 7.01978C0.37575 6.97928 0.0945 7.01978 0 7.01978V6.47978Z"/></svg><span><span class="long">Export audio (</span>.wav<span class="long">)</span></span></button>
+      <div class="info"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-export" aria-describedby="info-export-text" aria-label="Info: Export MIDI and audio">Info</button><div class="bubble" id="info-export" hidden><p id="info-export-text">The .mid file holds the bass line, ready to drop into your DAW. The .wav is a short loop of the demo sound, just a preview. If the download does not start by itself, a link appears under the keys: click it.</p><a class="docs" href="docs/#export" hidden>See the docs <span aria-hidden="true">↗</span></a></div></div>
     </div>
-    <p class="note" id="midiout" aria-live="polite">The .mid file holds the bass line, ready to drop into your DAW. If the download does not start by itself, a link appears here: click it.</p>
+    <p class="note" id="midiout" aria-live="polite"></p>
   </section>
 
-  <section class="panel" id="copy-notes" aria-label="To copy">
+  <!-- Copy on your instrument: one line per step. -->
+  <section class="panel copy" id="copy-notes" aria-label="Copy on your instrument">
     <h2>Copy on your instrument</h2>
-    <div class="tablewrap">
+    <div class="copytables">
       <table>
-        <thead><tr><th>Step</th><th>Note</th><th>MIDI</th><th>Semitones</th><th>Vel</th><th>Gate</th><th>Notes</th></tr></thead>
-        <tbody id="tbody"></tbody>
+        <caption class="sr">Steps 1 to 8</caption>
+        <thead><tr><th scope="col">Step</th><th scope="col">Note</th><th scope="col">MIDI</th><th scope="col">Semitones</th><th scope="col">Vel</th><th scope="col">Gate</th><th scope="col">Notes</th></tr></thead>
+        <tbody id="tbody1"></tbody>
+      </table>
+      <table id="table2">
+        <caption class="sr">Steps 9 to 16</caption>
+        <thead><tr><th scope="col">Step</th><th scope="col">Note</th><th scope="col">MIDI</th><th scope="col">Semitones</th><th scope="col">Vel</th><th scope="col">Gate</th><th scope="col">Notes</th></tr></thead>
+        <tbody id="tbody2"></tbody>
       </table>
     </div>
-    <div class="row" style="margin-top:10px"><button id="copy">Copy as text</button></div>
-    <p class="note">Semitones is the distance from the root note, handy if you transpose. Velocity (0 to 127) and gate (% of the step) are indicative: set them on your instrument. For a tied step, turn on glide on your synth and lengthen the note.</p>
+    <div class="copykeys">
+      <button class="key" id="copy">Copy as text</button>
+      <button class="key" id="txt"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 18 13.5" fill="none" stroke="currentColor"><path d="M4.8 5.85 9 10.05l4.2-4.2" stroke-width="1.125"/><path d="M9 2.25v7.8" stroke-width="1.69" stroke-linejoin="round"/><path d="M4.2 12.75h9.6" stroke-width="1.125" stroke-linejoin="round"/></svg>Download .txt</button>
+      <p class="copyout" id="copyout" aria-live="polite"></p>
+      <div class="info"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-copy" aria-describedby="info-copy-text" aria-label="Info: Copy on your instrument">Info</button><div class="bubble" id="info-copy" hidden><p id="info-copy-text">Semitones is the distance from the root note, handy if you transpose. Velocity (0 to 127) and gate (% of the step) are indicative: set them on your instrument. For a tied step, turn on glide on your synth and lengthen the note.</p><a class="docs" href="docs/#copy" hidden>See the docs <span aria-hidden="true">↗</span></a></div></div>
+    </div>
   </section>
 
-  <section class="panel" aria-label="Saved ideas">
-    <h2>Saved ideas</h2>
-    <div class="saved" id="saved"></div>
-  </section>
-
-  <section class="panel about" aria-label="About Bass Assembly">
-    <h2>About Bass Assembly</h2>
-    <p>Bass Assembly helps when you stare at an empty sequencer. Pick a style, a root note and a scale, press generate, and you get a short bass pattern of 8 or 16 steps with its own accents, ties, velocity and gate. Every result is editable, so a happy accident becomes a starting point.</p>
-    <p>The generator follows the habits of each genre. Acid favors minor pentatonic notes, accents and slides. EBM keeps a tight, driving pulse on the beat. Industrial leaves more space and leans on the root. Dark wave moves between the root, the fifth and the minor third.</p>
-    <h3>What you can do</h3>
-    <ul>
-      <li>Generate, randomize or gently vary a bassline, and keep the ideas you like.</li>
-      <li>Listen in the browser with an adjustable synth: wave, filter, drive, sub, glide, delay and reverb.</li>
-      <li>Add swing and humanize for a less rigid feel.</li>
-      <li>Export a MIDI file, or copy the notes to reproduce them on your own gear.</li>
-    </ul>
-    <h3>FAQ</h3>
+  <!-- About: About, What you can do and the FAQ. -->
+  <section class="panel about" id="about" aria-labelledby="about-title">
+    <h2 id="about-title">About Bass Assembly</h2>
+    <div class="acols">
+    <div class="acol">
+    <div class="asec">
+      <p>Bass Assembly helps when you stare at an empty sequencer. Pick a style, a root note and a scale, press generate, and you get a short bass pattern of 8 or 16 steps with its own accents, ties, velocity and gate. Every result is editable, so a happy accident becomes a starting point.</p>
+      <p>The generator follows the habits of each genre. Acid favors minor pentatonic notes, accents and slides. EBM keeps a tight, driving pulse on the beat. Industrial leaves more space and leans on the root. Dark wave moves between the root, the fifth and the minor third.</p>
+      <p>Bass Assembly is a free and open source project made by LPDLS (Chris Bonnet), released under the MIT license. The code is on GitHub. Feedback, bugs and ideas are welcome: <a href="https://github.com/chrislpdls/bass-assembly/issues" rel="noopener">open an issue on GitHub</a> or write to <a href="mailto:hello@bassassembly.app">hello@bassassembly.app</a>. Designers who know Figma can also make a theme: ask for the Figma file. The themes I choose go on the site, with the name of their designer. The fonts are Geist, Geist Mono and Geist Pixel under the SIL Open Font License. The design is inspired by hardware mixers and sequencers and by Dieter Rams's audio designs for Braun.</p>
+      <div class="links">
+        <a class="key" href="https://github.com/chrislpdls/bass-assembly" rel="noopener">Source on GitHub <span aria-hidden="true">↗</span></a>
+        <span class="key" role="link" aria-disabled="true" title="Docs are coming soon">Docs <span aria-hidden="true">↗</span><span class="sr"> (coming soon)</span></span>
+        <a class="key" href="mailto:hello@bassassembly.app">Contact</a>
+        <div class="paygroup">
+          <a class="key" href="https://payment-links.mollie.com/payment/RKG594G5VN6YuhhtBjTP8" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 12 9"><path fill="currentColor" d="M2.25 0H3V0.75H2.25V0ZM4.5 0H5.25V0.75H4.5V0ZM6.75 0H7.5V0.75H6.75V0ZM1.5 0.75H2.25V1.5H1.5V0.75ZM3.75 0.75H4.5V1.5H3.75V0.75ZM6 0.75H6.75V1.5H6V0.75ZM1.5 1.5H2.25V2.25H1.5V1.5ZM3.75 1.5H4.5V2.25H3.75V1.5ZM6 1.5H6.75V2.25H6V1.5ZM2.25 2.25H3V3H2.25V2.25ZM4.5 2.25H5.25V3H4.5V2.25ZM6.75 2.25H7.5V3H6.75V2.25ZM0.75 3.75H8.25V4.5H0.75V3.75ZM0.75 4.5H10.5V5.25H0.75V4.5ZM0.75 5.25H8.25V6H0.75V5.25ZM9.75 5.25H11.25V6H9.75V5.25ZM0.75 6H8.25V6.75H0.75V6ZM9.75 6H11.25V6.75H9.75V6ZM0.75 6.75H10.5V7.5H0.75V6.75ZM1.5 7.5H7.5V8.25H1.5V7.5ZM2.25 8.25H6.75V9H2.25V8.25Z"/></svg>Buy me a coffee<span class="sr"> (opens in a new tab)</span></a>
+          <div class="info payinfo"><button class="infotag" type="button" aria-expanded="false" aria-controls="info-pay" aria-describedby="info-pay-text" aria-label="Info: payment">i</button><div class="bubble" id="info-pay" hidden><p id="info-pay-text"><svg class="ico cup" aria-hidden="true" focusable="false" width="18" height="13.5" viewBox="0 0 12 9"><path fill="currentColor" d="M2.25 0H3V0.75H2.25V0ZM4.5 0H5.25V0.75H4.5V0ZM6.75 0H7.5V0.75H6.75V0ZM1.5 0.75H2.25V1.5H1.5V0.75ZM3.75 0.75H4.5V1.5H3.75V0.75ZM6 0.75H6.75V1.5H6V0.75ZM1.5 1.5H2.25V2.25H1.5V1.5ZM3.75 1.5H4.5V2.25H3.75V1.5ZM6 1.5H6.75V2.25H6V1.5ZM2.25 2.25H3V3H2.25V2.25ZM4.5 2.25H5.25V3H4.5V2.25ZM6.75 2.25H7.5V3H6.75V2.25ZM0.75 3.75H8.25V4.5H0.75V3.75ZM0.75 4.5H10.5V5.25H0.75V4.5ZM0.75 5.25H8.25V6H0.75V5.25ZM9.75 5.25H11.25V6H9.75V5.25ZM0.75 6H8.25V6.75H0.75V6ZM9.75 6H11.25V6.75H9.75V6ZM0.75 6.75H10.5V7.5H0.75V6.75ZM1.5 7.5H7.5V8.25H1.5V7.5ZM2.25 8.25H6.75V9H2.25V8.25Z"/></svg>Secure payment by Mollie. You choose the amount, from €1, with no account. Bass Assembly never sees your card details.</p></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="acol aside">
+    <div class="asec">
+      <h3>What you can do</h3>
+      <ul role="list">
+        <li>Generate, randomize or gently vary a bassline, and save the ideas you like.</li>
+        <li>Lock the rhythm, the notes, the style, the octave or the sound, and undo changes to the pattern.</li>
+        <li>Listen in the browser with an adjustable synth: wave, filter, drive, sub, glide, delay and reverb.</li>
+        <li>Tap the tempo, turn on the metronome, add swing and humanize for a less rigid feel.</li>
+        <li>Export a MIDI file or a .wav loop, or copy the notes to reproduce them on your own gear.</li>
+      </ul>
+    </div>
+    <div class="asec faq">
+      <h3>FAQ</h3>
       <details>
         <summary>What is Bass Assembly?</summary>
         <p>Bass Assembly is a free bassline generator and 16 step sequencer that runs in your browser. It suggests short bass patterns in styles such as acid, EBM, industrial and dark wave, plays them with a built-in synth, and lets you edit every step by hand.</p>
       </details>
       <details>
         <summary>How do I make an acid bassline?</summary>
-        <p>Choose the Acid style, keep the minor pentatonic scale and raise the density a little. Use ties for slides, add accents on a few steps, and push the resonance in the Sound panel. Generate again until a pattern grooves, then fine tune notes, velocity and gate in the grid.</p>
+        <p>Choose the Acid style and keep the minor pentatonic scale. Lock the style so Generate bassline keeps it. Use ties for slides, add accents on a few steps, and push the resonance in the Sound panel. Generate again until a pattern grooves, then fine tune notes, velocity and gate in the grid.</p>
+      </details>
+      <details>
+        <summary>How do the locks work?</summary>
+        <p>Each lock tells Generate bassline what to keep. Rhythm keeps which steps play, the accents, ties, velocity, gate, tempo, swing, step count and Half loop. Notes keeps the note, scale, octave and pitches. Sound keeps the Sound panel settings, and Style keeps the style. The padlock next to Octave keeps only the octave. Lock the rhythm you like and generate again to hear new notes on it, or lock the notes and try new rhythms.</p>
       </details>
       <details>
         <summary>Can I export the bassline as a MIDI file?</summary>
@@ -323,7 +583,7 @@
       </details>
       <details>
         <summary>How do I play the pattern on my own synth or pad controller?</summary>
-        <p>The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text.</p>
+        <p>The Play it on your gear panel shows the note of every step on a piano keyboard and on a generic two row pad layout. The Copy on your instrument panel lists the note, MIDI number, velocity and gate of each step, and you can copy it as text or download it as a .txt file.</p>
       </details>
       <details>
         <summary>What does Humanize do?</summary>
@@ -331,17 +591,43 @@
       </details>
       <details>
         <summary>Is Bass Assembly free and open source?</summary>
-        <p>Yes. It is free, needs no account, and everything runs locally in your browser: your ideas stay on your device. The code is released under the MIT license and you can <a href="https://github.com/chrislpdls/bass-assembly">download it on GitHub</a>.</p>
+        <p>Yes. It is free, needs no account, and everything runs locally in your browser: your ideas stay on your device. The code is released under the MIT license and you can <a href="https://github.com/chrislpdls/bass-assembly" rel="noopener">download it on GitHub</a>.</p>
       </details>
       <details>
         <summary>Does Bass Assembly track me?</summary>
-        <p>No. There are no cookies, no analytics, no ads and no trackers, and the page loads nothing from other sites: even the fonts are hosted here. The basslines, the sound and the MIDI files are made in your browser, nothing is sent to a server. Your theme and saved ideas are kept in your browser storage and never leave your device. Like any website, the web host may keep standard technical logs, such as IP addresses, for security. As the code is open source, you can also <a href="https://github.com/chrislpdls/bass-assembly">download it from GitHub</a> and run Bass Assembly on your own computer.</p>
+        <p>No. There are no cookies, no analytics, no ads and no trackers, and the page loads nothing from other sites: even the fonts are hosted here. The basslines, the sound and the MIDI files are made in your browser, nothing is sent to a server. Your saved ideas are kept in your browser storage and never leave your device. Like any website, the web host may keep standard technical logs, such as IP addresses, for security. As the code is open source, you can also <a href="https://github.com/chrislpdls/bass-assembly" rel="noopener">download it from GitHub</a> and run Bass Assembly on your own computer.</p>
       </details>
+      <details>
+        <summary>Does Bass Assembly work on a phone?</summary>
+        <p>Yes. Everything works on a phone, but it is best on a tablet or a computer: you see all 16 steps at once, the keyboard and the pads side by side, and the knobs are easier to turn.</p>
+      </details>
+      <details>
+        <summary>How can I support Bass Assembly?</summary>
+        <p>Bass Assembly stays free, with no ads and no account. If it helps your music, you can <a href="https://payment-links.mollie.com/payment/RKG594G5VN6YuhhtBjTP8" target="_blank" rel="noopener">buy me a coffee<span class="sr"> (opens in a new tab)</span></a>: you choose the amount, from €1, and pay by card, Apple Pay or Google Pay. The payment happens on the secure page of Mollie, a European payment provider, with no donation platform in between: your coffee comes straight to me, minus the usual payment fees. Bass Assembly never sees your card details, and this site still loads nothing from other sites.</p>
+      </details>
+      <details>
+        <summary>Can I design a theme for Bass Assembly?</summary>
+        <p>Yes. Bass Assembly has one theme for now, ABS, and more are coming. If you know Figma and want to make one, write to <a href="mailto:hello@bassassembly.app">hello@bassassembly.app</a>: I will send you the Figma file with the components and colors. Design the theme you like. I choose the themes that go on the site, and each one is credited with the name of its designer.</p>
+      </details>
+      <details>
+        <summary>How can I contact you or report a bug?</summary>
+        <p>Write to <a href="mailto:hello@bassassembly.app">hello@bassassembly.app</a> or <a href="https://github.com/chrislpdls/bass-assembly/issues" rel="noopener">open an issue on GitHub</a>. For a bug, please give your browser, your device and the steps that lead to it, so it can be reproduced.</p>
+      </details>
+    </div>
+    </div>
+    </div>
   </section>
   </main>
   <footer>
-    <p>Bass Assembly is free and open source, made by <a href="https://notimenolife.lpdls.com/">LPDLS</a> under the <a href="LICENSE">MIT license</a>. The source code is on <a href="https://github.com/chrislpdls/bass-assembly">GitHub</a>. The fonts are Geist, Geist Mono and Geist Pixel under the SIL Open Font License.</p>
+    <p>Bass Assembly is free and open source, made by <a href="https://notimenolife.lpdls.com/" rel="noopener">LPDLS (Chris Bonnet)</a> under the <a href="LICENSE">MIT license</a>. Design inspired by hardware mixers and Dieter Rams's work for Braun. Beta version, <time datetime="2026-11">November 2026</time>.</p>
+    <p class="legal">Legal notice: published by Chris Bonnet (LPDLS), EI. Contact: <a href="mailto:hello@bassassembly.app">hello@bassassembly.app</a>. Hosted by GitHub Pages, GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
   </footer>
+</div>
+<!-- Floating bar: Play, Generate and back to the top. -->
+<div class="fbar is-hidden" id="fbar" role="group" aria-label="Quick controls">
+  <button class="key key-sq play" aria-label="Play"><svg class="g-play" aria-hidden="true" focusable="false" width="8" height="8" viewBox="0 0 7.07 7.07"><path fill="currentColor" d="M.88 7.07C.38 7.07 0 6.72 0 6.31V.76C0 .36.38 0 .88 0 1.04 0 1.2.04 1.34.11L6.65 2.89C6.91 3.03 7.07 3.27 7.07 3.54 7.07 3.8 6.91 4.04 6.65 4.18L1.34 6.96C1.2 7.03 1.04 7.07.88 7.07Z"/></svg><svg class="g-stop" aria-hidden="true" focusable="false" width="8" height="8" viewBox="0 0 7.07 7.07"><rect x=".285" y=".285" width="6.5" height="6.5" rx="1" fill="currentColor"/></svg></button>
+  <button class="key key-sq" id="fgen" aria-label="Generate bassline"><svg aria-hidden="true" focusable="false" width="24" height="18" viewBox="0 0 24 18"><path fill="currentColor" d="M0 13.9287H1.7142V14.3571H0V13.9287ZM6.8572 13.9287H9.4286V14.3571H6.8572V13.9287ZM14.5714 13.9287H17.1428V14.3571H14.5714V13.9287ZM21.4286 13.9287H24V14.3571H21.4286V13.9287ZM0 13.0715H1.7142V13.5001H0V13.0715ZM6 13.0715H9.4286V13.5001H6V13.0715ZM13.7142 13.0715H17.1428V13.5001H13.7142V13.0715ZM21.4286 13.0715H23.1428V13.5001H21.4286V13.0715ZM0 12.2143H1.7142V12.6429H0V12.2143ZM6 12.2143H9.4286V12.6429H6V12.2143ZM13.7142 12.2143H17.1428V12.6429H13.7142V12.2143ZM20.5714 12.2143H23.1428V12.6429H20.5714V12.2143ZM0 11.3571H1.7142V11.7857H0V11.3571ZM5.1428 11.3571H9.4286V11.7857H5.1428V11.3571ZM12.8572 11.3571H17.1428V11.7857H12.8572V11.3571ZM19.7142 11.3571H22.2858V11.7857H19.7142V11.3571ZM0 10.5001H1.7142V10.9287H0V10.5001ZM4.2858 10.5001H6.8572V10.9287H4.2858V10.5001ZM7.7142 10.5001H9.4286V10.9287H7.7142V10.5001ZM12 10.5001H14.5714V10.9287H12V10.5001ZM15.4286 10.5001H17.1428V10.9287H15.4286V10.5001ZM19.7142 10.5001H21.4286V10.9287H19.7142V10.5001ZM0 9.64286H1.7142V10.0715H0V9.64286ZM3.4286 9.64286H6V10.0715H3.4286V9.64286ZM7.7142 9.64286H9.4286V10.0715H7.7142V9.64286ZM11.1428 9.64286H13.7142V10.0715H11.1428V9.64286ZM15.4286 9.64286H17.1428V10.0715H15.4286V9.64286ZM18.8572 9.64286H21.4286V10.0715H18.8572V9.64286ZM0 8.78566H1.7142V9.21426H0V8.78566ZM3.4286 8.78566H5.1428V9.21426H3.4286V8.78566ZM7.7142 8.78566H9.4286V9.21426H7.7142V8.78566ZM11.1428 8.78566H12.8572V9.21426H11.1428V8.78566ZM15.4286 8.78566H17.1428V9.21426H15.4286V8.78566ZM18 8.78566H20.5714V9.21426H18V8.78566ZM0 7.92866H1.7142V8.35706H0V7.92866ZM2.5714 7.92866H5.1428V8.35706H2.5714V7.92866ZM7.7142 7.92866H9.4286V8.35706H7.7142V7.92866ZM10.2858 7.92866H12.8572V8.35706H10.2858V7.92866ZM15.4286 7.92866H17.1428V8.35706H15.4286V7.92866ZM18 7.92866H19.7142V8.35706H18V7.92866ZM0 7.07146H4.2858V7.50006H0V7.07146ZM7.7142 7.07146H12V7.50006H7.7142V7.07146ZM15.4286 7.07146H19.7142V7.50006H15.4286V7.07146ZM0 6.21426H3.4286V6.64286H0V6.21426ZM7.7142 6.21426H11.1428V6.64286H7.7142V6.21426ZM15.4286 6.21426H18.8572V6.64286H15.4286V6.21426ZM0 5.35706H2.5714V5.78566H0V5.35706ZM7.7142 5.35706H10.2858V5.78566H7.7142V5.35706ZM15.4286 5.35706H18V5.78566H15.4286V5.35706ZM0 4.50006H2.5714V4.92866H0V4.50006ZM7.7142 4.50006H10.2858V4.92866H7.7142V4.50006ZM15.4286 4.50006H18V4.92866H15.4286V4.50006ZM0 3.64286H1.7142V4.07146H0V3.64286ZM7.7142 3.64286H9.4286V4.07146H7.7142V3.64286ZM15.4286 3.64286H17.1428V4.07146H15.4286V3.64286Z"/></svg></button>
+  <a class="key key-sq" href="#generate" aria-label="Back to the settings"><svg aria-hidden="true" focusable="false" width="9.2" height="10.13" viewBox="1.4 0 9.2 10.13"><path d="M1.91 4.93 6 .56l4.09 4.37M6 .83v7.1M1.91 9.56h8.18" fill="none" stroke="currentColor" stroke-width="1.125" stroke-linejoin="round"/></svg></a>
 </div>
 <script src="app.js" defer></script>
 </body>

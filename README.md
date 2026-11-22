@@ -6,16 +6,18 @@ No account, no tracking, nothing uploaded. Everything runs locally and your save
 
 ## Features
 
-- Styles: Acid, EBM, Industrial, Rolling and Dark Wave, each with its own rhythm grid, note weights, accents, ties, velocity and gate ranges
+- Styles: Acid, EBM, Industrial, Rolling and Dark Wave, each with its own rhythm grid, density, note weights, accents, ties, velocity and gate ranges
 - Eight scales, from minor pentatonic to harmonic minor
-- Generate a bassline (random settings and sequence), change only the notes, or vary a pattern a little. Optionally repeat the first half with small variations
+- Generate a bassline (random settings and sequence), get a new pattern with the same settings and sound, or vary a few steps. Optionally repeat the first half with small variations
+- Locks: keep the rhythm, the notes, the style, the octave or the sound when you generate
+- Undo and redo for the pattern: generate, step edits and the menus that change the steps (Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z)
 - Editable piano roll with accent, tie, velocity and gate for every step
 - Built-in synth: wave, filter, resonance, filter decay, drive, sub oscillator, glide, delay and reverb
+- Tap tempo and a metronome
 - Swing and humanize (small random changes to timing, velocity and note length)
 - "Play it on your gear" panel: the note of each step on a piano keyboard and on a generic two row pad layout
-- Copy the pattern as text, or export it as a Standard MIDI File (1, 2 or 4 bars)
+- Copy the pattern as text, or export it as a Standard MIDI File or a .wav loop (1, 2 or 4 bars)
 - Save the ideas you like, stored in the browser's local storage
-- Dark and light themes
 
 ## Run it
 
@@ -38,7 +40,6 @@ Then open the address it prints. You can also open `index.html` directly in a br
 index.html     page, SEO tags, structured data, content and FAQ
 style.css      styles and self-hosted font declarations
 app.js         generator, sequencer, Web Audio synth, MIDI export
-theme.js       applies the saved light or dark theme before the first paint
 fonts/         Geist, Geist Mono and Geist Pixel Line (SIL Open Font License)
 favicon.svg    icon
 apple-touch-icon.png  180x180 icon for iOS home screens
@@ -66,17 +67,25 @@ The files use the domain of the official site, `https://bassassembly.app`. If yo
 - `sitemap.xml`: the `loc` entry
 - `CNAME`: used by GitHub Pages for the custom domain. Put your own domain in it, or delete it if you do not use one
 
-A quick way to do it: search the whole project for `bassassembly.app` and replace it with your domain. Then check the link preview with a social share debugger and submit `sitemap.xml` in Google Search Console.
+A quick way to do it: search the whole project for `https://bassassembly.app` and replace it with your address, then edit `CNAME`. Leave the contact address hello@bassassembly.app as it is, or replace it with your own. Then check the link preview with a social share debugger and submit `sitemap.xml` in Google Search Console.
 
 ## How the generator works
 
-For each step the generator draws from a per style probability grid, scaled by the density setting. Notes are picked from the chosen scale with weights by interval (root, fifth and so on) and a bias toward notes close to the previous one. Accents, ties, velocity and gate come from per style ranges. The result is a suggestion, not a rule: the idea is to get unstuck, then edit.
+For each step the generator draws from a per style probability grid, scaled by the density of the style (Generate bassline varies it a little). Notes are picked from the chosen scale with weights by interval (root, fifth and so on) and a bias toward notes close to the previous one. Accents, ties, velocity and gate come from per style ranges. The result is a suggestion, not a rule: the idea is to get unstuck, then edit.
 
 The MIDI file is written by hand, without libraries (format 1, 480 ticks per quarter note).
 
 ## Contributing
 
 Issues are welcome. For larger changes, please open an issue first so we can discuss them. Ideas that would be great additions: more styles and scales, a pattern shift or reverse button, keyboard shortcuts, a share link that encodes the pattern in the URL, and translations.
+
+## Design a theme
+
+Bass Assembly has one theme for now, ABS, and more are coming. If you know Figma and want to design one, write to hello@bassassembly.app: I will send you the Figma file with the components and colors. Make the theme you like. I choose the themes that go on the site, and each one is credited with the name of its designer.
+
+## Credits
+
+The design is inspired by hardware mixers and sequencers and by Dieter Rams's audio designs for Braun. The fonts are Geist, Geist Mono and Geist Pixel by Vercel.
 
 ## License
 
